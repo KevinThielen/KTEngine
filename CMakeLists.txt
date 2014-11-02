@@ -1,0 +1,19 @@
+cmake_minimum_required(VERSION 2.8.11)
+project(KTEngine)
+message(STATUS "=======================================")
+
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build/")
+SET(CMAKE_C++_CREATE_STATIC_LIBRARY 1)
+SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -Wall")
+SET(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -Wall -Wno-reorder")
+
+find_package(OpenGL REQUIRED)
+add_definitions(-DGLM_FORCE_RADIANS)
+
+
+ADD_SUBDIRECTORY(external)
+ADD_SUBDIRECTORY(src)
+
+set(HEADER_FILES ${HEADER_FILES} PARENT_SCOPE)
+set(SOURCE_FILES ${SOURCE_FILES} PARENT_SCOPE)
+set(LIBRARIES ${LIBRARIES} PARENT_SCOPE)
