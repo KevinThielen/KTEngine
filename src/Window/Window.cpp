@@ -53,7 +53,6 @@ bool kte::Window::create(std::string title, int width, int height)
     if (!GLEW_VERSION_3_1)
         return false;
 
-    std::cout<<"Init success"<<std::endl;
     // Enable depth test
     // glEnable(GL_DEPTH_TEST);
 

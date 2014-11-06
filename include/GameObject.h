@@ -66,7 +66,9 @@ namespace kte
         T *addComponent()
         {
             std::shared_ptr<T> component(new T(ID));
-            components[std::type_index(typeid(*component))] = component;
+
+                components[std::type_index(typeid(*component))] = component;
+
             return component.get();
         }
 
@@ -74,6 +76,8 @@ namespace kte
         T *getComponent()
         {
             std::type_index index(typeid(T));
+
+
             unsigned long count = components.count(std::type_index(typeid(T)));
             if (count != 0)
             {

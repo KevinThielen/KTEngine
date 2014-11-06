@@ -24,7 +24,7 @@ namespace kte
 
         Text* createGuiText(Font* font, glm::vec3 position, glm::vec3 scale);
 
-
+        void setOptions(std::string title, int width, int height) { this->title = title; this->width = width; this->height = height; }
         bool isKeyDown(int key) { return renderSystem.getWindow()->isKeyDown(key); }
         bool isMouseDown(int button) { return renderSystem.getWindow()->isMouseDown(button); }
         void getMousePosition(double* x, double* y) { return renderSystem.getWindow()->getMousePosition(x, y); }
@@ -33,6 +33,9 @@ namespace kte
         ~Engine();
         bool initialize();
 
+        std::string title;
+        int width;
+        int height;
         std::vector<IGameState*> gameStates;
         std::vector<GameObject*> gameObjects;
         std::vector<Text*> guiTexts;

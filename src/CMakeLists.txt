@@ -3,6 +3,7 @@ message("Engine: =======================================")
 
 ADD_SUBDIRECTORY(Graphics)
 ADD_SUBDIRECTORY(Window)
+ADD_SUBDIRECTORY(Components)
 
 
 set(SOURCE_FILES ${SOURCE_FILES} ${KTEngine_SOURCE_DIR}/src/Engine.cpp ${KTEngine_SOURCE_DIR}/src/GameObject.cpp PARENT_SCOPE)

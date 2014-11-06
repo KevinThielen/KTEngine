@@ -77,12 +77,6 @@ namespace kte
         }
         FT_Done_Face(fontFace);
         FT_Done_FreeType(fontLibrary);
-
-
-        std::cout << "Font " << path << " loaded\n"<<std::endl;
-
-
-
         return true;
     }
 }

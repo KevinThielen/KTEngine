@@ -40,7 +40,7 @@ namespace kte
 
     bool Engine::initialize()
     {
-        bool result = renderSystem.initialize();
+        bool result = renderSystem.initialize(title, width, height);
 
         return result;
     }
@@ -69,14 +69,12 @@ namespace kte
     {
         GameObject* go = new GameObject();
         gameObjects.push_back(go);
-        std::cout<<"Added new GO"<<std::endl;
         return go;
     }
     GameObject* Engine::addGameObject(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation)
     {
         GameObject* go = new GameObject(position, scale, rotation);
         gameObjects.push_back(go);
-        std::cout<<"Added new GO"<<std::endl;
 
         return go;
     }
@@ -118,4 +116,6 @@ namespace kte
         guiTexts.push_back(text);
         return text;
     }
+
+
 }

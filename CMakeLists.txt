@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 2.8.11)
 project(KTEngine)
-message(STATUS "=======================================")
 
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build/")
 SET(CMAKE_C++_CREATE_STATIC_LIBRARY 1)

@@ -13,7 +13,7 @@ namespace kte
     class RenderSystem
     {
     public:
-        bool initialize();
+        bool initialize(std::string title, int width, int height);
         void render(std::vector<GameObject*> gameObjects);
         void render(std::vector<Text*> guiTexts);
 

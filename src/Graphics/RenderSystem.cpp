@@ -5,14 +5,16 @@
 #include <Graphics/ShaderManager.h>
 #include <Graphics/FontManager.h>
 #include <Graphics/Text.h>
-
 #include <iostream>
+#include <Components/Camera.h>
+
+#include <Engine.h>
 
 namespace kte
 {
-    bool RenderSystem::initialize()
+    bool RenderSystem::initialize(std::string title, int width, int height)
     {
-        if(!window.create("Rock, Paper, Toe!", 800, 600))
+        if(!window.create(title, width, height))
             return false;
 
         //Load Shaders
@@ -34,6 +36,10 @@ namespace kte
             return false;
         if(!FontManager::getInstance()->initializeDefaultFonts())
             return false;
+
+        //dummy cam
+        Camera::setMainCamera(Engine::getInstance()->addGameObject()->addComponent<Camera>());
+
         return true;
     }
 
