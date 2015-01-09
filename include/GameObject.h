@@ -95,7 +95,7 @@ namespace kte
         int ID = 0;          //ID of this gameObject, needed for hashing and other performance optimaizations
         static int availableId; //contains the next available ID. After instancing a new gameObject, this will increase by one
 
-        std::map<const std::type_index, std::shared_ptr<IComponent>> components;
+        std::map<const std::type_index, std::unique_ptr<IComponent>> components;
 
         Transformation transformation;    //Transformation: positions, rotation and scale in world space
     };

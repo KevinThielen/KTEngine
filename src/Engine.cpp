@@ -8,6 +8,9 @@ namespace kte
 
     Engine::~Engine()
     {
+        while(gameStates.size() > 0)
+            popGameState();
+
         for(unsigned int i = 0; i<gameObjects.size(); i++)
             delete gameObjects[i];
 
@@ -54,17 +57,35 @@ namespace kte
         if(!isRunning)
             isRunning = true;
 
-        while(isRunning)
+        while(isRunning && !glfwWindowShouldClose(glfwGetCurrentContext()))
         {
-            gameStates.back()->update();
+            calculateFPS();
 
+            gameStates.back()->update();
             renderSystem.getWindow()->clearScreen();
             renderSystem.render(gameObjects);
             renderSystem.render(guiTexts);
             renderSystem.getWindow()->swapBuffers();
-
         }
     }
+
+    void Engine::calculateFPS()
+    {
+
+        fpsCounter++;
+        dt = glfwGetTime() - lastTime;
+        accumulatedTime += dt;
+        lastTime = glfwGetTime();
+
+        if(accumulatedTime >= 1.0f)
+        {
+            lastFrames = fpsCounter;
+            fpsCounter = 0;
+            accumulatedTime = 0.0f;
+            std::cout<<"FPS: "<<lastFrames<<" ~"<<1.0f/lastFrames<<"ms"<<std::endl;
+        }
+    }
+
     GameObject* Engine::addGameObject()
     {
         GameObject* go = new GameObject();

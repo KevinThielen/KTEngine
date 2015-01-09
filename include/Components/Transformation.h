@@ -43,8 +43,18 @@ namespace kte
 
         bool contains2DPoint(float x, float y)
         {
-            if(x < position.x || x > position.x+scale.x)
-                return false;
+
+            if(scale.x < 0.0f)
+            {
+                if (x < position.x + scale.x || x > position.x)
+                    return false;
+            }
+            else
+            {
+                if (x < position.x || x > position.x + scale.x )
+                    return false;
+            }
+
             if(y < position.y || y > position.y+scale.y)
                 return false;
             return true;
@@ -73,11 +83,13 @@ namespace kte
             {
                 matrix = glm::mat4();
                 // transformation = translation x rotation x scale
-                matrix = glm::translate(matrix, position);
 
+                matrix = glm::translate(matrix, position + scale/2.0f);
                 matrix = glm::rotate(matrix, rotation.x, glm::vec3(1, 0, 0));
                 matrix = glm::rotate(matrix, rotation.y, glm::vec3(0, 1, 0));
                 matrix = glm::rotate(matrix, rotation.z, glm::vec3(0, 0, 1));
+                matrix = glm::translate(matrix, -scale/2.0f);
+
 
                 matrix = glm::scale(matrix, scale);
                 isDirty = false;
