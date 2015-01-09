@@ -7,15 +7,12 @@ SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -Wall")
 SET(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -Wall -Wno-reorder")
 
 find_package(OpenGL REQUIRED)
-add_definitions(-DGLM_FORCE_RADIANS)
+
 
 
 ADD_SUBDIRECTORY(external)
 ADD_SUBDIRECTORY(src)
 
 set(HEADER_FILES ${HEADER_FILES} PARENT_SCOPE)
-set(SOURCE_FILES ${SOURCE_FILES} "${KTEngine_SOURCE_DIR}/external/jsoncpp/src/lib_json/json_reader.cpp"
-                                 "${KTEngine_SOURCE_DIR}/external/jsoncpp/src/lib_json/json_value.cpp"
-                                 "${KTEngine_SOURCE_DIR}/external/jsoncpp/src/lib_json/json_writer.cpp"
-                                 PARENT_SCOPE)
+set(SOURCE_FILES ${SOURCE_FILES} PARENT_SCOPE)
 set(LIBRARIES ${LIBRARIES} PARENT_SCOPE)
