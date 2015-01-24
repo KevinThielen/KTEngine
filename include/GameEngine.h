@@ -9,6 +9,8 @@
  */
 
 #include <string>
+#include "Window.h"
+#include "IGameScene.h"
 
 namespace kte
 {
@@ -17,19 +19,25 @@ namespace kte
         std::string title;
         int width;
         int height;
+
+        WindowDesc(std::string title, int width = 800, int height = 600) : title(title), height(height), width(width)
+        {
+        }
     };
+
+    class IGameScene;
 
     class GameEngine
     {
     public:
-        static GameEngine &instance()
+        static GameEngine* instance()
         {
             static GameEngine *instance = new GameEngine();
-            return *instance;
+            return instance;
         }
 
         //run the game. The parameter is the first gameScene that should run.
-        void run();
+        void run(IGameScene* initialScene, WindowDesc windowDesc);
 
         //exit the whole game
         void exit();
@@ -37,8 +45,9 @@ namespace kte
     private:
         //only one instance
         GameEngine() {}
-
-        
+        Window window;
+        bool isRunning;
+        std::unique_ptr<IGameScene> currentScene;
     };
 }
 #endif
