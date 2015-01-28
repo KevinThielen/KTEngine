@@ -2,6 +2,7 @@
 #define KTE_ISYSTEM_H
 
 #include <string>
+#include "Messages/Message.h"
 
 namespace kte
 {
@@ -10,9 +11,7 @@ namespace kte
     public:
         virtual bool init() {}
         virtual void update(float dt) = 0;
-        virtual void receiveMessage(std::string message) {}
-
-
+        virtual void receiveMessage(Message* message) {}
     };
 }
 #endif

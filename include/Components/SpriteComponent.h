@@ -6,17 +6,23 @@
 
 namespace kte
 {
+    class Texture;
     struct SpriteComponent : public IComponent
     {
-        std::string sprite;
+        SpriteComponent(unsigned int gameObjectId) : IComponent(gameObjectId)
+        {
+
+        }
+
+        std::string renderTechnique = "SpriteTechnique";
+        Texture* texture = nullptr;
         unsigned int layer = 0;
 
         float spriteOffsetX = 0;
         float spriteOffsetY = 0;
         glm::vec4 color;
-
+        glm::vec4 textureRectangle = glm::vec4(0,0,1,1);
         void setSpriteOffset(float x, float y) { spriteOffsetX = x; spriteOffsetY = y; }
-
     };
 }
 #endif

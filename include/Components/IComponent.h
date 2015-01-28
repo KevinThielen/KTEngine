@@ -23,7 +23,8 @@ namespace kte
 
         }
 
-        unsigned int gameObjectId = -1;
+        unsigned int gameObjectId = 0;
+        bool isActive = true;
     };
 }
 #endif

@@ -22,7 +22,8 @@ namespace kte
         vertexAttributeLocations["vertex"] = 1;
         vertexAttributeLocations["uv"] = 2;
         vertexAttributeLocations["color"] = 3;
-        vertexAttributeLocations["MVP"] = 4;
+        vertexAttributeLocations["textureRectangle"] = 4;
+        vertexAttributeLocations["MVP"] = 5;
 
     }
     bool ShaderManager::shaderProgramFromFile(std::string programName, std::string vertexShader, std::string fragmentShader, std::string geometryShader)
@@ -62,6 +63,7 @@ namespace kte
 
             // Check the program
             glGetProgramiv(programID, GL_LINK_STATUS, &result);
+
             glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &infolength);
             if (infolength > 0){
                 std::vector<char> ProgramErrorMessage(infolength + 1);
@@ -99,13 +101,15 @@ namespace kte
 
     bool  ShaderManager::compileShader(GLuint shaderId, std::string shaderCode)
     {
+        if(shaderCode == "")
+            return false;
+
         char const * shaderSourcePointer = shaderCode.c_str();
         GLint result = GL_FALSE;
         int infolength;
 
         glShaderSource(shaderId, 1, &shaderSourcePointer, NULL);
         glCompileShader(shaderId);
-
 
         // Check Vertex Shader
         glGetShaderiv(shaderId, GL_COMPILE_STATUS, &result);
@@ -114,7 +118,6 @@ namespace kte
             std::vector<char> shaderErrorMessage(infolength + 1);
             glGetShaderInfoLog(shaderId, infolength, NULL, &shaderErrorMessage[0]);
             std::cout << &shaderErrorMessage[0] << std::endl;
-
         }
 
         return true;

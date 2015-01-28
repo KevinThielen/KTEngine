@@ -11,8 +11,9 @@
 #include <memory>
 #include <vector>
 
+#include "GameEngine.h"
 #include "Systems/ISystem.h"
-
+#include "Systems/RenderSystem.h"
 
 namespace kte
 {
@@ -25,9 +26,9 @@ namespace kte
         virtual ~IGameScene() {}
 
         virtual bool init() = 0;
-        virtual void update(float dt) = 0;
-        virtual void addSystem(ISystem* system) { systems.emplace_back(system); }
-        virtual void notifySystems(std::string message)  { for(auto& system : systems) system->receiveMessage(message); }
+        virtual void update(float dt) { for (auto& system : systems) system->update(dt); }
+        virtual void addSystem(ISystem* system);
+        virtual void notifySystems(Message* message)  { for(auto& system : systems) system->receiveMessage(message); }
 
     protected:
         std::unique_ptr<GameObject> scene;

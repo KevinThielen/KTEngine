@@ -5,6 +5,11 @@ kte::IGameScene::IGameScene()
 {
     scene = std::unique_ptr<kte::GameObject>(new kte::GameObject(this));
 
-    //stadard systems
-    addSystem(new kte::RenderSystem);
+}
+
+void kte::IGameScene::addSystem(kte::ISystem* system)
+{
+    systems.emplace_back(system);
+    if(!system->init())
+        kte::GameEngine::instance()->exit();
 }
