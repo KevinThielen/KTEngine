@@ -1,5 +1,3 @@
-#include <iostream>
-
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
@@ -33,6 +31,4 @@ namespace kte
 
         return (texture>0);
     }
-
-
 }

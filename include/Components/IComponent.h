@@ -9,9 +9,8 @@
 
 namespace kte
 {
-    class IComponent
+    struct IComponent
     {
-    public:
         /*****************
         * A component need the gameObjectId, as a callback channel for several systems
         ******************/
@@ -19,17 +18,13 @@ namespace kte
         {
         }
 
-        IComponent()
-        {
-        }
-
         virtual ~IComponent()
         {
 
         }
-    protected:
-        unsigned int gameObjectId = -1;
+
+        unsigned int gameObjectId = 0;
+        bool isActive = true;
     };
 }
 #endif
-

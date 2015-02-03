@@ -1,105 +1,74 @@
-#ifndef KTE_GAMEOBJECT_H
-#define KTE_GAMEOBJECT_H
+#ifndef KTE_GAME_OBJECT_H
+#define KTE_GAME_OBJECT_H
 
+#include "IGameScene.h"
+#include "Messages/ComponentAddedMessage.h"
+#include "Components/IComponent.h"
+#include "Components/TransformationComponent.h"
 
-
-/***********************
-* A single game object in the scene.
-* The game object contains only a transformation.
-* Additional components can be added.
-************************/
-#include <map>
-#include <memory>
-#include <typeinfo>
-#include <typeindex>
-
-#include "Components/Transformation.h"
-
-class IComponent;
 namespace kte
 {
     class GameObject
     {
     public:
-        GameObject() : transformation(Transformation(availableId))
+        GameObject(IGameScene* scene) : id(++ID_COUNTER), scene(scene)
         {
-            ID = availableId;
-            availableId++;
-
+            addComponent<kte::TransformationComponent>()->parentTransform = nullptr;
         }
 
-        GameObject(glm::vec3 position, glm::vec3 scale = glm::vec3(1,1,1), glm::vec3 rotation = glm::vec3(0,0,0)) : transformation(Transformation(availableId))
+        virtual ~GameObject() {}
+        template <typename T> T*  addComponent()
         {
-            ID=availableId;
-            transformation.setPosition(position);
-            transformation.setScale(scale);
-            transformation.setRotation(rotation);
-            availableId++;
+            ComponentAddedMessage message;
+            message.addedComponent = new T(id);
+            message.gameObjectId = id;
 
+            scene->notifySystems(&message);
+            components.emplace_back(message.addedComponent);
+            message.addedComponent->isActive = isActive;
+
+            return dynamic_cast<T*>(message.addedComponent);
         }
 
-        GameObject(const GameObject &other) : ID(availableId)
+        template <typename T> T* getComponent()
         {
-            ID = other.ID;
-            transformation = other.transformation;
-            components = other.components;
-        }
-
-        GameObject& operator= (const GameObject &other)
-        {
-            ID = other.ID;
-
-            transformation = other.transformation;
-            components = other.components;
-
-            return *this;
-        }
-
-        ~GameObject()
-        {
-
-        }
-
-        Transformation* getTransformation() { return &transformation; }
-
-        template<typename T>
-        T *addComponent()
-        {
-            std::shared_ptr<T> component(new T(ID));
-
-                components[std::type_index(typeid(*component))] = component;
-
-            return component.get();
-        }
-
-        template<typename T>
-        T *getComponent()
-        {
-            std::type_index index(typeid(T));
-
-
-            unsigned long count = components.count(std::type_index(typeid(T)));
-            if (count != 0)
+            for(auto& comp : components)
             {
-                return dynamic_cast< T * >(components[index].get());
+                IComponent* baseComp = comp.get();
+                if(dynamic_cast<T*>(baseComp))
+                    return dynamic_cast<T*>(baseComp);
             }
-            else
-            {
-                return NULL;
-            }
+
+            return nullptr;
         }
 
-        int getId() { return ID; }
+        GameObject* addChild()
+        {
+            GameObject* go = new GameObject(scene);
+            children.emplace_back(go);
 
+            go->getComponent<kte::TransformationComponent>()->parentTransform = getComponent<kte::TransformationComponent>();
+            go->setActive(isActive);
+
+            return go;
+        }
+
+        void setActive(bool active)
+        {
+            isActive = active;
+            for(auto& component : components)
+                component->isActive = active;
+            for(auto& child : children)
+                child->setActive(active);
+        }
     private:
-        int ID = 0;          //ID of this gameObject, needed for hashing and other performance optimaizations
-        static int availableId; //contains the next available ID. After instancing a new gameObject, this will increase by one
+        unsigned int id;
+        static unsigned int ID_COUNTER;
+        IGameScene* scene;
 
-        std::map<const std::type_index, std::unique_ptr<IComponent>> components;
-
-        Transformation transformation;    //Transformation: positions, rotation and scale in world space
+        std::vector<std::unique_ptr<GameObject>> children;
+        std::vector<std::unique_ptr<IComponent>> components;
+        bool isActive = true;
     };
-
-
 }
 #endif

@@ -17,13 +17,16 @@ namespace kte
     public:
         ~ShaderManager();
 
-        static ShaderManager* getInstance();
+        static ShaderManager* instance()
+        {
+            static ShaderManager* instance = new ShaderManager();
+            return instance;
+        }
 
         void initAttributeLocations();
         bool shaderProgramFromFile(std::string programName, std::string vertexShader, std::string fragmentShader, std::string geometryShader = "");
 
         GLuint getShaderProgram(std::string programName) { return shaderPrograms[programName]; }
-      //  GLuint getUniformLocation(std::string programName, const char* uniform) { return glGetUniformLocation(shaderPrograms[programName], uniform); }
         GLuint getAttribLocation(std::string attribName) { return vertexAttributeLocations[attribName]; }
 
     private:
@@ -31,9 +34,9 @@ namespace kte
         std::string loadShaderFromFile(std::string shader);
         bool compileShader(GLuint shaderId, std::string shaderCode);
 
-        static ShaderManager* shaderManager;
         std::map<std::string, GLuint> shaderPrograms;
         std::map<std::string, GLuint> vertexAttributeLocations;
     };
 }
+
 #endif

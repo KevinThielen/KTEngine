@@ -7,15 +7,28 @@ SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -Wall")
 SET(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -Wall -Wno-reorder")
 
 find_package(OpenGL REQUIRED)
-add_definitions(-DGLM_FORCE_RADIANS)
+
+#GLEW libraries, static linking
+add_library(glew_static STATIC IMPORTED GLOBAL)
+set_target_properties(glew_static PROPERTIES
+IMPORTED_LOCATION "${KTEngine_SOURCE_DIR}/external/glew/lib/libGLEW.a")
+
+#FREETYPE libraries, static linking
+add_library(freetype_static STATIC IMPORTED GLOBAL)
+set_target_properties(freetype_static PROPERTIES
+IMPORTED_LOCATION "/usr/local/lib/libfreetype.a")
+
+#zlib libraries, static linking
+add_library(zlib_static STATIC IMPORTED GLOBAL)
+set_target_properties(zlib_static PROPERTIES
+IMPORTED_LOCATION "/usr/local/lib/libz.a")
 
 
 ADD_SUBDIRECTORY(external)
 ADD_SUBDIRECTORY(src)
 
 set(HEADER_FILES ${HEADER_FILES} PARENT_SCOPE)
-set(SOURCE_FILES ${SOURCE_FILES} "${KTEngine_SOURCE_DIR}/external/jsoncpp/src/lib_json/json_reader.cpp"
-                                 "${KTEngine_SOURCE_DIR}/external/jsoncpp/src/lib_json/json_value.cpp"
-                                 "${KTEngine_SOURCE_DIR}/external/jsoncpp/src/lib_json/json_writer.cpp"
-                                 PARENT_SCOPE)
-set(LIBRARIES ${LIBRARIES} PARENT_SCOPE)
+set(SOURCE_FILES ${SOURCE_FILES} PARENT_SCOPE)
+
+set(LIBRARIES ${LIBRARIES} glew_static glfw ${OPENGL_glu_LIBRARY} ${OPENGL_gl_LIBRARY} ${GLFW_LIBRARIES} freetype_static zlib_static PARENT_SCOPE)
+

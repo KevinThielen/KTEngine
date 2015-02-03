@@ -9,15 +9,31 @@
 
 namespace kte
 {
-    class Camera : public IComponent
+    struct Camera : public IComponent
     {
     public:
-        Camera(unsigned int gameObjectId);
+        Camera(unsigned int gameObjectId) : IComponent(gameObjectId)
+        {
+            if(mainCamera == nullptr)
+                mainCamera = this;
+
+            viewMatrix = glm::ortho(left, right, bottom, top);
+        }
 
         glm::mat4 getMatrix() { return projectionMatrix * viewMatrix; }
 
+        void setViewMatrix(float left, float right, float bottom, float top)
+        {
+            this->left = left;
+            this->right = right;
+            this->bottom = bottom;
+            this->top = top;
+
+            viewMatrix = glm::ortho(left, right, bottom, top);
+        }
         static void setMainCamera(Camera* camera) { Camera::mainCamera = camera; }
-        static Camera* getMainCamera() { return Camera::mainCamera; }
+        static Camera* getMainCamera() { return mainCamera; }
+
     private:
         static Camera* mainCamera;
 
@@ -30,11 +46,12 @@ namespace kte
                 farPlane = 100.0f;
 
         float left = 0.0f,
-              right = 800.0f,
-              top = 0.0f,
-              bottom = 600.0f;
+                right = 800.0f,
+                top = 0.0f,
+                bottom = 600.0f;
     };
 
 }
+
 
 #endif
