@@ -49,92 +49,101 @@ namespace kte
         glUseProgram(programId);
 
 
-        std::map<kte::Texture*, std::map<SpriteComponent*, TransformationComponent*>> spritesSortedByTexture;
-
-        kte::Camera* mainCam = Camera::getMainCamera();
-        glm::mat4 viewMatrix;
-        if(mainCam)
-            viewMatrix = mainCam->getMatrix();
-
-        //one draw call for each tetxure
+        std::map<unsigned int, std::map<SpriteComponent*, TransformationComponent*>> spritesSortedByLayer;
         for(auto sprite : spritesToRender)
         {
             SpriteComponent* spriteComponent = sprite.first;
             TransformationComponent* transComp = sprite.second;
 
-            spritesSortedByTexture[spriteComponent->texture][spriteComponent] = transComp;
+            spritesSortedByLayer[spriteComponent->layer][spriteComponent] = transComp;
         }
 
-        for(auto sortedSprites : spritesSortedByTexture)
+        for(auto layerSprites : spritesSortedByLayer)
         {
-            //single drawCall
-            quad.bindVAO();
+            std::map<kte::Texture *, std::map<SpriteComponent *, TransformationComponent *>> spritesSortedByTexture;
 
-            std::vector<glm::mat4> mvps;
-            std::vector<glm::vec4> colors;
-            std::vector<glm::vec4> uvs;
+            kte::Camera *mainCam = Camera::getMainCamera();
+            glm::mat4 viewMatrix;
+            if (mainCam)
+                viewMatrix = mainCam->getMatrix();
 
-            Texture* texture = sortedSprites.first;
-
-            if(texture)
+            //one draw call for each tetxure
+            for (auto sprite : layerSprites.second)
             {
-                GLint textureLoc = glGetUniformLocation(programId, "texture");
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, texture->getTexture());
-                glUniform1i(textureLoc, 0);
-            }
-            for (auto sprite : sortedSprites.second)
-            {
-                TransformationComponent *transformationComponent = sprite.second;
                 SpriteComponent *spriteComponent = sprite.first;
+                TransformationComponent *transComp = sprite.second;
 
-                glm::vec3 position(transformationComponent->x, transformationComponent->y, 0);
-
-                glm::vec3 rotation(transformationComponent->xRotation, transformationComponent->yRotation, transformationComponent->zRotation);
-
-                glm::vec3 spriteOffset(spriteComponent->spriteOffsetX, spriteComponent->spriteOffsetY, 0);
-
-                glm::vec3 size(transformationComponent->width, transformationComponent->height, 1);
-
-
-                kte::TransformationComponent* parentTransform = transformationComponent->parentTransform;
-                while(parentTransform != nullptr)
-                {
-                    position += glm::vec3(parentTransform->x, parentTransform->y, parentTransform->z);
-                    parentTransform = parentTransform->parentTransform;
-                }
-                glm::vec3 finalPosition = position + spriteOffset;
-
-                glm::mat4 matrix;
-                matrix = glm::translate(matrix, size / 2.0f + finalPosition);
-                matrix = glm::rotate(matrix, rotation.x, glm::vec3(1, 0, 0));
-                matrix = glm::rotate(matrix, rotation.y, glm::vec3(0, 1, 0));
-                matrix = glm::rotate(matrix, rotation.z, glm::vec3(0, 0, 1));
-                matrix = glm::translate(matrix, (-size / 2.0f));
-                matrix = glm::scale(matrix, size);
-
-                mvps.push_back(viewMatrix * matrix);
-                //mvps.push_back(Camera::getMainCamera()->getMatrix() * trans.getMatrix());
-                colors.push_back(spriteComponent->color);
-                uvs.push_back(spriteComponent->textureRectangle);
+                spritesSortedByTexture[spriteComponent->texture][spriteComponent] = transComp;
             }
 
+            for (auto sortedSprites : spritesSortedByTexture)
+            {
+                //single drawCall
+                quad.bindVAO();
+
+                std::vector<glm::mat4> mvps;
+                std::vector<glm::vec4> colors;
+                std::vector<glm::vec4> uvs;
+
+                Texture *texture = sortedSprites.first;
+
+                if (texture)
+                {
+                    GLint textureLoc = glGetUniformLocation(programId, "texture");
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, texture->getTexture());
+                    glUniform1i(textureLoc, 0);
+                }
+                for (auto sprite : sortedSprites.second)
+                {
+                    TransformationComponent *transformationComponent = sprite.second;
+                    SpriteComponent *spriteComponent = sprite.first;
+
+                    glm::vec3 position(transformationComponent->x, transformationComponent->y, 0);
+
+                    glm::vec3 rotation(transformationComponent->xRotation, transformationComponent->yRotation, transformationComponent->zRotation);
+
+                    glm::vec3 spriteOffset(spriteComponent->spriteOffsetX, spriteComponent->spriteOffsetY, 0);
+
+                    glm::vec3 size(transformationComponent->width, transformationComponent->height, 1);
 
 
+                    kte::TransformationComponent *parentTransform = transformationComponent->parentTransform;
+                    while (parentTransform != nullptr)
+                    {
+                        position += glm::vec3(parentTransform->x, parentTransform->y, 0);
+                        parentTransform = parentTransform->parentTransform;
+                    }
+                    glm::vec3 finalPosition = position + spriteOffset;
 
-            glBindBuffer(GL_ARRAY_BUFFER, quad.getMVP());
-            glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * sortedSprites.second.size(), &mvps[0], GL_DYNAMIC_DRAW);
+                    glm::mat4 matrix;
+                    matrix = glm::translate(matrix, size / 2.0f + finalPosition);
+                    matrix = glm::rotate(matrix, rotation.x, glm::vec3(1, 0, 0));
+                    matrix = glm::rotate(matrix, rotation.y, glm::vec3(0, 1, 0));
+                    matrix = glm::rotate(matrix, rotation.z, glm::vec3(0, 0, 1));
+                    matrix = glm::translate(matrix, (-size / 2.0f));
+                    matrix = glm::scale(matrix, size);
 
-            glBindBuffer(GL_ARRAY_BUFFER, quad.getCOLOR());
-            glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * sortedSprites.second.size(), &colors[0], GL_DYNAMIC_DRAW);
+                    mvps.push_back(viewMatrix * matrix);
+                    //mvps.push_back(Camera::getMainCamera()->getMatrix() * trans.getMatrix());
+                    colors.push_back(spriteComponent->color);
+                    uvs.push_back(spriteComponent->textureRectangle);
+                }
 
-            glBindBuffer(GL_ARRAY_BUFFER, quad.getUV());
-            glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * sortedSprites.second.size(), &uvs[0], GL_DYNAMIC_DRAW);
+                glBindBuffer(GL_ARRAY_BUFFER, quad.getMVP());
+                glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * sortedSprites.second.size(), &mvps[0], GL_DYNAMIC_DRAW);
+
+                glBindBuffer(GL_ARRAY_BUFFER, quad.getCOLOR());
+                glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * sortedSprites.second.size(), &colors[0], GL_DYNAMIC_DRAW);
+
+                glBindBuffer(GL_ARRAY_BUFFER, quad.getUV());
+                glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * sortedSprites.second.size(), &uvs[0], GL_DYNAMIC_DRAW);
 
 
-            glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad.getNumberOfIndices(), sortedSprites.second.size());
-            glBindVertexArray(0);
+                glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad.getNumberOfIndices(), sortedSprites.second.size());
+                glBindVertexArray(0);
 
+            }
         }
     }
 }

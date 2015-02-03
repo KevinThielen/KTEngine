@@ -5,6 +5,7 @@
 #include "Messages/ComponentAddedMessage.h"
 #include "Components/IComponent.h"
 #include "Components/TransformationComponent.h"
+
 namespace kte
 {
     class GameObject
@@ -15,7 +16,7 @@ namespace kte
             addComponent<kte::TransformationComponent>()->parentTransform = nullptr;
         }
 
-        ~GameObject() {}
+        virtual ~GameObject() {}
         template <typename T> T*  addComponent()
         {
             ComponentAddedMessage message;
