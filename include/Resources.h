@@ -2,7 +2,7 @@
 #define RESOURCES_H
 
 #include <Graphics/Texture.h>
-
+#include <iostream>
 namespace kte
 {
     class Resources
@@ -13,8 +13,24 @@ namespace kte
         {
             Texture texture;
             if(!texture.loadFromFile(path))
+            {
+                std::cout<<"Error loading "<<path<<std::endl;
                 return false;
+            }
+            textures[name]  = texture;
+            return true;
+        }
 
+        bool loadTextureFromFile(std::string name)
+        {
+            Texture texture;
+            static std::string ressourcePath = RESOURCE_PATH;
+
+            if(!texture.loadFromFile(ressourcePath+"Textures/"+name))
+            {
+                std::cout<<"Error loading "<<ressourcePath+"Textures/"+name<<std::endl;
+                return false;
+            }
             textures[name]  = texture;
             return true;
         }

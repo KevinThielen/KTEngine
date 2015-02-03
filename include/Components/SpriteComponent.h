@@ -7,7 +7,7 @@
 namespace kte
 {
     class Texture;
-    struct SpriteComponent : public IComponentgit 
+    struct SpriteComponent : public IComponent
     {
         SpriteComponent(unsigned int gameObjectId) : IComponent(gameObjectId)
         {

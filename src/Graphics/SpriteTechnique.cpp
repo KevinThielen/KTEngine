@@ -21,7 +21,7 @@ namespace kte
         ShaderManager* shaderManager = ShaderManager::instance();
         if(!shaderManager->getShaderProgram("SpriteShader"))
         {
-            if(!shaderManager->shaderProgramFromFile("SpriteShader", "Shaders/SpriteShader.vs", "Shaders/SpriteShader.fs"))
+            if(!shaderManager->shaderProgramFromFile("SpriteShader", "SpriteShader.vs", "SpriteShader.fs"))
                 return false;
         }
 
