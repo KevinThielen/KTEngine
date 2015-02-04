@@ -6,7 +6,7 @@
 
 #include "RenderTechnique.h"
 #include "Quad.h"
-
+#include "Resources.h"
 
 namespace kte
 {
@@ -23,6 +23,8 @@ namespace kte
     private:
         GLuint programId;
         Quad quad;
+        GLuint defaultTexture;
+        Resources resources;
     };
 }
 #endif

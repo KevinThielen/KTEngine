@@ -11,11 +11,14 @@ bool kte::RenderSystem::init()
     return true;
 }
 
-void kte::RenderSystem::update(float dt)
+void kte::RenderSystem::update(__attribute__((unused)) float dt)
 {
+
+
     //pass the spriteComponents with the transformcomponents to their according rendertechniques
     for(auto& renderTechnique : renderTechniques)
     {
+        renderTechnique->use();
         std::map<SpriteComponent*, TransformationComponent*> spritesToRender;
         for(auto& spriteComponent : spriteComponents)
         {
@@ -32,6 +35,40 @@ void kte::RenderSystem::update(float dt)
         }
         renderTechnique->render(spritesToRender);
     }
+
+    //draw debug colliders
+    for(auto collider : boxColliders)
+    {
+        RenderTechnique* technique = renderTechniques[0].get();
+        std::map<SpriteComponent*, TransformationComponent*> debugSprites;
+
+technique->use();
+        if(collider->draw)
+        {
+            glDisable( GL_DEPTH_TEST );
+        //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE );
+
+            TransformationComponent trans(0);
+            trans.x = collider->position.x;
+            trans.y = collider->position.y;
+            trans.z = 0;
+            trans.width = collider->size.x;
+            trans.height = collider->size.y;
+            trans.parentTransform = nullptr;
+
+            SpriteComponent spriteComp(0);
+            spriteComp.color = glm::vec4(0,0,1,0.4f);
+            spriteComp.layer = 0;
+            debugSprites[&spriteComp] = &trans;
+
+
+            technique->render(debugSprites);
+       //     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
+            glEnable( GL_DEPTH_TEST );
+
+        }
+
+    }
 }
 
 void kte::RenderSystem::receiveMessage(kte::Message* message)
@@ -47,6 +84,10 @@ void kte::RenderSystem::receiveMessage(kte::Message* message)
         else if(dynamic_cast<kte::TransformationComponent*>(componentAddedMessage->addedComponent))
         {
             transformationComponents.push_back(dynamic_cast<kte::TransformationComponent*>(componentAddedMessage->addedComponent));
+        }
+        else if(dynamic_cast<kte::BoxCollider*>(componentAddedMessage->addedComponent))
+        {
+            boxColliders.push_back(dynamic_cast<kte::BoxCollider*>(componentAddedMessage->addedComponent));
         }
     }
 }

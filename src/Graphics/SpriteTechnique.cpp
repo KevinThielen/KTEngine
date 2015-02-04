@@ -30,6 +30,9 @@ namespace kte
         if(!quad.init())
             return false;
 
+        resources.loadTextureFromFile("default.png");
+        defaultTexture = resources.getTexture("default.png")->getTexture();
+
         return true;
     }
     void SpriteTechnique::use()
@@ -73,7 +76,7 @@ namespace kte
                 SpriteComponent *spriteComponent = sprite.first;
                 TransformationComponent *transComp = sprite.second;
 
-                spritesSortedByTexture[spriteComponent->texture][spriteComponent] = transComp;
+                    spritesSortedByTexture[spriteComponent->texture][spriteComponent] = transComp;
             }
 
             for (auto sortedSprites : spritesSortedByTexture)
@@ -94,11 +97,20 @@ namespace kte
                     glBindTexture(GL_TEXTURE_2D, texture->getTexture());
                     glUniform1i(textureLoc, 0);
                 }
+                else
+                {
+                    GLint textureLoc = glGetUniformLocation(programId, "texture");
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, defaultTexture);
+                    glUniform1i(textureLoc, 0);
+                }
+
                 for (auto sprite : sortedSprites.second)
                 {
                     TransformationComponent *transformationComponent = sprite.second;
                     SpriteComponent *spriteComponent = sprite.first;
 
+                    const float z = spriteComponent->layer * 0.1f;
                     glm::vec3 position(transformationComponent->x, transformationComponent->y, 0);
 
                     glm::vec3 rotation(transformationComponent->xRotation, transformationComponent->yRotation, transformationComponent->zRotation);
@@ -125,7 +137,6 @@ namespace kte
                     matrix = glm::scale(matrix, size);
 
                     mvps.push_back(viewMatrix * matrix);
-                    //mvps.push_back(Camera::getMainCamera()->getMatrix() * trans.getMatrix());
                     colors.push_back(spriteComponent->color);
                     uvs.push_back(spriteComponent->textureRectangle);
                 }
@@ -141,6 +152,8 @@ namespace kte
 
 
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad.getNumberOfIndices(), sortedSprites.second.size());
+
+                glBindTexture(GL_TEXTURE_2D, 0);
                 glBindVertexArray(0);
 
             }

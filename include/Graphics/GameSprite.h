@@ -27,6 +27,12 @@ namespace kte
             trans->width = width;
             trans->height = height;
         }
+
+        void setLayer(unsigned int layer)
+        {
+            gameObject->getComponent<kte::SpriteComponent>()->layer = layer;
+        }
+
         GameObject* getGameObject() { return gameObject; }
     private:
         GameObject* gameObject;

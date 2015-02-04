@@ -15,6 +15,8 @@ namespace kte
         void clearScreen();
         void swapBuffers();
         void destroy();
+        GLFWwindow* getContext() { return window; }
+        bool isKeyDown(unsigned int key) { return glfwGetKey(window, key); }
     private:
         GLFWwindow* window;
     };

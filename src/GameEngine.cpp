@@ -10,6 +10,7 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc)
     if(!window.create(windowDesc))
         return;
 
+    kte::Input::setContext(&window);
     currentScene = std::unique_ptr<IGameScene>(initialScene);
     if(!initialScene->init())
         return;
@@ -18,7 +19,7 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc)
     {
         window.clearScreen();
 
-        currentScene->update(0);
+        currentScene->update(0.02f);
         window.swapBuffers();
     }
 }
@@ -28,3 +29,4 @@ void kte::GameEngine::exit()
 {
     isRunning = false;
 }
+

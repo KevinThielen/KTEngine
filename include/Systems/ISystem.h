@@ -9,9 +9,9 @@ namespace kte
     class ISystem
     {
     public:
-        virtual bool init() {}
+        virtual bool init() {return true;}
         virtual void update(float dt) = 0;
-        virtual void receiveMessage(Message* message) {}
+        virtual void receiveMessage(__attribute__((unused)) Message* message) {}
     };
 }
 #endif

@@ -10,7 +10,7 @@ namespace kte
     public:
         virtual ~Mesh(){}
         virtual void bindVAO() { glBindVertexArray(vao); }
-        virtual bool init() { }
+        virtual bool init() { return true; }
         virtual GLuint getMVP() { return mvp; }
         virtual GLuint getCOLOR() { return color; }
         virtual unsigned int getNumberOfIndices() { return numberOfIndices; }

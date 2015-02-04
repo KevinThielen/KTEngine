@@ -19,7 +19,7 @@ namespace kte
         virtual ~RenderTechnique(){}
         virtual void use() = 0;
         virtual bool init() = 0;
-        virtual void render(std::map<SpriteComponent*, TransformationComponent*> spritesToRender){}
+        virtual void render(__attribute__((unused)) std::map<SpriteComponent*, TransformationComponent*> spritesToRender){}
 
         unsigned int getNumberOfRenderpasses() { return numberOfRenderpasses; }
 

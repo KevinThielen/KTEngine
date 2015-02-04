@@ -14,6 +14,9 @@
 #include "GameEngine.h"
 #include "Systems/ISystem.h"
 #include "Systems/RenderSystem.h"
+#include "Systems/MovementSystem.h"
+#include "Resources.h"
+#include "Input.h"
 
 namespace kte
 {
@@ -31,10 +34,21 @@ namespace kte
         virtual void notifySystems(Message* message)  { for(auto& system : systems) system->receiveMessage(message); }
 
     protected:
+        void initDefaultSystem()
+        {
+            //stadard systems
+            addSystem(new kte::MovementSystem);
+            addSystem(new kte::RenderSystem);
+        }
+
         std::unique_ptr<GameObject> scene;
         std::vector<std::unique_ptr<ISystem>> systems;
+        kte::Resources resources;
     };
+
+    bool isKeyDown(unsigned int key);
 }
+
 
 #include "GameObject.h"
 #endif

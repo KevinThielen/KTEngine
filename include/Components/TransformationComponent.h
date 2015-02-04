@@ -17,7 +17,7 @@ namespace kte
         float width = 100.f, height = 100.f;
         float xRotation = 0, yRotation = 0, zRotation = 0;
 
-        TransformationComponent* parentTransform;
+        TransformationComponent* parentTransform = nullptr;
     };
 }
 #endif

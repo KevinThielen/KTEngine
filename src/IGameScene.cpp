@@ -2,6 +2,7 @@
 #include "Systems/RenderSystem.h"
 #include "Components/Camera.h"
 
+
 kte::IGameScene::IGameScene()
 {
     scene = std::unique_ptr<kte::GameObject>(new kte::GameObject(this));
@@ -13,4 +14,12 @@ void kte::IGameScene::addSystem(kte::ISystem* system)
     systems.emplace_back(system);
     if(!system->init())
         kte::GameEngine::instance()->exit();
+}
+
+namespace kte
+{
+    bool isKeyDown(unsigned int key)
+    {
+        return Input::isKeyDown(key);
+    }
 }

@@ -12,14 +12,15 @@
 #include <string>
 #include "Window.h"
 #include "IGameScene.h"
+#include "Input.h"
 
 namespace kte
 {
     struct WindowDesc
     {
         std::string title;
-        int width;
         int height;
+        int width;
 
         WindowDesc(std::string title, int width = 800, int height = 600) : title(title), height(height), width(width)
         {
@@ -42,6 +43,7 @@ namespace kte
 
         //exit the whole game
         void exit();
+
 
     private:
         //only one instance
