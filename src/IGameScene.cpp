@@ -1,7 +1,7 @@
 #include "IGameScene.h"
 #include "Systems/RenderSystem.h"
 #include "Components/Camera.h"
-
+#include "GameObject.h"
 
 kte::IGameScene::IGameScene()
 {
@@ -15,6 +15,9 @@ void kte::IGameScene::addSystem(kte::ISystem* system)
     if(!system->init())
         kte::GameEngine::instance()->exit();
 }
+
+kte::GameObject* kte::IGameScene::getGameObject(unsigned int gameObjectId) { return gameObjects[gameObjectId]; }
+void kte::IGameScene::addGameObject(GameObject* gameObject) { gameObjects[gameObject->getId()] = gameObject; }
 
 namespace kte
 {

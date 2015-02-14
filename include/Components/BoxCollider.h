@@ -26,7 +26,8 @@ namespace kte
         }
         glm::vec2 size;
         glm::vec2 position;
-        bool draw = true;
+        bool overlaps = false;
+        bool draw = false;
     };
 }
 #endif

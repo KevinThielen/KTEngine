@@ -110,8 +110,8 @@ namespace kte
                     TransformationComponent *transformationComponent = sprite.second;
                     SpriteComponent *spriteComponent = sprite.first;
 
-                    const float z = spriteComponent->layer * 0.1f;
-                    glm::vec3 position(transformationComponent->x, transformationComponent->y, 0);
+                    const float z = spriteComponent->layer * 0.01f;
+                    glm::vec3 position(transformationComponent->x, transformationComponent->y, z);
 
                     glm::vec3 rotation(transformationComponent->xRotation, transformationComponent->yRotation, transformationComponent->zRotation);
 

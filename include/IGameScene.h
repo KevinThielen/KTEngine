@@ -15,8 +15,10 @@
 #include "Systems/ISystem.h"
 #include "Systems/RenderSystem.h"
 #include "Systems/MovementSystem.h"
+#include "Systems/AnimationSystem.h"
 #include "Resources.h"
 #include "Input.h"
+
 
 namespace kte
 {
@@ -33,15 +35,21 @@ namespace kte
         virtual void addSystem(ISystem* system);
         virtual void notifySystems(Message* message)  { for(auto& system : systems) system->receiveMessage(message); }
 
+        GameObject* getGameObject(unsigned int gameObjectId);
+        void addGameObject(GameObject* gameObject);
     protected:
         void initDefaultSystem()
         {
             //stadard systems
             addSystem(new kte::MovementSystem);
             addSystem(new kte::RenderSystem);
+            addSystem(new kte::AnimationSystem(&resources));
+
         }
 
         std::unique_ptr<GameObject> scene;
+        std::map<unsigned int, GameObject*> gameObjects;
+
         std::vector<std::unique_ptr<ISystem>> systems;
         kte::Resources resources;
     };

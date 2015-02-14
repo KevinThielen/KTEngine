@@ -2,6 +2,8 @@
 #define RESOURCES_H
 
 #include <Graphics/Texture.h>
+#include <Graphics/Animation.h>
+#include <initializer_list>
 #include <iostream>
 namespace kte
 {
@@ -12,7 +14,7 @@ namespace kte
         bool loadTextureFromFile(std::string name, std::string path)
         {
             Texture texture;
-            if(!texture.loadFromFile(path))
+            if(!texture.loadFromFile(path+name))
             {
                 std::cout<<"Error loading "<<path<<std::endl;
                 return false;
@@ -34,10 +36,27 @@ namespace kte
             textures[name]  = texture;
             return true;
         }
+
+        //TODO: load animation from file
+        bool loadAnimation(std::string name, std::string spriteSheet, std::initializer_list<glm::vec4> frames)
+        {
+            animations[name].name = name;
+            animations[name].spriteSheet = spriteSheet;
+
+            unsigned int frameCounter = 0;
+            for(auto frame : frames)
+            {
+                animations[name].frames[frameCounter++] = frame;
+            }
+            return true;
+        }
+
         Texture* getTexture(std::string name) { return &textures[name];}
+        Animation* getAnimation(std::string name) { return &animations[name]; }
 
     private:
         std::map<std::string, Texture> textures;
+        std::map<std::string, Animation> animations;
     };
 }
 

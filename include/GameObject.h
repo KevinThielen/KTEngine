@@ -1,10 +1,11 @@
 #ifndef KTE_GAME_OBJECT_H
 #define KTE_GAME_OBJECT_H
 
-#include "IGameScene.h"
+
 #include "Messages/ComponentAddedMessage.h"
 #include "Components/IComponent.h"
 #include "Components/TransformationComponent.h"
+#include "IGameScene.h"
 
 namespace kte
 {
@@ -14,6 +15,7 @@ namespace kte
         GameObject(IGameScene* scene) : id(++ID_COUNTER), scene(scene)
         {
             addComponent<kte::TransformationComponent>()->parentTransform = nullptr;
+            scene->addGameObject(this);
         }
 
         virtual ~GameObject() {}
@@ -61,6 +63,8 @@ namespace kte
             for(auto& child : children)
                 child->setActive(active);
         }
+
+        unsigned int getId() { return id; }
     private:
         unsigned int id;
         static unsigned int ID_COUNTER;
