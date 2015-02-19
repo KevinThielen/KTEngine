@@ -11,7 +11,7 @@ bool kte::RenderSystem::init()
     return true;
 }
 
-void kte::RenderSystem::update(__attribute__((unused)) float dt)
+void kte::RenderSystem::update(float dt)
 {
 
 

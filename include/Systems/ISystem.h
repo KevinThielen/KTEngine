@@ -11,7 +11,7 @@ namespace kte
     public:
         virtual bool init() {return true;}
         virtual void update(float dt) = 0;
-        virtual void receiveMessage(__attribute__((unused)) Message* message) {}
+        virtual void receiveMessage(Message* message) {}
     };
 }
 #endif

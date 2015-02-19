@@ -16,7 +16,7 @@ namespace kte
             Texture texture;
             if(!texture.loadFromFile(path+name))
             {
-                std::cout<<"Error loading "<<path<<std::endl;
+                std::cout<<"Error loading "<<path+name<<std::endl;
                 return false;
             }
             textures[name]  = texture;

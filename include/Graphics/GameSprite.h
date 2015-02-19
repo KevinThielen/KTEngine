@@ -35,6 +35,8 @@ namespace kte
 
         GameObject* getGameObject() { return gameObject; }
     private:
+		GameSprite() {}
+
         GameObject* gameObject;
     };
 }

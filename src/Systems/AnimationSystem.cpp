@@ -8,7 +8,7 @@ bool kte::AnimationSystem::init()
     return true;
 }
 
-void kte::AnimationSystem::update(__attribute__((unused)) float dt)
+void kte::AnimationSystem::update(float dt)
 {
     for(auto animator : animators)
     {

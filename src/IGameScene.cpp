@@ -5,7 +5,7 @@
 
 kte::IGameScene::IGameScene()
 {
-    scene = std::unique_ptr<kte::GameObject>(new kte::GameObject(this));
+	scene.reset(new kte::GameObject(this));
     scene->addComponent<kte::Camera>();
 }
 

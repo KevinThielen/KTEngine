@@ -18,7 +18,7 @@ namespace kte
         ~AnimationSystem() { }
 
         virtual bool init();
-        virtual void update(__attribute__((unused)) float dt);
+        virtual void update(float dt);
         virtual void receiveMessage(Message* message);
         void loadAnimation(Animation* animation);
 

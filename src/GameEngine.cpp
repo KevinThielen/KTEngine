@@ -11,10 +11,12 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc)
         return;
 
     kte::Input::setContext(&window);
-    currentScene = std::unique_ptr<IGameScene>(initialScene);
+    currentScene.reset(initialScene);
+
     if(!initialScene->init())
         return;
 
+	
     while(isRunning && !glfwWindowShouldClose(glfwGetCurrentContext()))
     {
         window.clearScreen();

@@ -1,21 +1,43 @@
 
 ADD_SUBDIRECTORY(Systems)
 ADD_SUBDIRECTORY(Graphics)
+ADD_SUBDIRECTORY(Components)
+ADD_SUBDIRECTORY(Messages)
 
-set(SOURCE_FILES ${SOURCE_FILES}
+
+set(KTENGINE_SOURCE 
                  ${CMAKE_CURRENT_SOURCE_DIR}/GameEngine.cpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/Window.cpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/GameObject.cpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/IGameScene.cpp
-    PARENT_SCOPE)
+    )
 
-set(HEADER_FILES ${HEADER_FILES}
-                 "${KTEngine_SOURCE_DIR}/include/"
+
+set(EXTERNAL_HEADER 
+				 "${KTEngine_SOURCE_DIR}/include/"
                  "${KTEngine_SOURCE_DIR}/external/glm/"
                  "${KTEngine_SOURCE_DIR}/external/glfw/include/"
+				 "${KTEngine_SOURCE_DIR}/external/glew/include/"
                  "${KTEngine_SOURCE_DIR}/external/freetype/include/freetype/"
                  "${KTEngine_SOURCE_DIR}/external/stb/"
                  "${KTEngine_SOURCE_DIR}/external/jsoncpp/include/"
-                 PARENT_SCOPE)
+                 )
+
+#needed for VS filter
+set(KTENGINE_HEADER 
+                 ${KTEngine_SOURCE_DIR}/include/GameEngine.h
+                 ${KTEngine_SOURCE_DIR}/include/Window.h
+                 ${KTEngine_SOURCE_DIR}/include/GameObject.h
+                 ${KTEngine_SOURCE_DIR}/include/IGameScene.h
+                 ${KTEngine_SOURCE_DIR}/include/Resources.h
+                 ${KTEngine_SOURCE_DIR}/include/Input.h
+                 )
+
+
 
 set(LIBRARIES ${LIBRARIES} PARENT_SCOPE)
+set(HEADER_FILES ${HEADER_FILES} ${EXTERNAL_HEADER} PARENT_SCOPE)
+set(SOURCE_FILES ${SOURCE_FILES} ${KTENGINE_SOURCE} ${KTENGINE_HEADER} PARENT_SCOPE)
+
+set(DATA_FILES ${DATA_FILES} "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt" PARENT_SCOPE)
+set_source_files_properties(" ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt" PROPERTIES HEADER_FILE_ONLY TRUE)
