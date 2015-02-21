@@ -14,7 +14,6 @@
 #include "GameEngine.h"
 #include "Systems/ISystem.h"
 #include "Systems/RenderSystem.h"
-#include "Systems/MovementSystem.h"
 #include "Systems/AnimationSystem.h"
 #include "Resources.h"
 #include "Input.h"
@@ -41,7 +40,7 @@ namespace kte
         void initDefaultSystem()
         {
             //stadard systems
-            addSystem(new kte::MovementSystem);
+        
             addSystem(new kte::RenderSystem);
             addSystem(new kte::AnimationSystem(&resources));
 

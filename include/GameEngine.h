@@ -13,6 +13,7 @@
 #include "Window.h"
 #include "IGameScene.h"
 #include "Input.h"
+#include "Utility\FPSCounter.h"
 
 namespace kte
 {
@@ -51,6 +52,7 @@ namespace kte
         Window window;
         bool isRunning;
         std::unique_ptr<IGameScene> currentScene;
+		FPSCounter fpsCounter;
     };
 }
 #endif
