@@ -27,6 +27,8 @@ bool kte::Window::create(kte::WindowDesc windowDesc)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwSwapInterval(1);
+
     // glfwSwapInterval(0);
     // Open a window and create its OpenGL context
     window = glfwCreateWindow(windowDesc.width, windowDesc.height, windowDesc.title.c_str(), NULL, NULL);

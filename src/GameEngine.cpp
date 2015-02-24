@@ -16,12 +16,14 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc)
     if(!initialScene->init())
         return;
 
-	
+	fpsCounter.update();
     while(isRunning && !glfwWindowShouldClose(glfwGetCurrentContext()))
     {
+		fpsCounter.update();
+
         window.clearScreen();
 
-        currentScene->update(0.02f);
+        currentScene->update(fpsCounter.getDeltaTime());
         window.swapBuffers();
     }
 }

@@ -42,9 +42,10 @@ void kte::RenderSystem::update(float dt)
         RenderTechnique* technique = renderTechniques[0].get();
         std::map<SpriteComponent*, TransformationComponent*> debugSprites;
 
-        technique->use();
+     
         if(collider->isActive && collider->draw)
-        {
+        {   
+			technique->use();
             glDisable( GL_DEPTH_TEST );
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE );
 
