@@ -1,0 +1,23 @@
+#!/bin/bash
+cd build/
+
+mkdir KTEngine
+cd KTEngine/
+ar -x ../libKTEngine.a
+
+cd ..
+mkdir GLFW
+cd GLFW/
+ar -x ../../external/glfw/build/src/libglfw3.a
+
+cd ..
+mkdir GLEW
+cd GLEW/
+ar -x ../KTEngine/libGLEW.a
+
+cd ..
+rm libKTEngine.a
+
+
+ar rcs libKTEngine.a  GLFW/*.o  GLEW/*.o KTEngine/*.o
+

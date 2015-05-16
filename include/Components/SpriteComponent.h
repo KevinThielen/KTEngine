@@ -23,6 +23,7 @@ namespace kte
         glm::vec4 color = glm::vec4(1,1,1,1);
         glm::vec4 textureRectangle = glm::vec4(0,0,1,1);
         void setSpriteOffset(float x, float y) { spriteOffsetX = x; spriteOffsetY = y; }
+        bool mirrored = false;
     };
 }
 #endif

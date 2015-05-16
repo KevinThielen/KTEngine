@@ -53,7 +53,7 @@ bool kte::Window::create(kte::WindowDesc windowDesc)
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
 
-    //enable Transparency
+//     enable Transparency
     glEnable(GL_BLEND);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -63,7 +63,7 @@ bool kte::Window::create(kte::WindowDesc windowDesc)
 
 
     glClearColor(0.6f, 0.6f, 1.0f, 1.0f);
-    //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+//     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     return true;
 }
 

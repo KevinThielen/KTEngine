@@ -4,6 +4,7 @@ kte::GameSprite::GameSprite(kte::GameObject* parent)
 {
     gameObject = parent->addChild();
     gameObject->addComponent<kte::SpriteComponent>();
+
 }
 
 

@@ -1,3 +1,6 @@
 external/*
 build/*
 .idea/*
+.kdev4/*
+.kdev*
+*.kdev4

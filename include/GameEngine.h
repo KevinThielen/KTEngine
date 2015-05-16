@@ -8,12 +8,12 @@
     There can only be one GameEngine-Instance per game
  */
 
-
+#define GLM_FORCE_RADIANS
 #include <string>
 #include "Window.h"
 #include "IGameScene.h"
 #include "Input.h"
-#include "Utility\FPSCounter.h"
+#include "Utility/FPSCounter.h"
 
 namespace kte
 {
@@ -52,7 +52,7 @@ namespace kte
         Window window;
         bool isRunning;
         std::unique_ptr<IGameScene> currentScene;
-		FPSCounter fpsCounter;
+	FPSCounter fpsCounter;
     };
 }
 #endif

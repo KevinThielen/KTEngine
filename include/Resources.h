@@ -3,6 +3,8 @@
 
 #include <Graphics/Texture.h>
 #include <Graphics/Animation.h>
+#include <Graphics/Font.h>
+
 #include <initializer_list>
 #include <iostream>
 namespace kte
@@ -37,12 +39,30 @@ namespace kte
             return true;
         }
 
+        bool loadFontFromFile(std::string name, unsigned int size = 16)
+        {
+            Font font;
+            static std::string ressourcePath = RESOURCE_PATH;
+
+            if(!font.loadFromFile(ressourcePath+"Fonts/"+name, size))
+            {
+                std::cout<<"Error loading "<<ressourcePath+"Fonts/"+name<<std::endl;
+
+                return false;
+            }
+
+            fonts[name] = font;
+            return true;
+        }
+
         //TODO: load animation from file
         bool loadAnimation(std::string name, std::string spriteSheet, std::initializer_list<glm::vec4> frames)
         {
             animations[name].name = name;
             animations[name].spriteSheet = spriteSheet;
 
+            if(!textures.count(spriteSheet) && !loadTextureFromFile(spriteSheet))
+                return false;
             unsigned int frameCounter = 0;
             for(auto frame : frames)
             {
@@ -51,12 +71,14 @@ namespace kte
             return true;
         }
 
+
         Texture* getTexture(std::string name) { return &textures[name];}
         Animation* getAnimation(std::string name) { return &animations[name]; }
 
     private:
         std::map<std::string, Texture> textures;
         std::map<std::string, Animation> animations;
+        std::map<std::string, Font> fonts;
     };
 }
 

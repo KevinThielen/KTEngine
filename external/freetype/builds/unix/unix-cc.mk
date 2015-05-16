@@ -14,8 +14,9 @@
 
 CC           := gcc
 COMPILER_SEP := $(SEP)
+FT_LIBTOOL_DIR ?= $(BUILD_DIR)
 
-LIBTOOL ?= $(BUILD_DIR)/libtool
+LIBTOOL := $(FT_LIBTOOL_DIR)/libtool
 
 
 # The object file extension (for standard and static libraries).  This can be
@@ -78,11 +79,11 @@ T := -o$(space)
 #   We use our own FreeType configuration file.
 #
 CPPFLAGS := 
-CFLAGS   := -c -Wall -g -O2 -DFT_CONFIG_OPTION_SYSTEM_ZLIB -DFT_CONFIG_CONFIG_H="<ftconfig.h>"
+CFLAGS   := -c -Wall -g -O2 -I/usr/local/include   -DFT_CONFIG_OPTION_SYSTEM_ZLIB -I/usr/include/libpng12   -DFT_CONFIG_OPTION_USE_PNG -DFT_CONFIG_CONFIG_H="<ftconfig.h>"
 
 # ANSIFLAGS: Put there the flags used to make your compiler ANSI-compliant.
 #
-ANSIFLAGS := -pedantic -ansi
+ANSIFLAGS :=  -pedantic -ansi
 
 # C compiler to use -- we use libtool!
 #
@@ -92,7 +93,7 @@ CC    := $(LIBTOOL) --mode=compile $(CCraw)
 
 # Linker flags.
 #
-LDFLAGS :=  -lz
+LDFLAGS :=  -L/usr/local/lib -lz   -lpng12  
 
 
 # export symbols

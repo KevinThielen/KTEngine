@@ -1,11 +1,12 @@
 #ifndef KTE_GAME_OBJECT_H
 #define KTE_GAME_OBJECT_H
 
-
+#include "IGameScene.h"
 #include "Messages/ComponentAddedMessage.h"
+#include "Messages/GameObjectRemovedMessage.h"
 #include "Components/IComponent.h"
 #include "Components/TransformationComponent.h"
-#include "IGameScene.h"
+
 
 namespace kte
 {
@@ -14,14 +15,21 @@ namespace kte
     public:
         GameObject(IGameScene* scene) : id(++ID_COUNTER), scene(scene)
         {
+            parent = nullptr;
             addComponent<kte::TransformationComponent>()->parentTransform = nullptr;
             scene->addGameObject(this);
         }
 
-        virtual ~GameObject() {}
+        ~GameObject()
+        {
+            GameObjectRemovedMessage message;
+            message.gameObjectId = id;
+            scene->notifySystems(&message);
+            scene->removeGameObject(id);
+        }
         template <typename T> T*  addComponent()
         {
-            ComponentAddedMessage message;
+           ComponentAddedMessage message;
             message.addedComponent = new T(id);
             message.gameObjectId = id;
 
@@ -47,12 +55,90 @@ namespace kte
         GameObject* addChild()
         {
             GameObject* go = new GameObject(scene);
+            go->newParentRef(this);
             children.emplace_back(go);
 
-            go->getComponent<kte::TransformationComponent>()->parentTransform = getComponent<kte::TransformationComponent>();
-            go->setActive(isActive);
+
 
             return go;
+        }
+
+       void addChild(GameObject* go)
+        {
+            children.emplace_back(go);
+            go->newParentRef(this);
+        }
+
+
+        void addChild(std::shared_ptr<GameObject> refChild)
+        {
+            children.emplace_back(refChild);
+            refChild->newParentRef(this);
+        }
+
+        std::shared_ptr<GameObject> getChild(unsigned int childId)
+        {
+            for(auto child : children)
+            {
+                if(child->getId() == childId)
+                    return child;
+            }
+            return nullptr;
+        }
+
+        void newParentRef(GameObject* parent)
+        {
+            this->parent = parent;
+
+
+            getComponent<kte::TransformationComponent>()->parentTransform = parent->getComponent<kte::TransformationComponent>();
+            setActive(isActive);
+        }
+
+
+        void setParent(GameObject* newParent)
+        {
+            if(parent != newParent)
+            {
+
+                if (parent)
+                {
+                    GameObject* oldParent = parent;
+                    newParent->addChild(parent->getChild(id));
+                    oldParent->removeChild(getId());
+                }
+                else
+                    newParent->addChild(this);
+            }
+        }
+
+        void removeChild(unsigned int gameObjectId)
+        {
+            for(unsigned int i = 0; i<children.size(); i++)
+            {
+                if(children[i]->getId() == gameObjectId)
+                {
+                    children[i].reset();
+                    children.erase(children.begin()+i);
+
+                    return;
+                }
+                children[i]->removeChild(gameObjectId);
+            }
+        }
+
+        void removeChild(GameObject* go)
+        {
+            for(unsigned int i = 0; i<children.size(); i++)
+            {
+                if(children[i]->getId() == go->getId())
+                {
+              //      children[i].reset();
+                    children.erase(children.begin()+i);
+                    return;
+                }
+                children[i]->removeChild(go->getId());
+            }
         }
 
         void setActive(bool active)
@@ -69,9 +155,10 @@ namespace kte
         unsigned int id;
         static unsigned int ID_COUNTER;
         IGameScene* scene;
+        GameObject* parent = nullptr;
+        std::vector<std::shared_ptr<GameObject>> children;
+        std::vector<std::shared_ptr<IComponent>> components;
 
-        std::vector<std::unique_ptr<GameObject>> children;
-        std::vector<std::unique_ptr<IComponent>> components;
         bool isActive = true;
     };
 }

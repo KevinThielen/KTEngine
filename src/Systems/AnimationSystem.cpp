@@ -10,8 +10,9 @@ bool kte::AnimationSystem::init()
 
 void kte::AnimationSystem::update(float dt)
 {
-    for(auto animator : animators)
+    for(auto animatorPair : animators)
     {
+        Animator* animator = animatorPair.second;
         if(animator->isActive )
         {
             //change animation
@@ -40,10 +41,10 @@ void kte::AnimationSystem::update(float dt)
                             //update spritcomponent
                             for(auto& spriteComponent : spriteComponents)
                             {
-                                if(spriteComponent->gameObjectId == animator->gameObjectId)
+                                if(spriteComponent.second->gameObjectId == animator->gameObjectId)
                                 {
-                                    spriteComponent->texture = resources->getTexture(currentAnimation->spriteSheet);
-                                    spriteComponent->textureRectangle = currentAnimation->frames[animator->currentFrame];
+                                    spriteComponent.second->texture = resources->getTexture(currentAnimation->spriteSheet);
+                                    spriteComponent.second->textureRectangle = currentAnimation->frames[animator->currentFrame];
                                 }
                             }
                             animator->currentFrame++;
@@ -54,10 +55,10 @@ void kte::AnimationSystem::update(float dt)
                         //update spritcomponent
                         for(auto& spriteComponent : spriteComponents)
                         {
-                            if(spriteComponent->gameObjectId == animator->gameObjectId)
+                            if(spriteComponent.second->gameObjectId == animator->gameObjectId)
                             {
-                                spriteComponent->texture = resources->getTexture(currentAnimation->spriteSheet);
-                                spriteComponent->textureRectangle = currentAnimation->frames[animator->currentFrame];
+                                spriteComponent.second->texture = resources->getTexture(currentAnimation->spriteSheet);
+                                spriteComponent.second->textureRectangle = currentAnimation->frames[animator->currentFrame];
                             }
                         }
                         animator->currentFrame++;
@@ -76,12 +77,24 @@ void kte::AnimationSystem::receiveMessage(kte::Message* message)
 
         if(dynamic_cast<kte::SpriteComponent*>(componentAddedMessage->addedComponent))
         {
-            spriteComponents.push_back(dynamic_cast<kte::SpriteComponent*>(componentAddedMessage->addedComponent));
+            spriteComponents[componentAddedMessage->gameObjectId] = (dynamic_cast<kte::SpriteComponent*>(componentAddedMessage->addedComponent));
         }
         else if(dynamic_cast<kte::Animator*>(componentAddedMessage->addedComponent))
         {
-            animators.push_back(dynamic_cast<kte::Animator*>(componentAddedMessage->addedComponent));
+            animators[componentAddedMessage->gameObjectId] =(dynamic_cast<kte::Animator*>(componentAddedMessage->addedComponent));
         }
+    }
+    if(dynamic_cast<kte::GameObjectRemovedMessage*>(message))
+    {
+        GameObjectRemovedMessage* gameObjectRemovedMessage = dynamic_cast<kte::GameObjectRemovedMessage*>(message);
 
+        if(spriteComponents.count(gameObjectRemovedMessage->gameObjectId))
+        {
+            spriteComponents.erase(gameObjectRemovedMessage->gameObjectId);
+        }
+        if(spriteComponents.count(gameObjectRemovedMessage->gameObjectId))
+        {
+            spriteComponents.erase(gameObjectRemovedMessage->gameObjectId);
+        }
     }
 }

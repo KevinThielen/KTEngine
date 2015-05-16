@@ -8,6 +8,7 @@
 #include <Components/SpriteComponent.h>
 #include <Components/Animator.h>
 #include "Messages/ComponentAddedMessage.h"
+#include "Messages/GameObjectRemovedMessage.h"
 
 namespace kte
 {
@@ -23,8 +24,8 @@ namespace kte
         void loadAnimation(Animation* animation);
 
     private:
-        std::vector<SpriteComponent*> spriteComponents;
-        std::vector<Animator*> animators;
+        std::map<unsigned int, SpriteComponent*> spriteComponents;
+        std::map<unsigned int, Animator*> animators;
         Resources* resources = nullptr;
     };
 }

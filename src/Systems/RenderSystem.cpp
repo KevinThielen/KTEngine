@@ -2,42 +2,54 @@
 #include <iostream>
 #include <map>
 #include <Graphics/SpriteTechnique.h>
+#include <Graphics/TextTechnique.h>
 
 bool kte::RenderSystem::init()
 {
+    
+    Geometries::initialze();
     renderTechniques.emplace_back(new SpriteTechnique);
     if(!renderTechniques.back()->init())
         return false;
+
+    textTechnique.reset(new TextTechnique);
+    if(!textTechnique->init())
+      return false;
+
     return true;
 }
 
 void kte::RenderSystem::update(float dt)
 {
-
-
     //pass the spriteComponents with the transformcomponents to their according rendertechniques
     for(auto& renderTechnique : renderTechniques)
     {
         renderTechnique->use();
-        std::map<SpriteComponent*, TransformationComponent*> spritesToRender;
-        for(auto& spriteComponent : spriteComponents)
+
+        if(componentsChanged)
         {
-            if(spriteComponent->isActive && spriteComponent->renderTechnique == renderTechnique->getName())
+            spritesToRender.clear();
+            for (auto& spriteComponent : spriteComponents)
             {
-                for(auto& transformationComponent : transformationComponents)
+                if (spriteComponent.second->isActive && spriteComponent.second->renderTechnique == renderTechnique->getName())
                 {
-                    if(transformationComponent->gameObjectId == spriteComponent->gameObjectId)
-                    {
-                        spritesToRender[spriteComponent] = transformationComponent;
-                    }
+                    if (transformationComponents[spriteComponent.second->gameObjectId])
+                        spritesToRender[spriteComponent.second] = transformationComponents[spriteComponent.second->gameObjectId];
                 }
+
             }
+            componentsChanged = true;
+//            componentsChanged = false;
+            renderTechnique->render(spritesToRender);
         }
-        renderTechnique->render(spritesToRender);
+   //     else
+   //         renderTechnique->renderCached();
+
+
     }
 
     //draw debug colliders
-    for(auto collider : boxColliders)
+/*    for(auto collider : boxColliders)
     {
         RenderTechnique* technique = renderTechniques[0].get();
         std::map<SpriteComponent*, TransformationComponent*> debugSprites;
@@ -69,7 +81,7 @@ void kte::RenderSystem::update(float dt)
 
         }
 
-    }
+    }*/
 }
 
 void kte::RenderSystem::receiveMessage(kte::Message* message)
@@ -80,15 +92,33 @@ void kte::RenderSystem::receiveMessage(kte::Message* message)
 
         if(dynamic_cast<kte::SpriteComponent*>(componentAddedMessage->addedComponent))
         {
-            spriteComponents.push_back(dynamic_cast<kte::SpriteComponent*>(componentAddedMessage->addedComponent));
+            componentsChanged = true;
+            spriteComponents[componentAddedMessage->gameObjectId] = (dynamic_cast<kte::SpriteComponent*>(componentAddedMessage->addedComponent));
         }
         else if(dynamic_cast<kte::TransformationComponent*>(componentAddedMessage->addedComponent))
         {
-            transformationComponents.push_back(dynamic_cast<kte::TransformationComponent*>(componentAddedMessage->addedComponent));
+            componentsChanged = true;
+            transformationComponents[componentAddedMessage->gameObjectId]=dynamic_cast<kte::TransformationComponent*>(componentAddedMessage->addedComponent);
         }
         else if(dynamic_cast<kte::BoxCollider*>(componentAddedMessage->addedComponent))
         {
             boxColliders.push_back(dynamic_cast<kte::BoxCollider*>(componentAddedMessage->addedComponent));
         }
     }
+    if(dynamic_cast<kte::GameObjectRemovedMessage*>(message))
+    {
+        GameObjectRemovedMessage* gameObjectRemovedMessage = dynamic_cast<kte::GameObjectRemovedMessage*>(message);
+
+        if(spriteComponents.count(gameObjectRemovedMessage->gameObjectId))
+        {
+            componentsChanged = true;
+            spriteComponents.erase(gameObjectRemovedMessage->gameObjectId);
+        }
+        if(transformationComponents.count(gameObjectRemovedMessage->gameObjectId))
+        {
+            componentsChanged = true;
+            transformationComponents.erase(gameObjectRemovedMessage->gameObjectId);
+        }
+    }
+
 }

@@ -6,6 +6,10 @@ set(KTENGINE_SOURCE
                  ${CMAKE_CURRENT_SOURCE_DIR}/ShaderManager.cpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/SpriteTechnique.cpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/Texture.cpp
+                 ${CMAKE_CURRENT_SOURCE_DIR}/Text.cpp
+                 ${CMAKE_CURRENT_SOURCE_DIR}/TextTechnique.cpp
+                 ${CMAKE_CURRENT_SOURCE_DIR}/Font.cpp
+                 ${CMAKE_CURRENT_SOURCE_DIR}/Geometries.cpp
 )
 set(KTENGINE_HEADER
 				  ${KTEngine_SOURCE_DIR}/include/Graphics/GameSprite.h
@@ -16,6 +20,9 @@ set(KTENGINE_HEADER
                   ${KTEngine_SOURCE_DIR}/include/Graphics/Animation.h
                   ${KTEngine_SOURCE_DIR}/include/Graphics/Mesh.h
                   ${KTEngine_SOURCE_DIR}/include/Graphics/RenderTechnique.h
+                  ${KTEngine_SOURCE_DIR}/include/Graphics/Text.h
+                  ${KTEngine_SOURCE_DIR}/include/Graphics/TextTechnique.h
+                  ${KTEngine_SOURCE_DIR}/include/Graphics/Geometries.h
 )
 
 

@@ -20,7 +20,7 @@ namespace kte
         virtual void use() = 0;
         virtual bool init() = 0;
         virtual void render(std::map<SpriteComponent*, TransformationComponent*> spritesToRender){}
-
+        virtual void renderCached(){}
         unsigned int getNumberOfRenderpasses() { return numberOfRenderpasses; }
 
         std::string getName() { return name; }

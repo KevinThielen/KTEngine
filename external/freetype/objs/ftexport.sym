@@ -6,8 +6,6 @@ FTC_ImageCache_New
 FTC_Manager_Done
 FTC_Manager_LookupFace
 FTC_Manager_LookupSize
-FTC_Manager_Lookup_Face
-FTC_Manager_Lookup_Size
 FTC_Manager_New
 FTC_Manager_RemoveFaceID
 FTC_Manager_Reset
@@ -75,6 +73,7 @@ FT_Get_PFR_Kerning
 FT_Get_PFR_Metrics
 FT_Get_PS_Font_Info
 FT_Get_PS_Font_Private
+FT_Get_PS_Font_Value
 FT_Get_Postscript_Name
 FT_Get_Renderer
 FT_Get_Sfnt_Name
@@ -94,6 +93,7 @@ FT_Glyph_Stroke
 FT_Glyph_StrokeBorder
 FT_Glyph_To_Bitmap
 FT_Glyph_Transform
+FT_Gzip_Uncompress
 FT_Has_PS_Glyph_Names
 FT_Init_FreeType
 FT_Library_SetLcdFilter
@@ -129,6 +129,7 @@ FT_Outline_Decompose
 FT_Outline_Done
 FT_Outline_Done_Internal
 FT_Outline_Embolden
+FT_Outline_EmboldenXY
 FT_Outline_GetInsideBorder
 FT_Outline_GetOutsideBorder
 FT_Outline_Get_BBox
@@ -141,6 +142,10 @@ FT_Outline_Render
 FT_Outline_Reverse
 FT_Outline_Transform
 FT_Outline_Translate
+FT_Property_Get
+FT_Property_Set
+FT_Reference_Face
+FT_Reference_Library
 FT_Remove_Module
 FT_Render_Glyph
 FT_Request_Size
@@ -159,6 +164,7 @@ FT_Set_Var_Blend_Coordinates
 FT_Set_Var_Design_Coordinates
 FT_Sfnt_Table_Info
 FT_Sin
+FT_Stream_OpenBzip2
 FT_Stream_OpenGzip
 FT_Stream_OpenLZW
 FT_Stroker_BeginSubPath

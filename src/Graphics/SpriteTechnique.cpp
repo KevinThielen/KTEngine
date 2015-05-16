@@ -27,8 +27,7 @@ namespace kte
 
         programId = shaderManager->getShaderProgram("SpriteShader");
 
-        if(!quad.init())
-            return false;
+        quad = &kte::Geometry::quad;
 
         resources.loadTextureFromFile("default.png");
         defaultTexture = resources.getTexture("default.png")->getTexture();
@@ -49,6 +48,9 @@ namespace kte
     ***************************************/
     void SpriteTechnique::render(std::map<SpriteComponent*, TransformationComponent*> spritesToRender)
     {
+        //remove old cached sprite
+        cachedSprites.clear();
+
         glUseProgram(programId);
 
 
@@ -82,7 +84,7 @@ namespace kte
             for (auto sortedSprites : spritesSortedByTexture)
             {
                 //single drawCall
-                quad.bindVAO();
+                quad->bindVAO();
 
                 std::vector<glm::mat4> mvps;
                 std::vector<glm::vec4> colors;
@@ -105,6 +107,8 @@ namespace kte
                     glUniform1i(textureLoc, 0);
                 }
 
+                RenderData cachedSprite;
+
                 for (auto sprite : sortedSprites.second)
                 {
                     TransformationComponent *transformationComponent = sprite.second;
@@ -120,6 +124,7 @@ namespace kte
                     glm::vec3 size(transformationComponent->width, transformationComponent->height, 1);
 
 
+
                     kte::TransformationComponent *parentTransform = transformationComponent->parentTransform;
                     while (parentTransform != nullptr)
                     {
@@ -128,6 +133,13 @@ namespace kte
                     }
                     glm::vec3 finalPosition = position + spriteOffset;
 
+
+                    glm::vec4 textureRectangle = spriteComponent->textureRectangle;
+                    if(spriteComponent->mirrored)
+                    {
+                        textureRectangle.x += textureRectangle.z;
+                        textureRectangle.z *= -1;
+                    }
                     glm::mat4 matrix;
                     matrix = glm::translate(matrix, size / 2.0f + finalPosition);
                     matrix = glm::rotate(matrix, rotation.x, glm::vec3(1, 0, 0));
@@ -138,25 +150,71 @@ namespace kte
 
                     mvps.push_back(viewMatrix * matrix);
                     colors.push_back(spriteComponent->color);
-                    uvs.push_back(spriteComponent->textureRectangle);
+                    uvs.push_back(textureRectangle);
                 }
 
-                glBindBuffer(GL_ARRAY_BUFFER, quad.getMVP());
+                glBindBuffer(GL_ARRAY_BUFFER, quad->getMVP());
                 glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * sortedSprites.second.size(), &mvps[0], GL_DYNAMIC_DRAW);
 
-                glBindBuffer(GL_ARRAY_BUFFER, quad.getCOLOR());
+                glBindBuffer(GL_ARRAY_BUFFER, quad->getCOLOR());
                 glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * sortedSprites.second.size(), &colors[0], GL_DYNAMIC_DRAW);
 
-                glBindBuffer(GL_ARRAY_BUFFER, quad.getUV());
+                glBindBuffer(GL_ARRAY_BUFFER, quad->getUV());
                 glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * sortedSprites.second.size(), &uvs[0], GL_DYNAMIC_DRAW);
 
 
-                glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad.getNumberOfIndices(), sortedSprites.second.size());
+                glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getNumberOfIndices(), sortedSprites.second.size());
+
+                //save for later use
+                cachedSprite.mvps = mvps;
+                cachedSprite.colors = colors;
+                cachedSprite.uvs = uvs;
+                cachedSprite.texture = texture;
+
+                cachedSprites.push_back(cachedSprite);
 
                 glBindTexture(GL_TEXTURE_2D, 0);
                 glBindVertexArray(0);
 
             }
         }
+    }
+
+    void SpriteTechnique::renderCached()
+    {
+       for(auto sprite : cachedSprites)
+       {
+           quad->bindVAO();
+
+           if (sprite.texture)
+           {
+               GLint textureLoc = glGetUniformLocation(programId, "texture");
+               glActiveTexture(GL_TEXTURE0);
+               glBindTexture(GL_TEXTURE_2D, sprite.texture->getTexture());
+               glUniform1i(textureLoc, 0);
+           }
+           else
+           {
+               GLint textureLoc = glGetUniformLocation(programId, "texture");
+               glActiveTexture(GL_TEXTURE0);
+               glBindTexture(GL_TEXTURE_2D, defaultTexture);
+               glUniform1i(textureLoc, 0);
+           }
+
+           glBindBuffer(GL_ARRAY_BUFFER, quad->getMVP());
+           glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * sprite.mvps.size(), &sprite.mvps[0], GL_DYNAMIC_DRAW);
+
+           glBindBuffer(GL_ARRAY_BUFFER, quad->getCOLOR());
+           glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * sprite.mvps.size(), &sprite.colors[0], GL_DYNAMIC_DRAW);
+
+           glBindBuffer(GL_ARRAY_BUFFER, quad->getUV());
+           glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * sprite.mvps.size(), &sprite.uvs[0], GL_DYNAMIC_DRAW);
+
+
+           glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getNumberOfIndices(), sprite.mvps.size());
+
+           glBindTexture(GL_TEXTURE_2D, 0);
+           glBindVertexArray(0);
+       }
     }
 }

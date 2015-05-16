@@ -11,8 +11,14 @@ Games
 
 Setup
 -----
-Refer to the source and header files in your CMake-File.
+Linux:
+sudo apt-get install libx11-dev ................. for X11/Xlib.h
+sudo apt-get install mesa-common-dev........ for GL/glx.h
+sudo apt-get install libglu1-mesa-dev ..... for GL/glu.h
+sudo apt-get install libxrandr-dev ........... for X11/extensions/Xrandr.h
+sudo apt-get install libxi-dev ................... for X11/extensions/XInput.h
 
+sudo apt-get install libfreetype6-dev................for freetype
 Doc
 ---
 ~Coming
