@@ -23,6 +23,12 @@ namespace kte
         {
             gameObject->getComponent<kte::SpriteComponent>()->color = color;
         }
+        
+        glm::vec4 getColor()
+	{
+	    return  gameObject->getComponent<kte::SpriteComponent>()->color;
+	}
+	
         void setPosition(float x, float y)
         {
             TransformationComponent *trans = gameObject->getComponent<kte::TransformationComponent>();
@@ -59,6 +65,15 @@ namespace kte
             trans->height = size.y;
         }
 
+        glm::vec2 getSize()
+	{
+	    TransformationComponent *trans = gameObject->getComponent<kte::TransformationComponent>();
+            
+	    glm::vec2 size = glm::vec2(trans->width, trans->height);
+	    
+	    return size;
+	}
+	
         void setRotationInDegrees(float rotation)
         {
             TransformationComponent* trans = gameObject->getComponent<kte::TransformationComponent>();
@@ -137,7 +152,27 @@ namespace kte
             spriteComponent->textureRectangle = rect;
         }
 
+        bool contains(glm::vec2 point)
+	{
+	    //TODO: Rotations
+	    glm::vec2 position = getPosition();
+	    glm::vec2 size = getSize();
+	    
+	    bool leftRightBoundary = (point.x >= position.x + size.x);
+	    bool leftLeftBoundary = (point.x <= position.x);
+	    bool leftTopBoundary = (point.y <= position.y);
+	    bool leftBottomBoundary = (point.y >= position.y + size.y);
+	    
+	    return !(leftRightBoundary || leftLeftBoundary || leftTopBoundary || leftBottomBoundary);
+	}
+        
+        glm::vec3 getWorldPosition() 
+	{
+	    return gameObject->getComponent<kte::TransformationComponent>()->getWorldPosition();
+	}
+	
         GameObject* getGameObject() { return gameObject; }
+        
     private:
         GameObject* gameObject;
         std::function<void(void)> onClick;

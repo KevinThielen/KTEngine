@@ -14,6 +14,7 @@ namespace kte
     {
     public:
         TextTechnique();
+	~TextTechnique() {}
         virtual bool init();
         virtual void use();
         virtual void render(std::map<SpriteComponent*, TransformationComponent*> spritesToRender){}

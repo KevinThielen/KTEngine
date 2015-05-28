@@ -11,6 +11,7 @@ namespace kte
     class Window
     {
     public:
+	Window() { window = nullptr; }
         bool create(kte::WindowDesc windowDesc);
         void clearScreen();
         void swapBuffers();

@@ -13,7 +13,7 @@ bool kte::Window::create(kte::WindowDesc windowDesc)
 {
 
     //Destroy old window
-    if (window != NULL)
+    if (window != nullptr)
         destroy();
 
     // Initialise GLFW
@@ -63,7 +63,7 @@ bool kte::Window::create(kte::WindowDesc windowDesc)
 
 
     glClearColor(0.6f, 0.6f, 1.0f, 1.0f);
-//     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+  //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     return true;
 }
 

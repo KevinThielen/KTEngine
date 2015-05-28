@@ -11,26 +11,42 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc)
         return;
 
     kte::Input::setContext(&window);
-    currentScene.reset(initialScene);
+    gameScenes.emplace_back(initialScene);
 
     if(!initialScene->init())
         return;
 
-	fpsCounter.update();
+    fpsCounter.update();
     while(isRunning && !glfwWindowShouldClose(glfwGetCurrentContext()))
     {
 		fpsCounter.update();
 
         window.clearScreen();
 
-        currentScene->update(fpsCounter.getDeltaTime());
+	if(!gameScenes.size())
+	    return;
+
+        gameScenes.back()->update(fpsCounter.getDeltaTime());
+	
         window.swapBuffers();
     }
 }
+
 
 //exit the whole game
 void kte::GameEngine::exit()
 {
     isRunning = false;
 }
+
+
+void kte::GameEngine::pushScene(kte::IGameScene* scene)
+{
+    gameScenes.emplace_back(scene);
+    if(!scene->init())
+	gameScenes.pop_back();
+
+}
+
+
 

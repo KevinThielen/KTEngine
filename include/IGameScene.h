@@ -33,7 +33,7 @@ namespace kte
     public:
         IGameScene();
 
-        virtual ~IGameScene() {}
+        virtual ~IGameScene();
 
         virtual bool init() = 0;
         virtual void update(float dt) { for (auto& system : systems) system->update(dt); }

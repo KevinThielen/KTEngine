@@ -17,32 +17,19 @@ namespace kte
     {
     public:
         SpriteTechnique();
+	virtual ~SpriteTechnique(){}
         virtual bool init();
         virtual void use();
         virtual void render(std::map<SpriteComponent*, TransformationComponent*> spritesToRender);
-        virtual void renderCached();
+
 
     private:
-
-        struct VectorPointer
-        {
-        float *x,*y,*z;
-        };
-        struct RenderData
-        {
-            Texture* texture;
-            std::vector<glm::mat4> mvps;
-            std::vector<glm::vec4> colors;
-            std::vector<glm::vec4> uvs;
-        };
-
 
         GLuint programId;
         Quad* quad;
         GLuint defaultTexture;
         Resources resources;
 
-        std::vector<RenderData> cachedSprites;
     };
 }
 #endif

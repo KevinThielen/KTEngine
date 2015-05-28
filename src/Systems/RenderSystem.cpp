@@ -5,9 +5,9 @@
 #include <Graphics/TextTechnique.h>
 
 bool kte::RenderSystem::init()
-{
-    
+{  
     Geometries::initialze();
+
     renderTechniques.emplace_back(new SpriteTechnique);
     if(!renderTechniques.back()->init())
         return false;

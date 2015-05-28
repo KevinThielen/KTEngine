@@ -7,7 +7,7 @@
 #include <fstream>
 
 #include <GL/glew.h>
-
+#include <iostream>
 
 namespace kte
 {
@@ -26,7 +26,7 @@ namespace kte
         void initAttributeLocations();
         bool shaderProgramFromFile(std::string programName, std::string vertexShader, std::string fragmentShader, std::string geometryShader = "");
 
-        GLuint getShaderProgram(std::string programName) { return shaderPrograms[programName]; }
+        GLuint getShaderProgram(std::string programName) {  return shaderPrograms[programName]; }
         GLuint getAttribLocation(std::string attribName) { return vertexAttributeLocations[attribName]; }
 
     private:

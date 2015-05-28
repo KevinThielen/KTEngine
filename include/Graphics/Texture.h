@@ -9,13 +9,18 @@ namespace kte
     class Texture
     {
     public:
-        GLuint getTexture()
+	~Texture()
+	{
+	  
+	    
+	}
+	GLuint getTexture()
         {
             return texture;
         }
 
         bool loadFromFile(std::string path);
-
+	void unload() { glDeleteTextures(1, &texture); }
     private:
         GLuint texture;
     };

@@ -15,11 +15,26 @@ namespace kte
 
         bool contains(float xPos, float yPos)
         {
-            if(xPos >= x && xPos <= x+width)
-                if(yPos >= y && yPos <= y+ height)
+	    glm::vec3 worldPos = getWorldPosition();
+	    
+            if(xPos >= worldPos.x && xPos <= worldPos.x+width)
+                if(yPos >= worldPos.y && yPos <= worldPos.y+ height)
                     return true;
             return false;
         }
+        glm::vec3 getWorldPosition()
+	{
+	    TransformationComponent* parent = parentTransform;
+	    glm::vec3 worldPos = glm::vec3(x,y,z);
+	    
+	    while(parent)
+	    {
+		worldPos += glm::vec3(parent->x, parent->y, parent->z);
+		parent = parent->parentTransform;
+	    };
+	    return worldPos;
+	}
+        
         float x = 0, y = 0, z = 0;
         float width = 100.f, height = 100.f;
         float xRotation = 0, yRotation = 0, zRotation = 0;

@@ -20,6 +20,10 @@ namespace kte
             scene->addGameObject(this);
         }
 
+        GameObject(GameObject& other)
+	{
+	}
+	
         ~GameObject()
         {
             GameObjectRemovedMessage message;
@@ -140,7 +144,7 @@ namespace kte
                 children[i]->removeChild(go->getId());
             }
         }
-
+	
         void setActive(bool active)
         {
             isActive = active;

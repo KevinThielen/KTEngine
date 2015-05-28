@@ -11,7 +11,14 @@ namespace kte
 	class FPSCounter
 	{
 	public:
-		FPSCounter() {}
+		FPSCounter() 
+		{
+		    accumulatedTime = 0.0f;
+		    deltaTime = 0.0f;
+		    fps = 0;
+		    fpsCounter = 0;
+		    lastTime = duration_cast<milliseconds>(high_resolution_clock::now().time_since_epoch());
+		}
 
 		void update()
 		{
@@ -34,10 +41,10 @@ namespace kte
 		float getFramesPerSecond() { return fps; }
 		double getDeltaTime() { return deltaTime; }
 	private:
-		float accumulatedTime = 0.0f;
-		float deltaTime = 0.0f;
-		int fps = 0;
-		int fpsCounter = 0;
+		float accumulatedTime;
+		float deltaTime;
+		int fps;
+		int fpsCounter;
 		milliseconds  lastTime;
 	};
 }

@@ -29,7 +29,7 @@ namespace kte
 
         quad = &kte::Geometry::quad;
 
-        resources.loadTextureFromFile("default.png");
+	  resources.loadTextureFromFile("default.png");
         defaultTexture = resources.getTexture("default.png")->getTexture();
 
         return true;
@@ -48,8 +48,6 @@ namespace kte
     ***************************************/
     void SpriteTechnique::render(std::map<SpriteComponent*, TransformationComponent*> spritesToRender)
     {
-        //remove old cached sprite
-        cachedSprites.clear();
 
         glUseProgram(programId);
 
@@ -107,7 +105,7 @@ namespace kte
                     glUniform1i(textureLoc, 0);
                 }
 
-                RenderData cachedSprite;
+          
 
                 for (auto sprite : sortedSprites.second)
                 {
@@ -165,14 +163,6 @@ namespace kte
 
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getNumberOfIndices(), sortedSprites.second.size());
 
-                //save for later use
-                cachedSprite.mvps = mvps;
-                cachedSprite.colors = colors;
-                cachedSprite.uvs = uvs;
-                cachedSprite.texture = texture;
-
-                cachedSprites.push_back(cachedSprite);
-
                 glBindTexture(GL_TEXTURE_2D, 0);
                 glBindVertexArray(0);
 
@@ -180,41 +170,5 @@ namespace kte
         }
     }
 
-    void SpriteTechnique::renderCached()
-    {
-       for(auto sprite : cachedSprites)
-       {
-           quad->bindVAO();
 
-           if (sprite.texture)
-           {
-               GLint textureLoc = glGetUniformLocation(programId, "texture");
-               glActiveTexture(GL_TEXTURE0);
-               glBindTexture(GL_TEXTURE_2D, sprite.texture->getTexture());
-               glUniform1i(textureLoc, 0);
-           }
-           else
-           {
-               GLint textureLoc = glGetUniformLocation(programId, "texture");
-               glActiveTexture(GL_TEXTURE0);
-               glBindTexture(GL_TEXTURE_2D, defaultTexture);
-               glUniform1i(textureLoc, 0);
-           }
-
-           glBindBuffer(GL_ARRAY_BUFFER, quad->getMVP());
-           glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * sprite.mvps.size(), &sprite.mvps[0], GL_DYNAMIC_DRAW);
-
-           glBindBuffer(GL_ARRAY_BUFFER, quad->getCOLOR());
-           glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * sprite.mvps.size(), &sprite.colors[0], GL_DYNAMIC_DRAW);
-
-           glBindBuffer(GL_ARRAY_BUFFER, quad->getUV());
-           glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * sprite.mvps.size(), &sprite.uvs[0], GL_DYNAMIC_DRAW);
-
-
-           glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getNumberOfIndices(), sprite.mvps.size());
-
-           glBindTexture(GL_TEXTURE_2D, 0);
-           glBindVertexArray(0);
-       }
-    }
 }

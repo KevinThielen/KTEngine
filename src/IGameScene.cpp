@@ -6,8 +6,13 @@
 #include "Systems/AnimationSystem.h"
 kte::IGameScene::IGameScene()
 {
-	scene.reset(new kte::GameObject(this));
+    scene.reset(new kte::GameObject(this));
     scene->addComponent<kte::Camera>();
+}
+
+kte::IGameScene::~IGameScene()
+{
+    scene = NULL;
 }
 
 void kte::IGameScene::addSystem(kte::ISystem* system)
@@ -26,8 +31,8 @@ void kte::IGameScene::initDefaultSystem()
     {
         //standard systems
 
-        renderer = new RenderSystem;
-        addSystem(renderer);
+        renderer = nullptr;
+       addSystem(new RenderSystem);
 
         addSystem(new kte::AnimationSystem(&resources));
         addSystem(new kte::InputSystem);
