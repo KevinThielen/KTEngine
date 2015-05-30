@@ -29,6 +29,8 @@ namespace kte
 			{
 				for(auto& mouseInputComponent : mouseInputComponentPair.second)
 				{
+				    if(mouseInputComponent->isActive)
+				    {
 					TransformationComponent* trans = transformations[mouseInputComponent->gameObjectId];
 					if (mouseDown && !mouseInputComponent->isDown)
 					{
@@ -42,6 +44,7 @@ namespace kte
 						if (trans->contains(mousePosition.x, mousePosition.y))
 							mouseInputComponent->onClick();
 					}
+				    }
 				}
 			}
 		}

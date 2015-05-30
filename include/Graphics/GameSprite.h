@@ -157,6 +157,12 @@ namespace kte
             spriteComponent->textureRectangle = rect;
         }
 
+        void pauseOnClickListener()
+	{
+	    gameObject->getComponent<MouseInputComponent>()->isActive = false;
+	    
+	}
+	
         bool contains(glm::vec2 point)
 	{
 	    //TODO: Rotations
