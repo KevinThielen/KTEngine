@@ -99,7 +99,14 @@ namespace kte
 
         //AudioDatas
         AudioData* getAudio(std::string name) { return &audios[name]; }
-        Texture* getTexture(std::string name) { return &textures[name];}
+        Texture* getTexture(std::string name) 
+	{ 
+	    if(!textures.count(name)) 
+		std::cout<<"Texture "<<name<<" not loaded!"<<std::endl; 
+	    
+	    return &textures[name];
+	    
+	}
         Animation* getAnimation(std::string name) { return &animations[name]; }
 
     private:

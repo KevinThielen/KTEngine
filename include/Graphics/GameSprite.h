@@ -132,6 +132,11 @@ namespace kte
             spriteComponent->mirrored = !spriteComponent->mirrored;
         }
 
+        bool isMirrored()
+	{
+	    return gameObject->getComponent<kte::SpriteComponent>()->mirrored;
+	}
+	
         void setActive(bool isActive)
         {
             gameObject->setActive(isActive);
