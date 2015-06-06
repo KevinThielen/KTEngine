@@ -19,11 +19,11 @@ namespace kte
 
     void ShaderManager::initAttributeLocations()
     {
-        vertexAttributeLocations["vertex"] = 1;
-        vertexAttributeLocations["uv"] = 2;
-        vertexAttributeLocations["color"] = 3;
-        vertexAttributeLocations["textureRectangle"] = 4;
-        vertexAttributeLocations["MVP"] = 5;
+        vertexAttributeLocations["vertex"] = 0;
+        vertexAttributeLocations["uv"] = 1;
+        vertexAttributeLocations["color"] = 2;
+        vertexAttributeLocations["textureRectangle"] = 3;
+        vertexAttributeLocations["MVP"] = 4;
 
     }
     bool ShaderManager::shaderProgramFromFile(std::string programName, std::string vertexShader, std::string fragmentShader, std::string geometryShader)

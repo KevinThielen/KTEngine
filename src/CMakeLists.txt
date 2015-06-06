@@ -14,16 +14,25 @@ set(KTENGINE_SOURCE
     )
 
 
+IF(EMSCRIPTEN)
 set(EXTERNAL_HEADER 
-				 "${KTEngine_SOURCE_DIR}/include/"
+	         "${KTEngine_SOURCE_DIR}/include/"
                  "${KTEngine_SOURCE_DIR}/external/glm/"
-                 "${KTEngine_SOURCE_DIR}/external/glfw/include/"
-				 "${KTEngine_SOURCE_DIR}/external/glew/include/"
-   #              "${KTEngine_SOURCE_DIR}/external/freetype/include/freetype/"
                  "${KTEngine_SOURCE_DIR}/external/stb/"
                  "${KTEngine_SOURCE_DIR}/external/jsoncpp/include/"
+                 "${KTEngine_SOURCE_DIR}/external/portaudio/include/" 
+)
+ELSE(EMSCRIPTEN)
+set(EXTERNAL_HEADER 
+	         "${KTEngine_SOURCE_DIR}/include/"
+                 "${KTEngine_SOURCE_DIR}/external/glm/"
+                 "${KTEngine_SOURCE_DIR}/external/glfw/include/"
+		 "${KTEngine_SOURCE_DIR}/external/glew/include/"
+                 "${KTEngine_SOURCE_DIR}/external/stb/"
+                 "${KTEngine_SOURCE_DIR}/external/jsoncpp/include/"
+                 "${KTEngine_SOURCE_DIR}/external/portaudio/include/"
                  )
-
+ENDIF(EMSCRIPTEN)
 #needed for VS filter
 set(KTENGINE_HEADER 
                  ${KTEngine_SOURCE_DIR}/include/GameEngine.h

@@ -2,7 +2,7 @@
 
 #include <iostream>
 //run the game. The parameter is the first gameScene that should run.
-void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc)
+void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc, bool isMainLoop)
 {
     //gameLoop
     isRunning = true;
@@ -16,10 +16,23 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc)
     if(!initialScene->init())
         return;
 
+    
+    
     fpsCounter.update();
-    while(isRunning && !glfwWindowShouldClose(glfwGetCurrentContext()))
+    
+    if(isMainLoop)
     {
-		fpsCounter.update();
+	while(isRunning && !glfwWindowShouldClose(glfwGetCurrentContext()))
+	{
+	    update();
+	}
+    }
+}
+
+
+void kte::GameEngine::update()
+{
+    	fpsCounter.update();
 
         window.clearScreen();
 
@@ -29,9 +42,7 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc)
         gameScenes.back()->update(fpsCounter.getDeltaTime());
 	
         window.swapBuffers();
-    }
 }
-
 
 //exit the whole game
 void kte::GameEngine::exit()

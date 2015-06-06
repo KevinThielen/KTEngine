@@ -19,6 +19,7 @@ bool kte::Window::create(kte::WindowDesc windowDesc)
     // Initialise GLFW
     if (!glfwInit())
     {
+	        std::cout<<"INIT"<<std::endl;
         return false;
     }
 
@@ -27,7 +28,7 @@ bool kte::Window::create(kte::WindowDesc windowDesc)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwSwapInterval(1);
+glfwSwapInterval(1);
 
     // glfwSwapInterval(0);
     // Open a window and create its OpenGL context
@@ -37,6 +38,7 @@ bool kte::Window::create(kte::WindowDesc windowDesc)
     if (window == NULL)
     {
         destroy();
+	        std::cout<<"NULL"<<std::endl;
     }
     glfwMakeContextCurrent(window);
 
@@ -46,9 +48,9 @@ bool kte::Window::create(kte::WindowDesc windowDesc)
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
     if (err != GLEW_OK)
-        return false;
-    if (!GLEW_VERSION_3_1)
-        return false;
+        std::cout<<"GLEW_OK"<<std::endl;
+    //if (!GLEW_VERSION_3_1)
+   //     return false;
 
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
