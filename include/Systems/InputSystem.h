@@ -44,6 +44,15 @@ namespace kte
 						if (trans->contains(mousePosition.x, mousePosition.y))
 							mouseInputComponent->onClick();
 					}
+					
+					if(!mouseInputComponent->isHovering && trans->contains(mousePosition.x, mousePosition.y))
+					{
+					    mouseInputComponent->isHovering = true;
+					    mouseInputComponent->onMouseOver();
+					}
+					else if(!trans->contains(mousePosition.x, mousePosition.y))
+					    mouseInputComponent->isHovering = false;
+			
 				    }
 				}
 			}

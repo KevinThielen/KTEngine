@@ -13,10 +13,14 @@ namespace kte
         MouseInputComponent(unsigned int gameObjectId) : IComponent(gameObjectId)
         {
             onClick = [] () {std::cout<<"click"<<std::endl;};
+            onMouseOver = [] () {std::cout<<"hover"<<std::endl;};
         }
 
         bool isDown = false;
+	bool isHovering = false;
+	
         std::function<void(void)> onClick;
+        std::function<void(void)> onMouseOver;
     };
 }
 #endif
