@@ -27,7 +27,7 @@ namespace kte
 
         void displayText(Text t)
         {
-            textTechnique->render(t);
+		textTechnique->render(t);
         }
 
         void displayText(std::vector<Text> text)

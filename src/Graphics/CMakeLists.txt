@@ -12,7 +12,7 @@ set(KTENGINE_SOURCE
                  ${CMAKE_CURRENT_SOURCE_DIR}/Geometries.cpp
 )
 set(KTENGINE_HEADER
-				  ${KTEngine_SOURCE_DIR}/include/Graphics/GameSprite.h
+		  ${KTEngine_SOURCE_DIR}/include/Graphics/GameSprite.h
                   ${KTEngine_SOURCE_DIR}/include/Graphics/Quad.h
                   ${KTEngine_SOURCE_DIR}/include/Graphics/ShaderManager.h
                   ${KTEngine_SOURCE_DIR}/include/Graphics/SpriteTechnique.h

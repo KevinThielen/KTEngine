@@ -121,16 +121,18 @@ namespace kte
 
                     glm::vec3 size(transformationComponent->width, transformationComponent->height, 1);
 
-
-
+		    glm::vec3 rotationOffset(transformationComponent->xOffset, transformationComponent->yOffset, 0);
+		    
                     kte::TransformationComponent *parentTransform = transformationComponent->parentTransform;
                     while (parentTransform != nullptr)
                     {
                         position += glm::vec3(parentTransform->x, parentTransform->y, 0);
+			rotation += glm::vec3(parentTransform->xRotation, parentTransform->yRotation, parentTransform->zRotation);
+			rotationOffset += glm::vec3(parentTransform->xOffset, parentTransform->yOffset, 0);
                         parentTransform = parentTransform->parentTransform;
                     }
                     glm::vec3 finalPosition = position + spriteOffset;
-
+		 
 
                     glm::vec4 textureRectangle = spriteComponent->textureRectangle;
                     if(spriteComponent->mirrored)
@@ -138,12 +140,13 @@ namespace kte
                         textureRectangle.x += textureRectangle.z;
                         textureRectangle.z *= -1;
                     }
+                    
                     glm::mat4 matrix;
-                    matrix = glm::translate(matrix, size / 2.0f + finalPosition);
+                    matrix = glm::translate(matrix, size / 2.0f + finalPosition + rotationOffset);
                     matrix = glm::rotate(matrix, rotation.x, glm::vec3(1, 0, 0));
                     matrix = glm::rotate(matrix, rotation.y, glm::vec3(0, 1, 0));
                     matrix = glm::rotate(matrix, rotation.z, glm::vec3(0, 0, 1));
-                    matrix = glm::translate(matrix, (-size / 2.0f));
+                    matrix = glm::translate(matrix, (-size / 2.0f) - rotationOffset);
                     matrix = glm::scale(matrix, size);
 
                     mvps.push_back(viewMatrix * matrix);

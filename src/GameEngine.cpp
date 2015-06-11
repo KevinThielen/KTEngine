@@ -10,6 +10,7 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc, bool 
     if(!window.create(windowDesc))
         return;
 
+    
     kte::Input::setContext(&window);
     gameScenes.emplace_back(initialScene);
 
@@ -17,7 +18,7 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc, bool 
         return;
 
     
-    
+
     fpsCounter.update();
     
     if(isMainLoop)

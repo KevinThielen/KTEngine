@@ -108,6 +108,15 @@ namespace kte
 	    
 	}
         Animation* getAnimation(std::string name) { return &animations[name]; }
+        
+        Font* getFont(std::string name) 
+	{
+	     if(!fonts.count(name)) 
+		std::cout<<"Font "<<name<<" not loaded!"<<std::endl; 
+	      
+	    return &fonts[name]; 
+
+	}
 
     private:
         std::map<std::string, Texture> textures;

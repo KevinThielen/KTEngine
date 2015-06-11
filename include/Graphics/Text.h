@@ -29,7 +29,6 @@ namespace kte
 
         unsigned int getTexture() { return  font->getTexture(); }
     private:
-//         Quad quad;
         glm::vec2 position;
         glm::vec2 size;
         glm::vec4 color;

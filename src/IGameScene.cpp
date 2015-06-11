@@ -31,8 +31,8 @@ void kte::IGameScene::initDefaultSystem()
     {
         //standard systems
 
-        renderer = nullptr;
-       addSystem(new RenderSystem);
+	renderer = new RenderSystem();
+        addSystem(renderer);
 
         addSystem(new kte::AnimationSystem(&resources));
         addSystem(new kte::InputSystem);
@@ -40,8 +40,14 @@ void kte::IGameScene::initDefaultSystem()
 
 void kte::IGameScene::displayText(kte::Text text)
 {
-    renderer->displayText(text);
+	renderer->displayText(text);
 }
+
+void kte::IGameScene::displayText(std::vector<kte::Text> texts)
+{
+	renderer->displayText(texts);
+}
+
 namespace kte
 {
     bool isKeyDown(unsigned int key)

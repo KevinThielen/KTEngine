@@ -18,6 +18,7 @@ namespace kte
         void destroy();
         GLFWwindow* getContext() { return window; }
         bool isKeyDown(unsigned int key) { return glfwGetKey(window, key); }
+        void setWireframe() {  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); }
     private:
         GLFWwindow* window;
     };

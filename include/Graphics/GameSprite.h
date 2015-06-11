@@ -80,6 +80,22 @@ namespace kte
             trans->zRotation = glm::radians(rotation);
         }
 
+         void rotateByDegrees(float rotation, glm::vec2 offset)
+        {
+            TransformationComponent* trans = gameObject->getComponent<kte::TransformationComponent>();
+            trans->zRotation += glm::radians(rotation);
+	    trans->xOffset = offset.x;
+	    trans->yOffset = offset.y;
+        }
+        
+           void rotateByDegrees(float rotation)
+        {
+            TransformationComponent* trans = gameObject->getComponent<kte::TransformationComponent>();
+            trans->zRotation += glm::radians(rotation);
+	    trans->xOffset = 0;
+	    trans->yOffset = 0;
+        }
+        
         void setLayer(unsigned int layer)
         {
             gameObject->getComponent<kte::SpriteComponent>()->layer = layer;

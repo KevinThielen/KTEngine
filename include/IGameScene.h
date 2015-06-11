@@ -44,7 +44,9 @@ namespace kte
         void removeGameObject(unsigned int gameObjectid);
         void addGameObject(GameObject* gameObject);
 
+
         void displayText(Text text);
+        void displayText(std::vector<Text> texts);
 
     protected:
         void initDefaultSystem();

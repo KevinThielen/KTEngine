@@ -19,7 +19,6 @@ bool kte::Window::create(kte::WindowDesc windowDesc)
     // Initialise GLFW
     if (!glfwInit())
     {
-	        std::cout<<"INIT"<<std::endl;
         return false;
     }
 
@@ -38,7 +37,6 @@ glfwSwapInterval(1);
     if (window == NULL)
     {
         destroy();
-	        std::cout<<"NULL"<<std::endl;
     }
     glfwMakeContextCurrent(window);
 
@@ -48,7 +46,7 @@ glfwSwapInterval(1);
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
     if (err != GLEW_OK)
-        std::cout<<"GLEW_OK"<<std::endl;
+	return false;
     //if (!GLEW_VERSION_3_1)
    //     return false;
 
@@ -65,7 +63,7 @@ glfwSwapInterval(1);
 
 
     glClearColor(0.6f, 0.6f, 1.0f, 1.0f);
-  //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    
     return true;
 }
 

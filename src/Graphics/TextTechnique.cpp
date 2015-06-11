@@ -85,26 +85,19 @@ namespace kte
                         glm::vec4 textureRectangle = t.getTextureRectangle(i);
 
 
-                       // const float z = spriteComponent->layer * 0.01f;
 
                         glm::vec3 position(rectangle.x, rectangle.y, 1);
-
-                       // glm::vec3 rotation(transformationComponent->xRotation, transformationComponent->yRotation, transformationComponent->zRotation);
-
-                        //glm::vec3 spriteOffset(spriteComponent->spriteOffsetX, spriteComponent->spriteOffsetY, 0);
 
                         glm::vec3 size(rectangle.z, rectangle.a, 1);
 
 
                         glm::vec3 finalPosition = position;
-
+			finalPosition.x += t.getPosition().x;
+			finalPosition.y += t.getPosition().y;
 
 
                         glm::mat4 matrix;
                         matrix = glm::translate(matrix, size / 2.0f + finalPosition);
-                       /* matrix = glm::rotate(matrix, rotation.x, glm::vec3(1, 0, 0));
-                        matrix = glm::rotate(matrix, rotation.y, glm::vec3(0, 1, 0));
-                        matrix = glm::rotate(matrix, rotation.z, glm::vec3(0, 0, 1));*/
                         matrix = glm::translate(matrix, (-size / 2.0f));
                         matrix = glm::scale(matrix, size);
 
@@ -181,14 +174,14 @@ namespace kte
 
 
                         glm::vec3 finalPosition = position;
+			finalPosition.x += text.getPosition().x;
+			finalPosition.y += text.getPosition().y;
 
 
 
                         glm::mat4 matrix;
                         matrix = glm::translate(matrix, size / 2.0f + finalPosition);
-                        /* matrix = glm::rotate(matrix, rotation.x, glm::vec3(1, 0, 0));
-                         matrix = glm::rotate(matrix, rotation.y, glm::vec3(0, 1, 0));
-                         matrix = glm::rotate(matrix, rotation.z, glm::vec3(0, 0, 1));*/
+
                         matrix = glm::translate(matrix, (-size / 2.0f));
                         matrix = glm::scale(matrix, size);
 

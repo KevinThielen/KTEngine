@@ -30,8 +30,11 @@ namespace kte
     {
         std::string resourcePath = "";
         resourcePath += RESOURCE_PATH;
-        resourcePath += "Shaders/";
-
+#if defined(EMSCRIPTEN)
+	resourcePath += "WebShaders/";
+#else
+	resourcePath += "Shaders/";
+#endif
         std::string vertexFilePath = resourcePath+vertexShader;
         std::string fragmentFilePath = resourcePath+fragmentShader;
         std::string geometryFilePath = resourcePath+geometryShader;
