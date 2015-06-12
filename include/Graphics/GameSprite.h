@@ -126,6 +126,23 @@ namespace kte
             gameObject->getComponent<MouseInputComponent>()->onClick = function;
         }
 
+        void setOnMouseOverEvent(std::function<void(void)> function)
+        {
+            onMouseOver = function;
+            if(!gameObject->getComponent<MouseInputComponent>())
+                gameObject->addComponent<MouseInputComponent>();
+
+            gameObject->getComponent<MouseInputComponent>()->onMouseOver = function;
+        }
+        
+        void setOnMouseLeaveEvent(std::function<void(void)> function)
+        {
+            onMouseLeave = function;
+            if(!gameObject->getComponent<MouseInputComponent>())
+                gameObject->addComponent<MouseInputComponent>();
+
+            gameObject->getComponent<MouseInputComponent>()->onMouseLeave = function;
+        }
         void setTexture(Texture* texture)
         {
             SpriteComponent* sprite = gameObject->getComponent<SpriteComponent>();
@@ -203,6 +220,8 @@ namespace kte
     private:
         GameObject* gameObject;
         std::function<void(void)> onClick;
+        std::function<void(void)> onMouseOver;
+        std::function<void(void)> onMouseLeave;
     };
 }
 #endif

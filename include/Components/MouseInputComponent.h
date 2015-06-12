@@ -14,6 +14,7 @@ namespace kte
         {
             onClick = [] () {std::cout<<"click"<<std::endl;};
             onMouseOver = [] () {std::cout<<"hover"<<std::endl;};
+            onMouseLeave = [] () {std::cout<<"leave"<<std::endl;};
         }
 
         bool isDown = false;
@@ -21,6 +22,7 @@ namespace kte
 	
         std::function<void(void)> onClick;
         std::function<void(void)> onMouseOver;
+        std::function<void(void)> onMouseLeave;
     };
 }
 #endif

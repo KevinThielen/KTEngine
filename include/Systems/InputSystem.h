@@ -32,6 +32,8 @@ namespace kte
 				    if(mouseInputComponent->isActive)
 				    {
 					TransformationComponent* trans = transformations[mouseInputComponent->gameObjectId];
+					
+					//onClick
 					if (mouseDown && !mouseInputComponent->isDown)
 					{
 						if (trans->contains(mousePosition.x, mousePosition.y))
@@ -45,14 +47,19 @@ namespace kte
 							mouseInputComponent->onClick();
 					}
 					
+					//onHover
 					if(!mouseInputComponent->isHovering && trans->contains(mousePosition.x, mousePosition.y))
 					{
 					    mouseInputComponent->isHovering = true;
 					    mouseInputComponent->onMouseOver();
 					}
 					else if(!trans->contains(mousePosition.x, mousePosition.y))
+					{
+					    if(mouseInputComponent->isHovering)
+						mouseInputComponent->onMouseLeave();
+					    
 					    mouseInputComponent->isHovering = false;
-			
+					}
 				    }
 				}
 			}
