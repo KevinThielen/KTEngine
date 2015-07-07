@@ -39,7 +39,8 @@ namespace kte
         virtual void update(float dt) { for (auto& system : systems) system->update(dt); }
         virtual void addSystem(ISystem* system);
         virtual void notifySystems(Message* message) { for(auto& system : systems) system->receiveMessage(message); }
-
+	virtual void refresh() { }
+	
         GameObject* getGameObject(unsigned int gameObjectId);
         void removeGameObject(unsigned int gameObjectid);
         void addGameObject(GameObject* gameObject);

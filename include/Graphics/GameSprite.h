@@ -88,7 +88,7 @@ namespace kte
 	    trans->yOffset = offset.y;
         }
         
-           void rotateByDegrees(float rotation)
+        void rotateByDegrees(float rotation)
         {
             TransformationComponent* trans = gameObject->getComponent<kte::TransformationComponent>();
             trans->zRotation += glm::radians(rotation);
@@ -101,6 +101,10 @@ namespace kte
             gameObject->getComponent<kte::SpriteComponent>()->layer = layer;
         }
 
+        unsigned int getLayer()
+	{
+	    return gameObject->getComponent<kte::SpriteComponent>()->layer;
+	}
         void setSpriteOffset(float xOffset, float yOffset)
         {
             SpriteComponent* sprite = gameObject->getComponent<SpriteComponent>();
@@ -143,6 +147,15 @@ namespace kte
 
             gameObject->getComponent<MouseInputComponent>()->onMouseLeave = function;
         }
+        
+        void setOnReleaseEvent(std::function<void(void)> function)
+        {
+            onRelease = function;
+            if(!gameObject->getComponent<MouseInputComponent>())
+                gameObject->addComponent<MouseInputComponent>();
+
+            gameObject->getComponent<MouseInputComponent>()->onRelease = function;
+        }
         void setTexture(Texture* texture)
         {
             SpriteComponent* sprite = gameObject->getComponent<SpriteComponent>();
@@ -173,6 +186,7 @@ namespace kte
         void setActive(bool isActive)
         {
             gameObject->setActive(isActive);
+	    
         }
 
         void moveUV(float x, float y)
@@ -190,9 +204,9 @@ namespace kte
             spriteComponent->textureRectangle = rect;
         }
 
-        void pauseOnClickListener()
+        void pauseOnClickListener(bool pause)
 	{
-	    gameObject->getComponent<MouseInputComponent>()->isActive = false;
+	    gameObject->getComponent<MouseInputComponent>()->isActive = !pause;
 	    
 	}
 	
@@ -220,6 +234,7 @@ namespace kte
     private:
         GameObject* gameObject;
         std::function<void(void)> onClick;
+        std::function<void(void)> onRelease;
         std::function<void(void)> onMouseOver;
         std::function<void(void)> onMouseLeave;
     };

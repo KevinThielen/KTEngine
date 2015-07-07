@@ -51,14 +51,7 @@ namespace kte
 	
 	void pushScene(IGameScene* scene);
 
-	void popScene()
-	{
-	    if(gameScenes.size())
-	    {
-		gameScenes.pop_back();
-		  
-	    }
-	}
+	void popScene();
     private:
 
         //only one instance
@@ -67,6 +60,8 @@ namespace kte
         bool isRunning;
         std::vector<std::unique_ptr<IGameScene>> gameScenes;
 	FPSCounter fpsCounter;
+	
+	bool pop;
     };
 }
 #endif

@@ -15,12 +15,14 @@ namespace kte
             onClick = [] () {std::cout<<"click"<<std::endl;};
             onMouseOver = [] () {std::cout<<"hover"<<std::endl;};
             onMouseLeave = [] () {std::cout<<"leave"<<std::endl;};
+            onRelease = [] () {std::cout<<"release"<<std::endl;};
         }
 
         bool isDown = false;
 	bool isHovering = false;
 	
         std::function<void(void)> onClick;
+        std::function<void(void)> onRelease;
         std::function<void(void)> onMouseOver;
         std::function<void(void)> onMouseLeave;
     };

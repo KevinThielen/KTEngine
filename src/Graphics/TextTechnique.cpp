@@ -85,12 +85,14 @@ namespace kte
                         glm::vec4 textureRectangle = t.getTextureRectangle(i);
 
 
+		
 
                         glm::vec3 position(rectangle.x, rectangle.y, 1);
 
-                        glm::vec3 size(rectangle.z, rectangle.a, 1);
+                        glm::vec3 size(rectangle.z * t.getSize().x, rectangle.a * t.getSize().y, 1);
 
 
+			
                         glm::vec3 finalPosition = position;
 			finalPosition.x += t.getPosition().x;
 			finalPosition.y += t.getPosition().y;
@@ -102,8 +104,11 @@ namespace kte
                         matrix = glm::scale(matrix, size);
 
                         mvps.push_back(viewMatrix * matrix);
-                        colors.push_back(t.getColor());
+                        colors.push_back(t.getColor(i));
                         uvs.push_back(textureRectangle);
+			
+			
+			
                     }
 
 
@@ -121,7 +126,11 @@ namespace kte
 
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getNumberOfIndices(), uvs.size());
 
-
+        GLenum error = glGetError();
+	if(error != GL_NO_ERROR)
+	{
+	    std::cout<<"EROOR: "<< glewGetErrorString(error)<<std::endl;
+	}
                 glBindTexture(GL_TEXTURE_2D, 0);
                 glBindVertexArray(0);
 
@@ -147,14 +156,13 @@ namespace kte
                 std::vector<glm::vec4> colors;
                 std::vector<glm::vec4> uvs;
 
-
+		
                 GLint textureLoc = glGetUniformLocation(programId, "texture");
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, text.getTexture());
                 glUniform1i(textureLoc, 0);
 
-
-
+		glm::vec2 oldOffset(text.getRectangle(0).x,text.getRectangle(0).y);
                     //for each character in text
                     for(unsigned int i = 0; i<text.getLength(); i++)
                     {
@@ -170,12 +178,22 @@ namespace kte
 
                         //glm::vec3 spriteOffset(spriteComponent->spriteOffsetX, spriteComponent->spriteOffsetY, 0);
 
-                        glm::vec3 size(rectangle.z, rectangle.a, 1);
+			
+			glm::vec2 scaledOffset(0,0);
+                        scaledOffset.x = position.x - oldOffset.x;
+			scaledOffset.y = 0;
+			
+			if(scaledOffset.x < 0.0f) 
+			    scaledOffset.x = 0.0f;
+			
+			
+			glm::vec3 size(rectangle.z * text.getSize().x, rectangle.a * text.getSize().y, 1);
+			scaledOffset.x *=  (text.getSize().x - 1);
 
-
+	
                         glm::vec3 finalPosition = position;
-			finalPosition.x += text.getPosition().x;
-			finalPosition.y += text.getPosition().y;
+			finalPosition.x += text.getPosition().x + scaledOffset.x;
+			finalPosition.y += text.getPosition().y + scaledOffset.y;
 
 
 
@@ -184,12 +202,15 @@ namespace kte
 
                         matrix = glm::translate(matrix, (-size / 2.0f));
                         matrix = glm::scale(matrix, size);
-
+			
                         mvps.push_back(viewMatrix * matrix);
-                        colors.push_back(text.getColor());
+                        colors.push_back(text.getColor(i));
                         uvs.push_back(textureRectangle);
+			
+			glm::vec2 oldOffset(position.x, position.y);
+			
                     }
-
+		        GLenum error = glGetError();
 
 
 
@@ -204,6 +225,7 @@ namespace kte
 
 
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getNumberOfIndices(), uvs.size());
+
 
 
                 glBindTexture(GL_TEXTURE_2D, 0);

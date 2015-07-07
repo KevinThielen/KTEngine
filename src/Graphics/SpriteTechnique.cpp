@@ -58,6 +58,7 @@ namespace kte
             SpriteComponent* spriteComponent = sprite.first;
             TransformationComponent* transComp = sprite.second;
 
+	   
             spritesSortedByLayer[spriteComponent->layer][spriteComponent] = transComp;
         }
 
@@ -112,7 +113,7 @@ namespace kte
                     TransformationComponent *transformationComponent = sprite.second;
                     SpriteComponent *spriteComponent = sprite.first;
 
-                    const float z = spriteComponent->layer * 0.01f;
+                    float z = 100-spriteComponent->layer;
                     glm::vec3 position(transformationComponent->x, transformationComponent->y, z);
 
                     glm::vec3 rotation(transformationComponent->xRotation, transformationComponent->yRotation, transformationComponent->zRotation);
@@ -132,7 +133,6 @@ namespace kte
                         parentTransform = parentTransform->parentTransform;
                     }
                     glm::vec3 finalPosition = position + spriteOffset;
-		 
 
                     glm::vec4 textureRectangle = spriteComponent->textureRectangle;
                     if(spriteComponent->mirrored)

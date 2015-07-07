@@ -40,6 +40,7 @@ namespace kte
 
 		float getFramesPerSecond() { return fps; }
 		double getDeltaTime() { return deltaTime; }
+		
 	private:
 		float accumulatedTime;
 		float deltaTime;

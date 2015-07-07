@@ -4,7 +4,8 @@
 namespace kte
 {
 
-
+	bool kte::AudioStream::initialized = false;
+	
 	int audioCallback(const void *input,
 		void *output,
 		unsigned long frameCount,
@@ -74,12 +75,23 @@ namespace kte
 
 	AudioStream::AudioStream()
 	{
+	    
+	    if(!initialized)
+	    {
 		Pa_Initialize();
+		initialized = true;
+	    }
+		stream = nullptr;
 	}
 
 	AudioStream::~AudioStream()
 	{
+	    
+	    if(!initialized)
+	    {
 		Pa_Terminate();
+		initialized = false;
+	    }
 	}
 
 
@@ -88,6 +100,8 @@ namespace kte
 		this->data = data;
 		restart();
 		/* set the output parameters */
+		Pa_StopStream(stream); // stop the stream
+
 		outputParameters.device = Pa_GetDefaultOutputDevice(); /* use the
 															   default device */
 		outputParameters.channelCount = data->getInfo().channels; /* use the
@@ -99,7 +113,9 @@ namespace kte
 
 		/* try to open the output */
 
-
+		if(stream)
+		    Pa_CloseStream(stream);
+		
 		error = Pa_OpenStream(&stream,  /* stream is a 'token' that we need to save for future portaudio calls */
 							  0,  /* no input */
 							  &outputParameters,
@@ -113,7 +129,8 @@ namespace kte
 		/* if we can't open it, then bail out */
 		if (error)
 		{
-			std::cout<<"error opening output, error code = "<<error<<std::endl;
+
+			std::cout<<"error opening output, error code = "<< Pa_GetErrorText(error)<<std::endl;
 			return false;
 		}
 

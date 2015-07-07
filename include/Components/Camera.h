@@ -17,19 +17,19 @@ namespace kte
             if(mainCamera == nullptr)
                 mainCamera = this;
 
-            viewMatrix = glm::ortho(left, right, bottom, top);
+           setViewMatrix(left, right, bottom, top);
         }
 
         glm::mat4 getMatrix() { return projectionMatrix * viewMatrix; }
 
-        void setViewMatrix(float left, float right, float bottom, float top)
+        void setViewMatrix(float left, float right, float bottom, float top, float nearPlane = 0.01f, float farPlane = 100.0f)
         {
             this->left = left;
             this->right = right;
             this->bottom = bottom;
             this->top = top;
 
-            viewMatrix = glm::ortho(left, right, bottom, top);
+            viewMatrix = glm::ortho(left, right, bottom, top, -0.01f, -100.0f);
         }
         static void setMainCamera(Camera* camera) { Camera::mainCamera = camera; }
         static Camera* getMainCamera() { return mainCamera; }

@@ -31,6 +31,7 @@ set(EXTERNAL_HEADER
                  "${KTEngine_SOURCE_DIR}/external/stb/"
                  "${KTEngine_SOURCE_DIR}/external/jsoncpp/include/"
                  "${KTEngine_SOURCE_DIR}/external/portaudio/include/"
+                 "${KTEngine_SOURCE_DIR}/external/enet/include/"
                  )
 ENDIF(EMSCRIPTEN)
 #needed for VS filter

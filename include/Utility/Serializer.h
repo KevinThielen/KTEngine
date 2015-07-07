@@ -24,6 +24,21 @@ namespace kte
 	
 	Json::Value& operator [](std::string node) { return root[node]; }
 	
+	Json::Value& getRoot() { return root; }
+	
+	bool readFromString(std::string data)
+	{
+	    //fill read with value
+	    Json::Reader reader;
+	    bool result = reader.parse(data, root);
+	    
+	    if(!result)
+	    {
+		  std::cout<<"Failed to read from string "<<reader.getFormattedErrorMessages()<<std::endl;
+	    }
+	    	    
+	    return result;
+	}
 	
 	bool read(std::string path)
 	{
@@ -33,7 +48,7 @@ namespace kte
 	    
 	    if(!file.is_open())
 	    {
-		std::cout<<"Coudln't open file"<<path<<std::endl;
+		std::cout<<"Coudln't open file "<<path<<std::endl;
 		return false;
 	    }
 	    std::string buffer;
@@ -62,7 +77,7 @@ namespace kte
 	    file.open(path);
 	    
 	    file<<styledWriter.write(root);
-	    
+	    std::cout<<"PErsist: "<<styledWriter.write(root)<<std::endl;
 	    file.close();
 	}	
 	

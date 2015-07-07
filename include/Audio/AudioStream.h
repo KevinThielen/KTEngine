@@ -20,6 +20,7 @@ namespace kte
 		PaError error;
 		PaStreamParameters outputParameters;
 		AudioData* data;
+		static bool initialized;
 	};
 }
 

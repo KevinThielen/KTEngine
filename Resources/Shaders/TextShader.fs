@@ -1,6 +1,6 @@
 #version 330
 
-uniform sampler2D texture;
+uniform gsampler2DRect texture;
 in vec4 fragmentColor;
 in vec2 fragmentUV;
 

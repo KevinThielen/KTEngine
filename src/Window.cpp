@@ -64,6 +64,11 @@ glfwSwapInterval(1);
 
     glClearColor(0.6f, 0.6f, 1.0f, 1.0f);
     
+    GLenum error = glGetError();
+    if(error != GL_NO_ERROR)
+    {
+	std::cout<<"EROOR: "<<std::to_string(error)<< glewGetErrorString(error)<<std::endl;
+    }
     return true;
 }
 
@@ -83,6 +88,12 @@ void kte::Window::swapBuffers()
 {
     glfwSwapBuffers(window);
     glfwPollEvents();
+    
+    GLenum error = glGetError();
+    if(error != GL_NO_ERROR)
+    {
+	std::cout<<"EROOR: "<<std::to_string(error)<< glewGetErrorString(error)<<std::endl;
+    }
 }
 
 void kte::Window::destroy()

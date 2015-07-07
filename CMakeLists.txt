@@ -89,7 +89,8 @@ ELSE(EMSCRIPTEN)
 	ELSEIF (UNIX)
 	    set(HEADER_FILES ${HEADER_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/include "/usr/local/include/freetype" 		    PARENT_SCOPE)
 	    
-	    set(LIBRARIES ${LIBRARIES} glew_static  glfw ${GLFW_LIBRARIES} ${OPENGL_glu_LIBRARY} ${OPENGL_gl_LIBRARY} ${FREETYPE_LIBRARIES} portaudio pthread asound rt sndfile   		    PARENT_SCOPE)
+	    set(LIBRARIES ${LIBRARIES} glew_static  glfw ${GLFW_LIBRARIES} ${OPENGL_glu_LIBRARY} ${OPENGL_gl_LIBRARY} ${FREETYPE_LIBRARIES} portaudio pthread asound rt sndfile enet
+	    PARENT_SCOPE)
 
 	ENDIF(WIN32)
 ENDIF(EMSCRIPTEN)

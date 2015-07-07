@@ -37,14 +37,16 @@ namespace kte
 					if (mouseDown && !mouseInputComponent->isDown)
 					{
 						if (trans->contains(mousePosition.x, mousePosition.y))
-							mouseInputComponent->isDown = true;
+						{	mouseInputComponent->isDown = true;
+							mouseInputComponent->onClick();
+						}
 					}
 					else if (!mouseDown && mouseInputComponent->isDown)
 					{
 						mouseInputComponent->isDown = false;
 
 						if (trans->contains(mousePosition.x, mousePosition.y))
-							mouseInputComponent->onClick();
+		  				   mouseInputComponent->onRelease();
 					}
 					
 					//onHover
