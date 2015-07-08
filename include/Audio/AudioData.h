@@ -11,6 +11,7 @@ namespace kte
 	public:
 		bool loadFromFile(std::string path, bool isRepeating = false)
 		{
+			volume = 1.0f;
 			/* initialize our data structure */
 			position = 0;
 			sfInfo.format = SF_FORMAT_PCM_32;
@@ -35,11 +36,15 @@ namespace kte
 		int getPosition() { return position; }
 		void setPosition(int pos) { position = pos; }
 		void movePosition(int delta) { position += delta; }
+		float getVolume() { return volume; }
+		void setVolum(float v) { volume = v; }
+		
 	private:
 		SNDFILE* sndFile;
 		SF_INFO sfInfo;
 		int position;
 		bool repeating;
+		float volume;
 	};
     
 }

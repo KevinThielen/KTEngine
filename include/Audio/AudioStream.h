@@ -6,6 +6,11 @@
 
 namespace kte
 {	
+	namespace Audio
+	{
+	    extern float masterVolume;
+	}
+	
 	class AudioStream
 	{
 	public:

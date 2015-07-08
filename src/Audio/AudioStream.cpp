@@ -4,6 +4,11 @@
 namespace kte
 {
 
+	namespace Audio
+	{
+	    float masterVolume = 1.0f;
+	}
+    
 	bool kte::AudioStream::initialized = false;
 	
 	int audioCallback(const void *input,
@@ -14,8 +19,8 @@ namespace kte
 		void *userData)
 	{
 		AudioData *data = (AudioData *)userData; /* we passed a data structure into the callback so we have something to work with */
-		int *cursor; /* current pointer into the output  */
-		int *out = (int *)output;
+		float *cursor; /* current pointer into the output  */
+		float *out = (float *)output;
 		int thisSize = frameCount;
 		int thisRead;
 
@@ -58,7 +63,11 @@ namespace kte
 			/* since our output format and channel interleaving is the same as
 			sf_readf_int's requirements */
 			/* we'll just read straight into the output buffer */
-			sf_readf_int(data->getFile(), cursor, thisRead);
+			sf_readf_float(data->getFile(), cursor, thisRead);
+			
+			for(int i = 0; i<thisRead; i++)
+			    cursor[i] *= (data->getVolume() * Audio::masterVolume);
+			
 			/* increment the output cursor*/
 			cursor += thisRead;
 			/* decrement the number of samples left to process */
@@ -106,7 +115,7 @@ namespace kte
 															   default device */
 		outputParameters.channelCount = data->getInfo().channels; /* use the
 															   same number of channels as our sound file */
-		outputParameters.sampleFormat = paInt32; /* 32bit int format */
+		outputParameters.sampleFormat = paFloat32; /* 32bit int format */
 		outputParameters.suggestedLatency = 0.1; /* 200 ms ought to satisfy
 												 even the worst sound card */
 		outputParameters.hostApiSpecificStreamInfo = 0; /* no api specific data */
