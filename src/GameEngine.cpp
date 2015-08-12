@@ -23,7 +23,7 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc, bool 
     
     if(isMainLoop)
     {
-	while(isRunning && !glfwWindowShouldClose(glfwGetCurrentContext()))
+	while(isRunning && !glfwWindowShouldClose(window.getContext()))
 	{
 	    update();
 	}

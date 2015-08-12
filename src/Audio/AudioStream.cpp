@@ -7,6 +7,7 @@ namespace kte
 	namespace Audio
 	{
 	    float masterVolume = 1.0f;
+	    bool muted = false;
 	}
     
 	bool kte::AudioStream::initialized = false;
@@ -65,8 +66,12 @@ namespace kte
 			/* we'll just read straight into the output buffer */
 			sf_readf_float(data->getFile(), cursor, thisRead);
 			
-			for(int i = 0; i<thisRead; i++)
-			    cursor[i] *= (data->getVolume() * Audio::masterVolume);
+			if(Audio::muted) 
+			    for(int i = 0; i<thisRead; i++)
+				cursor[i] *= 0;
+			else
+			    for(int i = 0; i<thisRead; i++)
+				cursor[i] *= (data->getVolume() * Audio::masterVolume);
 			
 			/* increment the output cursor*/
 			cursor += thisRead;

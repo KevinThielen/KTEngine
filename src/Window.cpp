@@ -9,44 +9,66 @@
 *   int width: Window width
 *   int height: Window height
 ********************/
-bool kte::Window::create(kte::WindowDesc windowDesc)
+bool kte::Window::create(kte::WindowDesc windowDesc, bool fullscreen ) 
 {
-
-    //Destroy old window
-    if (window != nullptr)
-        destroy();
+    desc = windowDesc;
+    
+  
 
     // Initialise GLFW
-    if (!glfwInit())
-    {
-        return false;
-    }
+    
+    if(!initialized)
+	if (!glfwInit())
+	    return false;
 
     glfwWindowHint(GLFW_SAMPLES, 8);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-glfwSwapInterval(1);
+    glfwSwapInterval(1);
 
     // glfwSwapInterval(0);
     // Open a window and create its OpenGL context
-    window = glfwCreateWindow(windowDesc.width, windowDesc.height, windowDesc.title.c_str(), NULL, NULL);
-
+    GLFWwindow* newWindow = nullptr;
+    
+    if(!fullscreen)
+	newWindow = glfwCreateWindow(windowDesc.width, windowDesc.height, windowDesc.title.c_str(),nullptr, nullptr);
+    else
+	newWindow = glfwCreateWindow(windowDesc.width, windowDesc.height, windowDesc.title.c_str(),nullptr, nullptr);
+	
     //window creation failed
-    if (window == NULL)
+    if (newWindow == nullptr)
     {
         destroy();
     }
+    
+      //Destroy old window
+    if (window != nullptr)
+       glfwDestroyWindow(window);
+    
+    
+    window = newWindow;
+    
+  //  if(!initialized)
     glfwMakeContextCurrent(window);
-
+    glfwSwapInterval(1);
     //	inputManager = InputManager(this->window);
 
     //glew
-    glewExperimental = GL_TRUE;
-    GLenum err = glewInit();
-    if (err != GLEW_OK)
-	return false;
+    if(!initialized)
+    {
+	glewExperimental = GL_TRUE;
+	GLenum err = glewInit();
+	
+	if(err != GL_NO_ERROR)
+	{
+	    std::cout<<"ERROR: "<<std::to_string(err)<< glewGetErrorString(err)<<std::endl;
+	    return false;
+	}
+	
+    }
+  
     //if (!GLEW_VERSION_3_1)
    //     return false;
 
@@ -67,9 +89,22 @@ glfwSwapInterval(1);
     GLenum error = glGetError();
     if(error != GL_NO_ERROR)
     {
-	std::cout<<"EROOR: "<<std::to_string(error)<< glewGetErrorString(error)<<std::endl;
+	std::cout<<"ERROR: "<<std::to_string(error)<< glewGetErrorString(error)<<std::endl;
     }
+    initialized = true;
+    
     return true;
+}
+
+bool kte::Window::create(bool fullscreen)
+{
+   return false;//create(desc, fullscreen);
+    
+}
+
+void kte::Window::setFullscreen(bool fullscreen)
+{
+    //TODO:
 }
 
 /*******************
@@ -86,18 +121,21 @@ void kte::Window::clearScreen()
 ********************/
 void kte::Window::swapBuffers()
 {
-    glfwSwapBuffers(window);
+    glfwSwapBuffers(glfwGetCurrentContext());
     glfwPollEvents();
     
     GLenum error = glGetError();
-    if(error != GL_NO_ERROR)
+    while(error != GL_NO_ERROR)
     {
-	std::cout<<"EROOR: "<<std::to_string(error)<< glewGetErrorString(error)<<std::endl;
+	std::cout<<"ERROR: "<<std::to_string(error)<< glewGetErrorString(error)<<std::endl;
+	error = glGetError();
     }
+    
+
 }
 
 void kte::Window::destroy()
 {
     glfwTerminate();
-    window = NULL;
+    window = nullptr;
 }

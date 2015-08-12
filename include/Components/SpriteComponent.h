@@ -18,7 +18,7 @@ namespace kte
         
         std::string renderTechnique = "SpriteTechnique";
         Texture* texture = nullptr;
-        int layer = 0;
+        int layer = 1;
 
         float spriteOffsetX = 0;
         float spriteOffsetY = 0;

@@ -17,17 +17,6 @@
 
 namespace kte
 {
-    struct WindowDesc
-    {
-        std::string title;
-        int height;
-        int width;
-
-        WindowDesc(std::string title, int width = 800, int height = 600) : title(title), height(height), width(width)
-        {
-        }
-    };
-
     class IGameScene;
 
     class GameEngine
@@ -52,6 +41,8 @@ namespace kte
 	void pushScene(IGameScene* scene);
 
 	void popScene();
+	
+	Window* getContext() { return &window; }
     private:
 
         //only one instance

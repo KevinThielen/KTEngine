@@ -156,6 +156,15 @@ namespace kte
 
             gameObject->getComponent<MouseInputComponent>()->onRelease = function;
         }
+        void setOnDragEvent(std::function<void(float x, float y)> function)
+	{
+	    onDrag = function;
+            if(!gameObject->getComponent<MouseInputComponent>())
+                gameObject->addComponent<MouseInputComponent>();
+
+            gameObject->getComponent<MouseInputComponent>()->onDrag = function;
+	}
+        
         void setTexture(Texture* texture)
         {
             SpriteComponent* sprite = gameObject->getComponent<SpriteComponent>();
@@ -237,6 +246,7 @@ namespace kte
         std::function<void(void)> onRelease;
         std::function<void(void)> onMouseOver;
         std::function<void(void)> onMouseLeave;
+        std::function<void(float x, float y)> onDrag;;
     };
 }
 #endif

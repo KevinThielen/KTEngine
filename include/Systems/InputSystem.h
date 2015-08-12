@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <boost/concept_check.hpp>
 #include <GameObject.h>
 #include "ISystem.h"
 #include "Components/MouseInputComponent.h"
@@ -23,6 +24,10 @@ namespace kte
 		virtual void update(float dt)
 		{
 			glm::vec2 mousePosition = Input::getMousePosition();
+			glm::vec2 deltaMousePosition = mousePosition - lastMousePosition;
+			lastMousePosition = mousePosition;
+			
+			bool mouseMoved = (deltaMousePosition.x != 0 || deltaMousePosition.y != 0) ? true : false;
 			bool mouseDown = Input::isMouseDown();
 
 			for(auto& mouseInputComponentPair : mouseInputComponents)
@@ -39,6 +44,8 @@ namespace kte
 						if (trans->contains(mousePosition.x, mousePosition.y))
 						{	mouseInputComponent->isDown = true;
 							mouseInputComponent->onClick();
+							mouseInputComponent->isDragged = true;
+				
 						}
 					}
 					else if (!mouseDown && mouseInputComponent->isDown)
@@ -47,6 +54,8 @@ namespace kte
 
 						if (trans->contains(mousePosition.x, mousePosition.y))
 		  				   mouseInputComponent->onRelease();
+						
+						mouseInputComponent->isDragged = false;
 					}
 					
 					//onHover
@@ -62,6 +71,18 @@ namespace kte
 					    
 					    mouseInputComponent->isHovering = false;
 					}
+					//onMouseMove
+					if(mouseMoved)
+					{
+					    mouseInputComponent->onMouseMove(deltaMousePosition.x, deltaMousePosition.y);
+					    if(mouseInputComponent->isDragged)
+						mouseInputComponent->onDrag(deltaMousePosition.x, deltaMousePosition.y);
+					    
+					    if (!trans->contains(mousePosition.x, mousePosition.y))
+						mouseInputComponent->isDragged = false;
+			
+					}
+					
 				    }
 				}
 			}
@@ -101,6 +122,8 @@ namespace kte
     private:
 		std::map<unsigned int, std::vector<MouseInputComponent*>> mouseInputComponents;
 		std::map<unsigned int, TransformationComponent*> transformations;
+		
+		glm::vec2 lastMousePosition;
     };
 }
 

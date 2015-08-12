@@ -16,15 +16,20 @@ namespace kte
             onMouseOver = [] () {std::cout<<"hover"<<std::endl;};
             onMouseLeave = [] () {std::cout<<"leave"<<std::endl;};
             onRelease = [] () {std::cout<<"release"<<std::endl;};
+            onMouseMove = [] (float x, float y) {};
+            onDrag = [] (float x, float y) {};
         }
 
         bool isDown = false;
 	bool isHovering = false;
+	bool isDragged = false;
 	
         std::function<void(void)> onClick;
         std::function<void(void)> onRelease;
         std::function<void(void)> onMouseOver;
         std::function<void(void)> onMouseLeave;
+        std::function<void(float deltaX, float deltaY)> onMouseMove;
+        std::function<void(float deltaX, float deltaY)> onDrag;
     };
 }
 #endif

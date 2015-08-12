@@ -9,6 +9,7 @@ namespace kte
 	namespace Audio
 	{
 	    extern float masterVolume;
+	    extern bool muted;
 	}
 	
 	class AudioStream
