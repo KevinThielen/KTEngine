@@ -1,8 +1,8 @@
 #KTEngine/Utility
 
 set(KTENGINE_SOURCE
-  "${CMAKE_CURRENT_SOURCE_DIR}/Analytics.cpp"
-  "${CMAKE_CURRENT_SOURCE_DIR}/Time.cpp"
+   ${CMAKE_CURRENT_SOURCE_DIR}/Analytics.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/Time.cpp
 )
 set(KTENGINE_HEADER
                 "${KTEngine_SOURCE_DIR}/include/Utility/FPSCounter.h"

@@ -3,7 +3,7 @@
 
 #include <map>
 #include <vector>
-#include <Graphics/Font.h>
+#include <Resources/Font.h>
 #include <Graphics/Quad.h>
 
 #include <glm/glm.hpp>
@@ -30,15 +30,17 @@ namespace kte
 
         unsigned int getLength() { return length; }
 
-        unsigned int getTexture() { return  font->getTexture(); }
+        unsigned int getTexture() { return  fontTexture; }
         void setSize(float x, float y) { size = glm::vec2(x,y); }
 	glm::vec2 getSize() { return size; }
+	
     private:
         glm::vec2 position;
         glm::vec2 size;
         glm::vec4 color;
 
         Font* font;
+	GLuint fontTexture;
         unsigned int length;
         std::string textString;
 

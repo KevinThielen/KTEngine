@@ -246,7 +246,7 @@ namespace kte
         std::function<void(void)> onRelease;
         std::function<void(void)> onMouseOver;
         std::function<void(void)> onMouseLeave;
-        std::function<void(float x, float y)> onDrag;;
+        std::function<void(float x, float y)> onDrag;
     };
 }
 #endif

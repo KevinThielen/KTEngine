@@ -11,7 +11,7 @@ namespace kte
     {
     public:
 	virtual ~ISystem(){}
-        virtual bool init() {return true;}
+        virtual bool init() { return true; }
         virtual void update(float dt) = 0;
         virtual void receiveMessage(Message* message) {}
     };

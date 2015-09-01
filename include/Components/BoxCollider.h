@@ -2,16 +2,17 @@
 #define KTE_BOX_COLLIDER_H
 
 #include <glm/glm.hpp>
+#include <functional>
+#include <algorithm> //std::function
 #include "IComponent.h"
 
 namespace kte
 {
-    class Texture;
     struct BoxCollider : public IComponent
     {
         BoxCollider(unsigned int gameObjectId) : IComponent(gameObjectId)
         {
-
+	    onCollision = [] () {};
         }
 
         bool intersects(BoxCollider* other)
@@ -26,6 +27,8 @@ namespace kte
         }
         glm::vec2 size;
         glm::vec2 position;
+
+	std::function<void(void)> onCollision;
         bool overlaps = false;
         bool draw = false;
     };

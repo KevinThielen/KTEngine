@@ -29,15 +29,16 @@ namespace kte
 
                 //if (!textureRectangles[c])
                 //{
-                    rectangles[i].x = xOffset + g.bitmapLeft +g.textureX;
+                    rectangles[i].x = xOffset + g.bitmapLeft +(g.textureX / font->getTextureWidth());
                     rectangles[i].y = yOffset + (font->getTextureHeight() - g.bitmapTop);
                     rectangles[i].z = g.bitmapWidth;
                     rectangles[i].a = g.bitmapHeight;
 
-                    textureRectangles[i].x = g.bitmapLeft+ g.textureX;
+                    textureRectangles[i].x = g.bitmapLeft+ (g.textureX / font->getTextureWidth());
                     textureRectangles[i].y = 0;
                     textureRectangles[i].z = g.bitmapWidth / font->getTextureWidth();
                     textureRectangles[i].a = 1;
+		    
                     xOffset += g.advanceX;
             //    }
             }

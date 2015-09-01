@@ -79,6 +79,8 @@ namespace kte
 	    file<<styledWriter.write(root);
 	    std::cout<<"PErsist: "<<styledWriter.write(root)<<std::endl;
 	    file.close();
+	    
+	    return true;
 	}	
 	
     private:

@@ -1,13 +1,13 @@
-#KTEngine/Audio
+#KTEngine/A
 
 set(KTENGINE_SOURCE
-                 ${CMAKE_CURRENT_SOURCE_DIR}/AudioStream.cpp
+                 ${CMAKE_CURRENT_SOURCE_DIR}/AudioManager.cpp
 )
-
 set(KTENGINE_HEADER
-		  ${KTEngine_SOURCE_DIR}/include/Audio/AudioData.h
-                  ${KTEngine_SOURCE_DIR}/include/Audio/AudioStream.h
-
+		  ${KTEngine_SOURCE_DIR}/include/Audio/AudioManager.h
+                  ${KTEngine_SOURCE_DIR}/include/Audio/AudioSource.h
+                  ${KTEngine_SOURCE_DIR}/include/Audio/AudioData.h
+                  ${KTEngine_SOURCE_DIR}/include/Audio/AudioBuffer.h
 )
 
 

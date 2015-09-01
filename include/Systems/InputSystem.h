@@ -4,10 +4,10 @@
 #include <vector>
 #include <map>
 #include <memory>
-#include <boost/concept_check.hpp>
 #include <GameObject.h>
 #include "ISystem.h"
 #include "Components/MouseInputComponent.h"
+#include "Components/KeyInputComponent.h"
 #include "Messages/ComponentAddedMessage.h"
 #include "Input.h"
 
@@ -30,6 +30,39 @@ namespace kte
 			bool mouseMoved = (deltaMousePosition.x != 0 || deltaMousePosition.y != 0) ? true : false;
 			bool mouseDown = Input::isMouseDown();
 
+			
+			for(auto& comps : keyInputComponents)
+			{
+			    
+			    for(auto& comp : comps.second)
+			    {
+				if(comp->isActive)
+				{
+				    kte::KeyInputComponent* keyInputComponent = comp;
+				    for(auto& keyState : keyInputComponent->keyStates)
+				    {	
+					bool newState = Input::isKeyDown(keyState.first);
+					
+					if(keyState.second != newState)
+					{
+					    keyState.second = newState;
+					    
+					    if(!newState)
+					    {
+						std::cout<<"key Up Once"<<std::endl;
+						keyInputComponent->onKeyUp[keyState.first]();
+					    }
+					    else 
+					    {
+						std::cout<<"key Down Once"<<std::endl;
+						keyInputComponent->onKeyDown[keyState.first]();
+					    }
+					    
+					}
+				    }
+				}
+			    }
+			}
 			for(auto& mouseInputComponentPair : mouseInputComponents)
 			{
 				for(auto& mouseInputComponent : mouseInputComponentPair.second)
@@ -102,6 +135,10 @@ namespace kte
 				{
 					mouseInputComponents[componentAddedMessage->gameObjectId].push_back(dynamic_cast<MouseInputComponent*>(componentAddedMessage->addedComponent));
 				}
+				else if(dynamic_cast<KeyInputComponent*>(componentAddedMessage->addedComponent))
+				{
+					keyInputComponents[componentAddedMessage->gameObjectId].push_back(dynamic_cast<KeyInputComponent*>(componentAddedMessage->addedComponent));
+				}
 			}
 
 			if(dynamic_cast<kte::GameObjectRemovedMessage*>(message))
@@ -109,6 +146,10 @@ namespace kte
 				GameObjectRemovedMessage* gameObjectRemovedMessage = dynamic_cast<kte::GameObjectRemovedMessage*>(message);
 
 				if(mouseInputComponents.count(gameObjectRemovedMessage->gameObjectId))
+				{
+					mouseInputComponents[gameObjectRemovedMessage->gameObjectId].clear();
+				}
+				if(keyInputComponents.count(gameObjectRemovedMessage->gameObjectId))
 				{
 					mouseInputComponents[gameObjectRemovedMessage->gameObjectId].clear();
 				}
@@ -120,6 +161,7 @@ namespace kte
 		}
 
     private:
+		std::map<unsigned int, std::vector<KeyInputComponent*>> keyInputComponents;
 		std::map<unsigned int, std::vector<MouseInputComponent*>> mouseInputComponents;
 		std::map<unsigned int, TransformationComponent*> transformations;
 		

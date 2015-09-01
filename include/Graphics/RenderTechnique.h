@@ -26,6 +26,10 @@ namespace kte
         std::string getName() { return name; }
         void setName(std::string name) { this->name = name; }
 
+        
+   
+    
+    
     protected:
         unsigned int numberOfRenderpasses = 1;
         std::string name;

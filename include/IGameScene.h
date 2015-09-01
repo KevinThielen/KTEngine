@@ -16,12 +16,10 @@
 #include "Messages/Message.h"
 #include "Systems/ISystem.h"
 #include "Graphics/Text.h"
-//#include "Systems/RenderSystem.h"
-//#include "Systems/AnimationSystem.h"
-//#include "Systems/InputSystem.h"
+
 #include "Resources.h"
 #include "Input.h"
-
+#include "Audio/AudioManager.h"
 
 namespace kte
 {
@@ -58,6 +56,7 @@ namespace kte
 
         std::vector<std::unique_ptr<ISystem>> systems;
         kte::Resources resources;
+	AudioManager audioManager;
     };
 
     bool isKeyDown(unsigned int key);

@@ -8,7 +8,6 @@ set(KTENGINE_SOURCE
                  ${CMAKE_CURRENT_SOURCE_DIR}/Texture.cpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/Text.cpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/TextTechnique.cpp
-                 ${CMAKE_CURRENT_SOURCE_DIR}/Font.cpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/Geometries.cpp
 )
 set(KTENGINE_HEADER

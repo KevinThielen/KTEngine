@@ -84,7 +84,7 @@ bool kte::Window::create(kte::WindowDesc windowDesc, bool fullscreen )
     glDepthFunc(GL_LESS);
 
 
-    glClearColor(0.6f, 0.6f, 1.0f, 1.0f);
+    glClearColor(0.55f, 0.55f, 0.55f, 1.0f);
     
     GLenum error = glGetError();
     if(error != GL_NO_ERROR)

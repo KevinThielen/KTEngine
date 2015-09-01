@@ -13,6 +13,7 @@ kte::IGameScene::IGameScene()
 kte::IGameScene::~IGameScene()
 {
     scene = NULL;
+
 }
 
 void kte::IGameScene::addSystem(kte::ISystem* system)
@@ -36,6 +37,8 @@ void kte::IGameScene::initDefaultSystem()
 
         addSystem(new kte::AnimationSystem(&resources));
         addSystem(new kte::InputSystem);
+	
+
     }
 
 void kte::IGameScene::displayText(kte::Text text)

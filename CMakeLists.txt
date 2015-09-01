@@ -11,12 +11,13 @@ SET(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -Wall")
 set_property( GLOBAL PROPERTY USE_FOLDERS ON)
 
 
-
-
-
-IF(EMSCRIPTEN)
+FIND_PACKAGE(OpenAL)
 
 find_package(Freetype REQUIRED)
+IF(EMSCRIPTEN)
+
+
+
 
 ELSE(EMSCRIPTEN)
     add_definitions(-DGLEW_STATIC)
@@ -68,20 +69,21 @@ IF(EMSCRIPTEN)
 	MESSAGE( STATUS "EMSCRIPTEN TARGET")
 
 	set(HEADER_FILES ${HEADER_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
-        set(LIBRARIES ${LIBRARIES} ${FREETYPE_LIBRARIES}  portaudio_static pthread asound rt sndfile PARENT_SCOPE)
+        set(LIBRARIES ${LIBRARIES} ${FREETYPE_LIBRARIES} ${OPENAL_LIB} pthread sndlib PARENT_SCOPE)
 
 
 
 ELSE(EMSCRIPTEN)
+MESSAGE( STATUS "NO EMSCRIPTEN TARGET")
 	if(WIN32)
 	    include_directories( ${HEADER_FILES} )
-	    set(LIBRARIES ${LIBRARIES} glew_static  glfw ${GLFW_LIBRARIES} ${OPENGL_glu_LIBRARY} 			          ${OPENGL_gl_LIBRARY} Freetype portaudio)
+	    set(LIBRARIES ${LIBRARIES} glew_static  glfw ${GLFW_LIBRARIES} ${OPENGL_glu_LIBRARY} ${OPENGL_gl_LIBRARY} Freetype portaudio)
 
 	    add_library(KTEngine STATIC ${SOURCE_FILES} ${DATA_FILES})
 	    target_link_libraries(KTEngine ${LIBRARIES})
 
 	    SET_TARGET_PROPERTIES(KTEngine PROPERTIES
-	    STATIC_LIBRARY_FLAGS
+	    STATIC_LIBRARY_FLAGS${OPENAL_LIBRARY}
 		"${freetype_path}
 		 ${CMAKE_CURRENT_SOURCE_DIR}/external/glew/lib/glew32s.lib
 		 ${CMAKE_CURRENT_SOURCE_DIR}/external/glfw/src/Debug/glfw3.lib")
@@ -89,7 +91,7 @@ ELSE(EMSCRIPTEN)
 	ELSEIF (UNIX)
 	    set(HEADER_FILES ${HEADER_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/include "/usr/local/include/freetype" 		    PARENT_SCOPE)
 	    
-	    set(LIBRARIES ${LIBRARIES} glew_static  glfw ${GLFW_LIBRARIES} ${OPENGL_glu_LIBRARY} ${OPENGL_gl_LIBRARY} ${FREETYPE_LIBRARIES} portaudio pthread asound rt sndfile enet
+	    set(LIBRARIES ${LIBRARIES} glew_static  glfw ${GLFW_LIBRARIES} ${OPENGL_glu_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENAL_LIBRARY} ${FREETYPE_LIBRARIES} portaudio pthread asound rt sndfile enet
 	    PARENT_SCOPE)
 
 	ENDIF(WIN32)

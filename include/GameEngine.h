@@ -14,6 +14,7 @@
 #include "IGameScene.h"
 #include "Input.h"
 #include "Utility/FPSCounter.h"
+#include "Audio/AudioManager.h"
 
 namespace kte
 {
@@ -22,6 +23,11 @@ namespace kte
     class GameEngine
     {
     public:
+	virtual ~GameEngine()
+	{
+	    audioManager.release();
+	}
+	
         static GameEngine* instance()
         {
             static std::unique_ptr<GameEngine> instance = std::unique_ptr<GameEngine>(new GameEngine);
@@ -51,7 +57,7 @@ namespace kte
         bool isRunning;
         std::vector<std::unique_ptr<IGameScene>> gameScenes;
 	FPSCounter fpsCounter;
-	
+	AudioManager audioManager;
 	bool pop;
     };
 }

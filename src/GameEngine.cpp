@@ -11,12 +11,21 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc, bool 
         return;
 
     
+
+    if(!audioManager.initializeAudioDevice())
+    {
+	std::cout<<"Failed to initialize the AudioManager"<<std::endl;
+	return;
+    }
+    
     kte::Input::setContext(&window);
     gameScenes.emplace_back(initialScene);
 
     if(!initialScene->init())
+    {
+	std::cout<<"Failed to initialize the scene."<<std::endl;
         return;
-
+    }
     
 
     fpsCounter.update();

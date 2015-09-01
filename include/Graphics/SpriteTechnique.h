@@ -10,8 +10,8 @@
 
 namespace kte
 {
-    class SpriteComponent;
-    class TransformationComponent;
+    struct SpriteComponent;
+    struct TransformationComponent;
 
     class SpriteTechnique : public RenderTechnique
     {

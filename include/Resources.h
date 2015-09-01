@@ -3,8 +3,8 @@
 
 #include <Graphics/Texture.h>
 #include <Graphics/Animation.h>
-#include <Graphics/Font.h>
-#include <Audio/AudioData.h>
+#include <Resources/Font.h>
+#include <Audio/AudioBuffer.h>
 
 #include <initializer_list>
 #include <iostream>
@@ -64,22 +64,25 @@ namespace kte
             return true;
         }
          
-        bool loadAudioFromFile(std::string name, bool isReapeating = false)
+        bool loadAudioFromFile(std::string name)
         {
-            AudioData audioData;
+            AudioBuffer sound;
             static std::string ressourcePath = RESOURCE_PATH;
 
-            if(!audioData.loadFromFile(ressourcePath+"Audio/"+name))
+            if(!sound.loadWaveFromFile(ressourcePath+"Audio/"+name))
             {
                 std::cout<<"Error loading "<<ressourcePath+"Audio/"+name<<std::endl;
 
                 return false;
             }
-	    audioData.isRepeating(isReapeating);
-            audios[name] = audioData;
+            sounds[name] = sound;
             return true;
         }
 
+        bool loadMusicFromFile()
+	{
+	    return true;
+	}
         //TODO: load animation from file
         bool loadAnimation(std::string name, std::string spriteSheet, std::initializer_list<glm::vec4> frames)
         {
@@ -98,7 +101,8 @@ namespace kte
 
 
         //AudioDatas
-        AudioData* getAudio(std::string name) { return &audios[name]; }
+        AudioBuffer* getAudio(std::string name) { return &sounds[name]; }
+        
         Texture* getTexture(std::string name) 
 	{ 
 	    if(!textures.count(name)) 
@@ -122,7 +126,7 @@ namespace kte
         std::map<std::string, Texture> textures;
         std::map<std::string, Animation> animations;
         std::map<std::string, Font> fonts;
-	std::map<std::string, AudioData> audios;
+	std::map<std::string, AudioBuffer> sounds;
     };
 }
 
