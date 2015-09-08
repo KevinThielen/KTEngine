@@ -2,7 +2,7 @@
 #include <stb/stb_image.h>
 #include <iostream>
 #include <Graphics/Texture.h>
-#include <Graphics/Font.h>
+#include <Resources/Font.h>
 
 namespace kte
 {
@@ -38,27 +38,6 @@ namespace kte
         return (texture>0);
     }
 	
-    bool Texture::loadFromFont(Font* font)
-    {
-	    int w,h,comp;
-	    
-	      //create the texture atlas
 
-	    glActiveTexture(GL_TEXTURE0);
-	    glGenTextures(1, &texture);
-	    glBindTexture(GL_TEXTURE_2D, texture);
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-	    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, font->textureWidth, font->textureHeight, 0, GL_RED, GL_UNSIGNED_BYTE, font->data);
-
-
-	    glBindTexture(GL_TEXTURE_2D, 0);
-
-
-	    return (texture>0);
-    }
 
 }

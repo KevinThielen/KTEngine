@@ -5,6 +5,7 @@ ADD_SUBDIRECTORY(Components)
 ADD_SUBDIRECTORY(Messages)
 ADD_SUBDIRECTORY(Utility)
 add_subdirectory(Audio)
+add_subdirectory(Resources)
 
 set(KTENGINE_SOURCE 
                  ${CMAKE_CURRENT_SOURCE_DIR}/GameEngine.cpp

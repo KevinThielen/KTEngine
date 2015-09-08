@@ -2,8 +2,8 @@
 #define FONT_H
 
 #include <map>
+#include <vector>
 #include "IResource.h"
-
 namespace kte 
 {
     struct GlyphInformation
@@ -22,7 +22,7 @@ namespace kte
 	unsigned int textureHeight;
 	unsigned int textureWidth;
 	std::map<char, GlyphInformation> glyphs;
-	std::vector<unsigned char> data;
+	std::vector<char> data;
     };
 }
 

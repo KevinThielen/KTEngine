@@ -5,7 +5,7 @@ namespace kte
     void Text::setString(std::string text)
     {
         textString = text;
-
+	    
         float xOffset = 0.0f;
         float yOffset = 0.0f;
 
@@ -20,25 +20,28 @@ namespace kte
             if (c == '\n')
             {
                 xOffset = 0.0f;
-                yOffset += font->getTextureHeight();
+                yOffset += fontTexture->getFont().textureHeight;
             }
 
             else
             {
-                GlyphInformation g = font->getGlyph(c);
+                GlyphInformation g = fontTexture->getFont().glyphs[c];
 
                 //if (!textureRectangles[c])
                 //{
-                    rectangles[i].x = xOffset + g.bitmapLeft +(g.textureX / font->getTextureWidth());
-                    rectangles[i].y = yOffset + (font->getTextureHeight() - g.bitmapTop);
+		    float textureX = (float)g.textureX / fontTexture->getFont().textureWidth;
+                    rectangles[i].x = xOffset + g.bitmapLeft + textureX;
+                    rectangles[i].y = yOffset;
                     rectangles[i].z = g.bitmapWidth;
                     rectangles[i].a = g.bitmapHeight;
 
-                    textureRectangles[i].x = g.bitmapLeft+ (g.textureX / font->getTextureWidth());
+	
+                    textureRectangles[i].x = textureX;
                     textureRectangles[i].y = 0;
-                    textureRectangles[i].z = g.bitmapWidth / font->getTextureWidth();
-                    textureRectangles[i].a = 1;
-		    
+                    textureRectangles[i].z = (float)(g.bitmapWidth) /  fontTexture->getFont().textureWidth;
+                    textureRectangles[i].a = (float)(g.bitmapHeight) /  fontTexture->getFont().textureHeight;
+	    		    
+
                     xOffset += g.advanceX;
             //    }
             }

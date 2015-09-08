@@ -3,7 +3,8 @@
 
 #include <Graphics/Texture.h>
 #include <Graphics/Animation.h>
-#include <Resources/Font.h>
+#include <Graphics/FontTexture.h>
+#include <Resources/ResourcePackage.h>
 #include <Audio/AudioBuffer.h>
 
 #include <initializer_list>
@@ -48,19 +49,28 @@ namespace kte
             return true;
         }
 
+        bool loadPackage(std::string name)
+	{
+	   ResourcePackage resourcePackage;
+	   if(!resourcePackage.read(name.c_str()))
+	       return false;
+	   
+	   std::vector<Font> packedFonts = resourcePackage.getFonts();
+	   
+	   for(auto& font : packedFonts)
+	   {
+	       FontTexture fontTexture;
+	       if(!fontTexture.loadFromFont(font))
+		   return false;
+	       fonts[font.name] = fontTexture;
+	   }
+	   
+	   return true;
+	}
+	
         bool loadFontFromFile(std::string name, unsigned int size = 16)
         {
-            Font font;
-            static std::string ressourcePath = RESOURCE_PATH;
-
-            if(!font.loadFromFile(ressourcePath+"Fonts/"+name, size))
-            {
-                std::cout<<"Error loading "<<ressourcePath+"Fonts/"+name<<std::endl;
-
-                return false;
-            }
-
-            fonts[name] = font;
+         
             return true;
         }
          
@@ -113,11 +123,11 @@ namespace kte
 	}
         Animation* getAnimation(std::string name) { return &animations[name]; }
         
-        Font* getFont(std::string name) 
+        FontTexture* getFont(std::string name) 
 	{
 	     if(!fonts.count(name)) 
 		std::cout<<"Font "<<name<<" not loaded!"<<std::endl; 
-	      
+	    
 	    return &fonts[name]; 
 
 	}
@@ -125,8 +135,10 @@ namespace kte
     private:
         std::map<std::string, Texture> textures;
         std::map<std::string, Animation> animations;
-        std::map<std::string, Font> fonts;
+        std::map<std::string, FontTexture> fonts;
 	std::map<std::string, AudioBuffer> sounds;
+	
+	std::vector<kte::ResourcePackage> resourcePackages;
     };
 }
 

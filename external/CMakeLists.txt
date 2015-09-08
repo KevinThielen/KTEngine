@@ -9,8 +9,6 @@ IF(NOT EMSCRIPTEN)
 add_subdirectory(enet)
 add_subdirectory(glfw)
 ELSE(NOT EMSCRIPTEN)
-add_subdirectory(freetype)
-add_subdirectory(enet)
 
 
 ENDIF(NOT EMSCRIPTEN)

@@ -32,7 +32,7 @@ namespace kte
 
 		    if(!std::strncmp(id, "RIFF", 4))
 		    {
-			std::cout<<"RIFF test passed"<<std::endl;
+			
 			file.read(id, 4);
 			
 			
@@ -81,7 +81,6 @@ namespace kte
 			    do 
 			    {
 				file.read(id, 4);
-				 std::cout<<"Received: "<<id<<std::endl;
 				if(!file)
 				{
 				    std::cout<<"Wrong file format!(DATA check failed). Received: "<<id<<" instead !"<<std::endl;

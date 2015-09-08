@@ -54,9 +54,7 @@ namespace kte
 	    return resolutions;
 	}
     
-	void setScreenResolution(glm::vec2 resolution)
-	{
-	}
+	
 	
 	void setFullscreen(bool fullscreen);
     private:

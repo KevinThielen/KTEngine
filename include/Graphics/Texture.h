@@ -6,6 +6,7 @@
 
 namespace kte
 {
+    class Font;
     class Texture
     {
     public:
@@ -20,7 +21,6 @@ namespace kte
         }
 
         bool loadFromFile(std::string path);
-	bool loadFromData(std::string data);
 	void unload() { glDeleteTextures(1, &texture); }
     private:
         GLuint texture;

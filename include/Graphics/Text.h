@@ -3,9 +3,9 @@
 
 #include <map>
 #include <vector>
-#include <Resources/Font.h>
+#include <Graphics/FontTexture.h>
 #include <Graphics/Quad.h>
-
+#include <iostream>
 #include <glm/glm.hpp>
 
 namespace kte
@@ -13,7 +13,7 @@ namespace kte
     class Text
     {
     public:
-        void setFont(Font* f) { size = glm::vec2(1,1); font = f; }
+        void setFont(FontTexture* f) { size = glm::vec2(1,1); fontTexture = f; }
         void setString(std::string s);
 
 
@@ -30,7 +30,7 @@ namespace kte
 
         unsigned int getLength() { return length; }
 
-        unsigned int getTexture() { return  fontTexture; }
+        GLuint getTexture() { return  fontTexture->getTexture(); }
         void setSize(float x, float y) { size = glm::vec2(x,y); }
 	glm::vec2 getSize() { return size; }
 	
@@ -39,8 +39,8 @@ namespace kte
         glm::vec2 size;
         glm::vec4 color;
 
-        Font* font;
-	GLuint fontTexture;
+        FontTexture* fontTexture;
+	
         unsigned int length;
         std::string textString;
 

@@ -37,6 +37,11 @@ namespace kte
 	void play(AudioBuffer* buffer)
 	{
 	    alSourcei(source, AL_BUFFER, buffer->getBuffer());
+	    if(!Audio::muted)
+		alSourcef(source, AL_GAIN, Audio::masterVolume);
+	    else 
+		alSourcef(source, AL_GAIN, 0.0f);
+	    
 	    alSourcePlay(source);
 	    AudioManager::checkALError("Play Buffer");
 	}

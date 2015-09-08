@@ -44,6 +44,7 @@ namespace kte
     void TextTechnique::render(std::vector<Text> texts)
     {
 
+	
         glUseProgram(programId);
 
        std::map<unsigned int, std::vector<Text>> sortedByFont;
@@ -83,8 +84,7 @@ namespace kte
                     {
                         glm::vec4 rectangle = t.getRectangle(i);
                         glm::vec4 textureRectangle = t.getTextureRectangle(i);
-
-
+	
 		
 
                         glm::vec3 position(rectangle.x, rectangle.y, 1);
