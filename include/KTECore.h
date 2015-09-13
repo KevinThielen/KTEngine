@@ -7,4 +7,7 @@
 #include "Input.h"
 #include "Window.h"
 
+#include "Messages/Message.h"
+#include "Messages/ComponentAddedMessage.h"
+#include "Messages/GameObjectRemovedMessage.h"
 #endif

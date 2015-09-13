@@ -7,5 +7,5 @@
 #include "Systems/KTESystems.h"
 #include "Components/KTEComponents.h"
 #include "Resources/KTEResources.h"
-
+#include "KTECore.h"
 #endif
