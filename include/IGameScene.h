@@ -17,7 +17,7 @@
 #include "Systems/ISystem.h"
 #include "Graphics/Text.h"
 
-#include "Resources.h"
+#include "Resources/Resources.h"
 #include "Input.h"
 #include "Audio/AudioManager.h"
 

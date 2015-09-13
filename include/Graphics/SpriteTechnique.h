@@ -6,7 +6,7 @@
 
 #include "RenderTechnique.h"
 #include "Graphics/Geometries.h"
-#include "Resources.h"
+#include "Resources/Resources.h"
 
 namespace kte
 {

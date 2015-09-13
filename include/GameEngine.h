@@ -15,7 +15,10 @@
 #include "Input.h"
 #include "Utility/FPSCounter.h"
 #include "Audio/AudioManager.h"
-#include "Resources.h"
+#include "Resources/Resources.h"
+
+
+
 namespace kte
 {
     class IGameScene;

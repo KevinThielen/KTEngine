@@ -21,33 +21,6 @@ namespace kte
 		texture.second.unload();
 	    }
 	}
-	
-//         Textures
-//         bool loadTextureFromFile(std::string name, std::string path)
-//         {
-//             Texture texture;
-//             if(!texture.loadFromFile(path+name))
-//             {
-//                 std::cout<<"Error loading "<<path+name<<std::endl;
-//                 return false;
-//             }
-//             textures[name]  = texture;
-//             return true;
-//         }
-// 
-//         bool loadTextureFromFile(std::string name)
-//         {
-//             Texture texture;
-//             static std::string ressourcePath = RESOURCE_PATH;
-// 
-//             if(!texture.loadFromFile(ressourcePath+"Textures/"+name))
-//             {
-//                 std::cout<<"Error loading "<<ressourcePath+"Textures/"+name<<std::endl;
-//                 return false;
-//             }
-//             textures[name]  = texture;
-//             return true;
-//         }
 
         bool loadPackage(std::string name)
 	{
@@ -63,21 +36,35 @@ namespace kte
 		for(auto& font : packedFonts)
 		{
 		    FontTexture fontTexture;
-		    
-		    if(!fonts.count(font.name) && !fontTexture.loadFromFont(font))
-			return false;
-			
-		    fonts[font.name] = fontTexture;
+		    if(!fonts.count(font.name))
+		    {
+			if(!fontTexture.loadFromFont(font))
+			    return false;
+			    
+			fonts[font.name] = fontTexture;
+		    }
+		    else 
+		    {
+			std::cout<<"WARNING: Font "<<font.name<<" already loaded."<<std::endl;
+		    }
 		}
 		
 		std::vector<TextureData> packedTextures = resourcePackage.getTextures();
 		
 		for(auto& textureData : packedTextures)
 		{
+		    
 		    Texture texture;
-		    if(!textures.count(textureData.name) && !texture.create(textureData))
-			return false;
-		    textures[textureData.name] = texture;
+		    if(!textures.count(textureData.name))
+		    {
+			if(!texture.create(textureData))
+			    return false;
+			textures[textureData.name] = texture;
+		    }
+		    else 
+		    {
+			std::cout<<"WARNING: Texture "<<texture.name<<" already loaded."<<std::endl;
+		    }
 		}
 		
 		resourcePackages[name]  = resourcePackage;

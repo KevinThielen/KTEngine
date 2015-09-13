@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <memory>
-#include <Resources.h>
+#include <Resources/Resources.h>
 #include "ISystem.h"
 #include <Components/SpriteComponent.h>
 #include <Components/Animator.h>
