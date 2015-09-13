@@ -1,5 +1,5 @@
-#ifndef FONT_H
-#define FONT_H
+#ifndef KTE_FONT_H
+#define KTE_FONT_H
 
 #include <map>
 #include <vector>
@@ -17,7 +17,6 @@ namespace kte
 	
     struct Font : public IResource 
     {
-	std::string name;
 	float fontSize;
 	unsigned int textureHeight;
 	unsigned int textureWidth;

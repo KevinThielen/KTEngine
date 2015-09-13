@@ -22,64 +22,75 @@ namespace kte
 	    }
 	}
 	
-        //Textures
-        bool loadTextureFromFile(std::string name, std::string path)
-        {
-            Texture texture;
-            if(!texture.loadFromFile(path+name))
-            {
-                std::cout<<"Error loading "<<path+name<<std::endl;
-                return false;
-            }
-            textures[name]  = texture;
-            return true;
-        }
-
-        bool loadTextureFromFile(std::string name)
-        {
-            Texture texture;
-            static std::string ressourcePath = RESOURCE_PATH;
-
-            if(!texture.loadFromFile(ressourcePath+"Textures/"+name))
-            {
-                std::cout<<"Error loading "<<ressourcePath+"Textures/"+name<<std::endl;
-                return false;
-            }
-            textures[name]  = texture;
-            return true;
-        }
+//         Textures
+//         bool loadTextureFromFile(std::string name, std::string path)
+//         {
+//             Texture texture;
+//             if(!texture.loadFromFile(path+name))
+//             {
+//                 std::cout<<"Error loading "<<path+name<<std::endl;
+//                 return false;
+//             }
+//             textures[name]  = texture;
+//             return true;
+//         }
+// 
+//         bool loadTextureFromFile(std::string name)
+//         {
+//             Texture texture;
+//             static std::string ressourcePath = RESOURCE_PATH;
+// 
+//             if(!texture.loadFromFile(ressourcePath+"Textures/"+name))
+//             {
+//                 std::cout<<"Error loading "<<ressourcePath+"Textures/"+name<<std::endl;
+//                 return false;
+//             }
+//             textures[name]  = texture;
+//             return true;
+//         }
 
         bool loadPackage(std::string name)
 	{
-	   ResourcePackage resourcePackage;
-	   if(!resourcePackage.read(name.c_str()))
-	       return false;
+	   ResourcePackage resourcePackage(name);
 	   
-	   std::vector<Font> packedFonts = resourcePackage.getFonts();
-	   
-	   for(auto& font : packedFonts)
+	   if(!resourcePackages.count(name))
 	   {
-	       FontTexture fontTexture;
-	       if(!fontTexture.loadFromFont(font))
-		   return false;
-	       fonts[font.name] = fontTexture;
+		if(!resourcePackage.read())
+		    return false;
+		
+		std::vector<Font> packedFonts = resourcePackage.getFonts();
+		
+		for(auto& font : packedFonts)
+		{
+		    FontTexture fontTexture;
+		    
+		    if(!fonts.count(font.name) && !fontTexture.loadFromFont(font))
+			return false;
+			
+		    fonts[font.name] = fontTexture;
+		}
+		
+		std::vector<TextureData> packedTextures = resourcePackage.getTextures();
+		
+		for(auto& textureData : packedTextures)
+		{
+		    Texture texture;
+		    if(!textures.count(textureData.name) && !texture.create(textureData))
+			return false;
+		    textures[textureData.name] = texture;
+		}
+		
+		resourcePackages[name]  = resourcePackage;
 	   }
-	   
 	   return true;
 	}
 	
-        bool loadFontFromFile(std::string name, unsigned int size = 16)
-        {
-         
-            return true;
-        }
-         
         bool loadAudioFromFile(std::string name)
         {
             AudioBuffer sound;
             static std::string ressourcePath = RESOURCE_PATH;
 
-            if(!sound.loadWaveFromFile(ressourcePath+"Audio/"+name))
+            if(!sounds.count(name) && !sound.loadWaveFromFile(ressourcePath+"Audio/"+name))
             {
                 std::cout<<"Error loading "<<ressourcePath+"Audio/"+name<<std::endl;
 
@@ -93,21 +104,21 @@ namespace kte
 	{
 	    return true;
 	}
-        //TODO: load animation from file
-        bool loadAnimation(std::string name, std::string spriteSheet, std::initializer_list<glm::vec4> frames)
-        {
-            animations[name].name = name;
-            animations[name].spriteSheet = spriteSheet;
-
-            if(!textures.count(spriteSheet) && !loadTextureFromFile(spriteSheet))
-                return false;
-            unsigned int frameCounter = 0;
-            for(auto frame : frames)
-            {
-                animations[name].frames[frameCounter++] = frame;
-            }
-            return true;
-        }
+//         TODO: load animation from file
+//         bool loadAnimation(std::string name, std::string spriteSheet, std::initializer_list<glm::vec4> frames)
+//         {
+//             animations[name].name = name;
+//             animations[name].spriteSheet = spriteSheet;
+// 
+//             if(!textures.count(spriteSheet) && !loadTextureFromFile(spriteSheet))
+//                 return false;
+//             unsigned int frameCounter = 0;
+//             for(auto frame : frames)
+//             {
+//                 animations[name].frames[frameCounter++] = frame;
+//             }
+//             return true;
+//         }
 
 
         //AudioDatas
@@ -138,7 +149,7 @@ namespace kte
         std::map<std::string, FontTexture> fonts;
 	std::map<std::string, AudioBuffer> sounds;
 	
-	std::vector<kte::ResourcePackage> resourcePackages;
+	std::map<std::string, kte::ResourcePackage> resourcePackages;
     };
 }
 

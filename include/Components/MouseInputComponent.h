@@ -12,10 +12,10 @@ namespace kte
     {
         MouseInputComponent(unsigned int gameObjectId) : IComponent(gameObjectId)
         {
-            onClick = [] () {std::cout<<"click"<<std::endl;};
-            onMouseOver = [] () {std::cout<<"hover"<<std::endl;};
-            onMouseLeave = [] () {std::cout<<"leave"<<std::endl;};
-            onRelease = [] () {std::cout<<"release"<<std::endl;};
+            onClick = [] () {};
+            onMouseOver = [] () {};
+            onMouseLeave = [] () {};
+            onRelease = [] () {};
             onMouseMove = [] (float x, float y) {};
             onDrag = [] (float x, float y) {};
         }

@@ -4,10 +4,15 @@
 #include "Systems/RenderSystem.h"
 #include "Systems/InputSystem.h"
 #include "Systems/AnimationSystem.h"
+
 kte::IGameScene::IGameScene()
 {
     scene.reset(new kte::GameObject(this));
     scene->addComponent<kte::Camera>();
+    
+    kte::GameEngine* engine = kte::GameEngine::instance();
+    resources = engine->getResources();
+    audioManager = engine->getAudioManager();
 }
 
 kte::IGameScene::~IGameScene()
@@ -35,7 +40,7 @@ void kte::IGameScene::initDefaultSystem()
 	renderer = new RenderSystem();
         addSystem(renderer);
 
-        addSystem(new kte::AnimationSystem(&resources));
+        addSystem(new kte::AnimationSystem(resources));
         addSystem(new kte::InputSystem);
 	
 

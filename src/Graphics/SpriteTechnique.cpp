@@ -29,8 +29,8 @@ namespace kte
 
         quad = &kte::Geometry::quad;
 
-	  resources.loadTextureFromFile("default.png");
-        defaultTexture = resources.getTexture("default.png")->getTexture();
+	resources.loadPackage("default");
+        defaultTexture = resources.getTexture("default")->getTexture();
 
         return true;
     }

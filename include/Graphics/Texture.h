@@ -3,6 +3,7 @@
 
 #include <string>
 #include <GL/glew.h>
+#include "Resources/TextureData.h"
 
 namespace kte
 {
@@ -20,8 +21,9 @@ namespace kte
             return texture;
         }
 
-        bool loadFromFile(std::string path);
+        bool create(TextureData textureData);
 	void unload() { glDeleteTextures(1, &texture); }
+	
     private:
         GLuint texture;
     };

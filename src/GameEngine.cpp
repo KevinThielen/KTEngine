@@ -6,7 +6,7 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc, bool 
 {
     //gameLoop
     isRunning = true;
-    pop = false;
+    pop = true;
     if(!window.create(windowDesc))
         return;
 
@@ -19,7 +19,9 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc, bool 
     }
     
     kte::Input::setContext(&window);
+    
     gameScenes.emplace_back(initialScene);
+    initialScene->initDefaultSystem();
 
     if(!initialScene->init())
     {
@@ -49,7 +51,10 @@ void kte::GameEngine::update()
 	if(!gameScenes.size())
 	    return;
 
-        gameScenes.back()->update(fpsCounter.getDeltaTime());
+	float dt = fpsCounter.getDeltaTime();
+	
+	gameScenes.back()->IGameScene::update(dt);
+        gameScenes.back()->update(dt);
 	
         window.swapBuffers();
 }
@@ -64,6 +69,7 @@ void kte::GameEngine::exit()
 void kte::GameEngine::pushScene(kte::IGameScene* scene)
 {
     gameScenes.emplace_back(scene);
+    scene->initDefaultSystem();
     if(!scene->init())
 	gameScenes.pop_back();
 

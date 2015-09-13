@@ -28,7 +28,7 @@ namespace kte
 	    alSourcei(source, AL_LOOPING, AL_FALSE);
 	    
 	    AudioManager::checkALError("Audio source generation");
-	    
+	    isLooping = false;
 	  
 	    
 	    return true;
@@ -46,8 +46,22 @@ namespace kte
 	    AudioManager::checkALError("Play Buffer");
 	}
 	
-    private:
+	void play(AudioBuffer* buffer, bool loop)
+	{
+	    isLooping = loop;
+	    
+	    if(loop)
+		alSourcei(source, AL_LOOPING, AL_TRUE);
+	    else 
+		alSourcei(source, AL_LOOPING, AL_FALSE);
 	
+	    play(buffer);
+	}
+	
+
+	
+    private:
+	bool isLooping;
 	ALuint source;
     };
 }

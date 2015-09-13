@@ -15,7 +15,7 @@
 #include "Input.h"
 #include "Utility/FPSCounter.h"
 #include "Audio/AudioManager.h"
-
+#include "Resources.h"
 namespace kte
 {
     class IGameScene;
@@ -49,6 +49,9 @@ namespace kte
 	void popScene();
 	
 	Window* getContext() { return &window; }
+	AudioManager* getAudioManager() { return &audioManager; }
+	Resources* getResources() { return &resources; }
+	
     private:
 
         //only one instance
@@ -58,6 +61,7 @@ namespace kte
         std::vector<std::unique_ptr<IGameScene>> gameScenes;
 	FPSCounter fpsCounter;
 	AudioManager audioManager;
+	Resources resources;
 	bool pop;
     };
 }

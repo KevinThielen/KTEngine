@@ -31,7 +31,7 @@ namespace kte
                 //{
 		    float textureX = (float)g.textureX / fontTexture->getFont().textureWidth;
                     rectangles[i].x = xOffset + g.bitmapLeft + textureX;
-                    rectangles[i].y = yOffset;
+                    rectangles[i].y = yOffset+  g.bitmapTop-g.bitmapHeight ;
                     rectangles[i].z = g.bitmapWidth;
                     rectangles[i].a = g.bitmapHeight;
 

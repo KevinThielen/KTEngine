@@ -33,7 +33,7 @@ namespace kte
 
         virtual ~IGameScene();
 
-        virtual bool init() = 0;
+        virtual bool init() {}
         virtual void update(float dt) { for (auto& system : systems) system->update(dt); }
         virtual void addSystem(ISystem* system);
         virtual void notifySystems(Message* message) { for(auto& system : systems) system->receiveMessage(message); }
@@ -47,16 +47,16 @@ namespace kte
         void displayText(Text text);
         void displayText(std::vector<Text> texts);
 
-    protected:
         void initDefaultSystem();
+    protected:
 
         RenderSystem* renderer;
         std::shared_ptr<GameObject> scene;
         std::map<unsigned int, GameObject*> gameObjects;
 
         std::vector<std::unique_ptr<ISystem>> systems;
-        kte::Resources resources;
-	AudioManager audioManager;
+        kte::Resources* resources;
+	AudioManager* audioManager;
     };
 
     bool isKeyDown(unsigned int key);

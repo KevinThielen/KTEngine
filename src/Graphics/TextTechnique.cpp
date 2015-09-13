@@ -126,11 +126,7 @@ namespace kte
 
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getNumberOfIndices(), uvs.size());
 
-        GLenum error = glGetError();
-	if(error != GL_NO_ERROR)
-	{
-	    std::cout<<"EROOR: "<< glewGetErrorString(error)<<std::endl;
-	}
+       
                 glBindTexture(GL_TEXTURE_2D, 0);
                 glBindVertexArray(0);
 
@@ -210,7 +206,7 @@ namespace kte
 			glm::vec2 oldOffset(position.x, position.y);
 			
                     }
-		        GLenum error = glGetError();
+
 
 
 
