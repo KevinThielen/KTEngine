@@ -31,9 +31,25 @@ namespace kte
 
             viewMatrix = glm::ortho(left, right, bottom, top, -0.01f, -100.0f);
         }
+        
+        void move(float dx, float dy) 
+	{
+	    left += dx;
+	    right += dx;
+	    top += dy;
+	    bottom += dy;
+	    
+	    updateMatrix();
+	}
+        
+        void updateMatrix()
+	{
+	    viewMatrix = glm::ortho(left, right, bottom, top, -0.01f, -100.0f);
+	}
         static void setMainCamera(Camera* camera) { Camera::mainCamera = camera; }
         static Camera* getMainCamera() { return mainCamera; }
 
+        
     private:
         static Camera* mainCamera;
 

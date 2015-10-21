@@ -23,6 +23,16 @@ namespace kte
             return instance;
         }
 
+        void reset()
+	{
+	    for (auto iterator = shaderPrograms.begin(); iterator != shaderPrograms.end(); iterator++)
+	    {
+		glDeleteProgram(iterator->second);
+	    }
+    
+	    shaderPrograms.clear();
+	}
+	
         void initAttributeLocations();
         bool shaderProgramFromFile(std::string programName, std::string vertexShader, std::string fragmentShader, std::string geometryShader = "");
 

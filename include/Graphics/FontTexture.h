@@ -29,7 +29,7 @@ namespace kte
 	
 	std::vector<unsigned char> fontData;
 	
-	for(int i = 0; i<font.data.size(); i++)
+	for(unsigned int i = 0; i<font.data.size(); i++)
 	{
 	    fontData.push_back(font.data[i]);
 	    fontData.push_back(0);

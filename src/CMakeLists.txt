@@ -19,9 +19,7 @@ IF(EMSCRIPTEN)
 set(EXTERNAL_HEADER 
 	         "${KTEngine_SOURCE_DIR}/include/"
                  "${KTEngine_SOURCE_DIR}/external/glm/"
-                 "${KTEngine_SOURCE_DIR}/external/stb/"
                  "${KTEngine_SOURCE_DIR}/external/jsoncpp/include/"
-                 "${KTEngine_SOURCE_DIR}/external/portaudio/include/" 
 )
 ELSE(EMSCRIPTEN)
 set(EXTERNAL_HEADER 
@@ -29,9 +27,8 @@ set(EXTERNAL_HEADER
                  "${KTEngine_SOURCE_DIR}/external/glm/"
                  "${KTEngine_SOURCE_DIR}/external/glfw/include/"
 		 "${KTEngine_SOURCE_DIR}/external/glew/include/"
-                 "${KTEngine_SOURCE_DIR}/external/stb/"
+
                  "${KTEngine_SOURCE_DIR}/external/jsoncpp/include/"
-                 "${KTEngine_SOURCE_DIR}/external/portaudio/include/"
                  "${KTEngine_SOURCE_DIR}/external/enet/include/"
                  )
 ENDIF(EMSCRIPTEN)
@@ -41,7 +38,6 @@ set(KTENGINE_HEADER
                  ${KTEngine_SOURCE_DIR}/include/Window.h
                  ${KTEngine_SOURCE_DIR}/include/GameObject.h
                  ${KTEngine_SOURCE_DIR}/include/IGameScene.h
-                 ${KTEngine_SOURCE_DIR}/include/Resources.h
                  ${KTEngine_SOURCE_DIR}/include/Input.h
                  )
 

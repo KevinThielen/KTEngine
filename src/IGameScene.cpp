@@ -56,6 +56,12 @@ void kte::IGameScene::displayText(std::vector<kte::Text> texts)
 	renderer->displayText(texts);
 }
 
+kte::GameObject* kte::IGameScene::getSceneNode()
+{
+    return scene.get(); 
+}
+
+
 namespace kte
 {
     bool isKeyDown(unsigned int key)

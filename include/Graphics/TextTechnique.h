@@ -7,6 +7,8 @@
 #include "RenderTechnique.h"
 #include "Text.h"
 #include "Graphics/Geometries.h"
+#include "Resources/Resources.h"
+
 namespace kte
 {
 
@@ -24,6 +26,7 @@ namespace kte
     private:
         GLuint programId;
         Quad* quad;
+	Resources* resources;
     };
 }
 #endif

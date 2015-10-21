@@ -13,5 +13,6 @@
 #include "Graphics/Text.h"
 #include "Graphics/TextTechnique.h"
 #include "Graphics/Texture.h"
+#include "Graphics/Button.h"
 
 #endif

@@ -33,7 +33,7 @@ namespace kte
 
         virtual ~IGameScene();
 
-        virtual bool init() {}
+        virtual bool init() { return true; }
         virtual void update(float dt) { for (auto& system : systems) system->update(dt); }
         virtual void addSystem(ISystem* system);
         virtual void notifySystems(Message* message) { for(auto& system : systems) system->receiveMessage(message); }
@@ -48,6 +48,7 @@ namespace kte
         void displayText(std::vector<Text> texts);
 
         void initDefaultSystem();
+	GameObject* getSceneNode();
     protected:
 
         RenderSystem* renderer;

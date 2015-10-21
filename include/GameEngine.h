@@ -18,11 +18,11 @@
 #include "Resources/Resources.h"
 
 
-
 namespace kte
 {
     class IGameScene;
-
+    class GameObject;
+    
     class GameEngine
     {
     public:
@@ -50,11 +50,13 @@ namespace kte
 	void pushScene(IGameScene* scene);
 
 	void popScene();
+	GameObject* getSceneNode();
+	
 	
 	Window* getContext() { return &window; }
 	AudioManager* getAudioManager() { return &audioManager; }
 	Resources* getResources() { return &resources; }
-	
+	void sendMessage(kte::Message* message);
     private:
 
         //only one instance

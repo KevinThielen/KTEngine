@@ -29,15 +29,10 @@ namespace kte
     bool ShaderManager::shaderProgramFromFile(std::string programName, std::string vertexShader, std::string fragmentShader, std::string geometryShader)
     {
         std::string resourcePath = "";
-        resourcePath += RESOURCE_PATH;
-#if defined(EMSCRIPTEN)
-	resourcePath += "WebShaders/";
-#else
-	resourcePath += "Shaders/";
-#endif
-        std::string vertexFilePath = resourcePath+vertexShader;
-        std::string fragmentFilePath = resourcePath+fragmentShader;
-        std::string geometryFilePath = resourcePath+geometryShader;
+        
+        std::string vertexFile = vertexShader;
+        std::string fragmentFile = fragmentShader;
+        std::string geometryFile = geometryShader;
 
         GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
         GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
@@ -46,9 +41,9 @@ namespace kte
         //     geometryShaderId = glCreateShader(GL_GEOMETRY_SHADER);
 
 
-        if(!compileShader(vertexShaderId, loadShaderFromFile(vertexFilePath)))
+        if(!compileShader(vertexShaderId, vertexShader))
             return false;
-        else if(!compileShader(fragmentShaderId, loadShaderFromFile(fragmentFilePath)))
+        else if(!compileShader(fragmentShaderId, fragmentShader))
             return false;
         else
         {

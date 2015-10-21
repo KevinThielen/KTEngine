@@ -5,7 +5,7 @@ namespace kte
 {
     glm::vec3 ColorToFloat(float r, float g, float b)
     {
-	glm::vec4 rgb;
+	glm::vec3 rgb;
 	rgb.x = r / 256.0f;
 	rgb.y = g / 256.0f;
 	rgb.z = b / 256.0f;

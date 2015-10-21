@@ -20,6 +20,10 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc, bool 
     
     kte::Input::setContext(&window);
     
+    //default resources
+    resources.loadPackage("KTEData");
+    
+    
     gameScenes.emplace_back(initialScene);
     initialScene->initDefaultSystem();
 
@@ -85,6 +89,16 @@ void kte::GameEngine::popScene()
 	if(gameScenes.size())
 	    gameScenes.back()->refresh();
     }
+}
+
+kte::GameObject* kte::GameEngine::getSceneNode()
+{
+    return gameScenes.back()->getSceneNode();
+}
+
+void kte::GameEngine::sendMessage(kte::Message* message)
+{
+    gameScenes.back()->notifySystems(message);	
 }
 
 

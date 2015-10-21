@@ -23,7 +23,15 @@ namespace kte
 
             return glm::vec2(x,y);
         }
-
+	
+	static void enableCursor(bool enabled)
+	{
+	    if(!enabled)
+		glfwSetInputMode(window->getContext(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	    else 
+		glfwSetInputMode(window->getContext(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+        
         /*  void InputManager::setMousePosition(double x, double y)
     {
         glfwSetCursorPos(window, x, y);

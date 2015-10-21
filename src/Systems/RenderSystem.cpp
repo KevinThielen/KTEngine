@@ -3,6 +3,8 @@
 #include <map>
 #include <Graphics/SpriteTechnique.h>
 #include <Graphics/TextTechnique.h>
+#include <Graphics/ShaderManager.h>
+#include <GameEngine.h>
 
 bool kte::RenderSystem::init()
 {  
@@ -104,6 +106,7 @@ void kte::RenderSystem::receiveMessage(kte::Message* message)
         {
             boxColliders.push_back(dynamic_cast<kte::BoxCollider*>(componentAddedMessage->addedComponent));
         }
+        
     }
     if(dynamic_cast<kte::GameObjectRemovedMessage*>(message))
     {
@@ -119,6 +122,25 @@ void kte::RenderSystem::receiveMessage(kte::Message* message)
             componentsChanged = true;
             transformationComponents.erase(gameObjectRemovedMessage->gameObjectId);
         }
+    }
+    if(dynamic_cast<kte::ContextChange*>(message))
+    {
+	    checkGLError("Context Change Entry");
+	    ShaderManager::instance()->reset();
+	    checkGLError("ShaderManager reset");
+	    Geometries::reCreate();
+	    checkGLError("Geometry Recreation");
+    
+	    
+	    renderTechniques.clear();
+	    
+	    renderTechniques.emplace_back(new SpriteTechnique);
+	    renderTechniques.back()->init();
+	    checkGLError("SpriteTechnique init");
+
+	    textTechnique.reset(new TextTechnique);
+	    textTechnique->init();
+	    checkGLError("TextTechnique init");
     }
 
 }

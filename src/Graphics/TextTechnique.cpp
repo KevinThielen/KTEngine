@@ -5,6 +5,7 @@
 #include "Graphics/RenderTechnique.h"
 #include "Components/Camera.h"
 #include "Graphics/TextTechnique.h"
+#include "GameEngine.h"
 
 namespace kte
 {
@@ -16,9 +17,12 @@ namespace kte
     bool TextTechnique::init()
     {
         ShaderManager* shaderManager = ShaderManager::instance();
+   
+	resources = kte::GameEngine::instance()->getResources();
+	
         if(!shaderManager->getShaderProgram("TextShader"))
         {
-            if(!shaderManager->shaderProgramFromFile("TextShader", "TextShader.vs", "TextShader.fs"))
+            if(!shaderManager->shaderProgramFromFile("TextShader", resources->getFile("textVS")->content, resources->getFile("textFS")->content))
                 return false;
         }
 

@@ -13,7 +13,7 @@ set_property( GLOBAL PROPERTY USE_FOLDERS ON)
 
 FIND_PACKAGE(OpenAL)
 
-find_package(Freetype REQUIRED)
+
 IF(EMSCRIPTEN)
 
 
@@ -28,27 +28,12 @@ ELSE(EMSCRIPTEN)
     IF(WIN32)
 
     #	IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/external/glew/lib/glew32s.lib")
-
-    #	IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/external/freetype/lib/libfreetype.lib")
-	    #FREETYPE libraries, static linking
-	    add_library(freetype_static STATIC IMPORTED GLOBAL)
-	    set_target_properties(freetype_static PROPERTIES
-	    IMPORTED_LOCATION ${freetype_path})
-    ELSEIF(UNIX)
-
-	    
-	    add_library(portaudio STATIC IMPORTED GLOBAL)
-	    set_target_properties(portaudio PROPERTIES
-	    IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/external/portaudio/lib/libportaudio.a)
-
     ENDIF(WIN32)
+    
 	    #GLEW libraries, static linking
 	    add_library(glew_static STATIC IMPORTED GLOBAL)
 	    set_target_properties(glew_static PROPERTIES
 	    IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/external/glew/lib/libGLEW.a")
-	    
-	    find_package(Freetype REQUIRED)
-
 ENDIF(EMSCRIPTEN)
 
 
@@ -57,7 +42,6 @@ ENDIF(EMSCRIPTEN)
 ADD_SUBDIRECTORY(external)
 ADD_SUBDIRECTORY(src)
 
-set(HEADER_FILES ${HEADER_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/external/freetype/include/ PARENT_SCOPE)
 set(SOURCE_FILES ${SOURCE_FILES} PARENT_SCOPE)
 set(DATA_FILES ${DATA_FILES} "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt" PARENT_SCOPE)
 set(LIBRARIES ${LIBRARIES} PARENT_SCOPE)
@@ -77,7 +61,7 @@ ELSE(EMSCRIPTEN)
 MESSAGE( STATUS "NO EMSCRIPTEN TARGET")
 	if(WIN32)
 	    include_directories( ${HEADER_FILES} )
-	    set(LIBRARIES ${LIBRARIES} glew_static  glfw ${GLFW_LIBRARIES} ${OPENGL_glu_LIBRARY} ${OPENGL_gl_LIBRARY} Freetype portaudio)
+	    set(LIBRARIES ${LIBRARIES} glew_static  glfw ${GLFW_LIBRARIES} ${OPENGL_glu_LIBRARY} ${OPENGL_gl_LIBRARY})
 
 	    add_library(KTEngine STATIC ${SOURCE_FILES} ${DATA_FILES})
 	    target_link_libraries(KTEngine ${LIBRARIES})
@@ -89,9 +73,9 @@ MESSAGE( STATUS "NO EMSCRIPTEN TARGET")
 		 ${CMAKE_CURRENT_SOURCE_DIR}/external/glfw/src/Debug/glfw3.lib")
 
 	ELSEIF (UNIX)
-	    set(HEADER_FILES ${HEADER_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/include "/usr/local/include/freetype" 		    PARENT_SCOPE)
+	    set(HEADER_FILES ${HEADER_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 	    
-	    set(LIBRARIES ${LIBRARIES} glew_static  glfw ${GLFW_LIBRARIES} ${OPENGL_glu_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENAL_LIBRARY} ${FREETYPE_LIBRARIES} portaudio pthread asound rt sndfile enet
+	    set(LIBRARIES ${LIBRARIES} glew_static  glfw ${GLFW_LIBRARIES} ${OPENGL_glu_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENAL_LIBRARY} pthread asound rt enet 
 	    PARENT_SCOPE)
 
 	ENDIF(WIN32)

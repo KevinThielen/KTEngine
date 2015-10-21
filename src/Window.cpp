@@ -1,6 +1,8 @@
 
 #include "Window.h"
 #include "GameEngine.h"
+#include "Messages/ContextChange.h"
+#include <Systems/RenderSystem.h>
 /********************
 * Creates the window and binds the current context to it.
 * Also inits GLFW.
@@ -11,14 +13,13 @@
 ********************/
 bool kte::Window::create(kte::WindowDesc windowDesc, bool fullscreen ) 
 {
+    GLenum error = glGetError();
     desc = windowDesc;
-    
   
 
     // Initialise GLFW
     
-    if(!initialized)
-	if (!glfwInit())
+    if(!initialized && !glfwInit())
 	    return false;
 
     glfwWindowHint(GLFW_SAMPLES, 8);
@@ -28,32 +29,36 @@ bool kte::Window::create(kte::WindowDesc windowDesc, bool fullscreen )
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwSwapInterval(1);
 
-    // glfwSwapInterval(0);
+  //Destroy old window
+    if (window != nullptr)
+       glfwDestroyWindow(window);
+    
     // Open a window and create its OpenGL context
     GLFWwindow* newWindow = nullptr;
     
+    this->fullscreen = fullscreen;
     if(!fullscreen)
 	newWindow = glfwCreateWindow(windowDesc.width, windowDesc.height, windowDesc.title.c_str(),nullptr, nullptr);
     else
-	newWindow = glfwCreateWindow(windowDesc.width, windowDesc.height, windowDesc.title.c_str(),nullptr, nullptr);
-	
+    {
+	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+	glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+	newWindow = glfwCreateWindow(mode->width, mode->height, windowDesc.title.c_str(), glfwGetPrimaryMonitor(), nullptr);
+    }
     //window creation failed
     if (newWindow == nullptr)
     {
         destroy();
     }
     
-      //Destroy old window
-    if (window != nullptr)
-       glfwDestroyWindow(window);
-    
-    
     window = newWindow;
     
-  //  if(!initialized)
+
     glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
-    //	inputManager = InputManager(this->window);
 
     //glew
     if(!initialized)
@@ -66,8 +71,8 @@ bool kte::Window::create(kte::WindowDesc windowDesc, bool fullscreen )
 	    std::cout<<"ERROR: "<<std::to_string(err)<< glewGetErrorString(err)<<std::endl;
 	    return false;
 	}
-	
     }
+
   
     //if (!GLEW_VERSION_3_1)
    //     return false;
@@ -84,27 +89,27 @@ bool kte::Window::create(kte::WindowDesc windowDesc, bool fullscreen )
     glDepthFunc(GL_LESS);
 
 
-    glClearColor(0.55f, 0.55f, 0.55f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
-    GLenum error = glGetError();
+    error = glGetError();
+
     if(error != GL_NO_ERROR)
     {
-	std::cout<<"ERROR: "<<std::to_string(error)<< glewGetErrorString(error)<<std::endl;
+	std::cout<<"ERROR in WindowCreation: "<<std::to_string(error)<< glewGetErrorString(error)<<std::endl;
     }
     initialized = true;
     
     return true;
 }
 
-bool kte::Window::create(bool fullscreen)
-{
-   return false;//create(desc, fullscreen);
-    
-}
 
 void kte::Window::setFullscreen(bool fullscreen)
 {
-    //TODO:
+    if(this->fullscreen == fullscreen)
+	return; 
+    
+    this->fullscreen = fullscreen;
+    reCreate = true;
 }
 
 /*******************
@@ -124,14 +129,25 @@ void kte::Window::swapBuffers()
     glfwSwapBuffers(glfwGetCurrentContext());
     glfwPollEvents();
     
-    GLenum error = glGetError();
-    while(error != GL_NO_ERROR)
+    RenderSystem::checkGLError("Swap Buffers");
+   
+    if(reCreate)
     {
-	std::cout<<"ERROR: "<<std::to_string(error)<< glewGetErrorString(error)<<std::endl;
-	error = glGetError();
-    }
-    
+    create(desc, fullscreen);  
 
+    //release textures from old context
+    GameEngine::instance()->getResources()->unload();
+    RenderSystem::checkGLError("Ressources Unload");
+    kte::Message* contextChange = new ContextChange();
+    kte::GameEngine::instance()->sendMessage(contextChange);
+    delete contextChange;
+    RenderSystem::checkGLError("Window Recreation");
+    
+    //reallocate resources for new context
+    GameEngine::instance()->getResources()->reload();
+    RenderSystem::checkGLError("Ressources Reload");
+    reCreate = false;
+    }
 }
 
 void kte::Window::destroy()

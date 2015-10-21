@@ -137,7 +137,6 @@ namespace kte
             {
                 if(children[i]->getId() == go->getId())
                 {
-              //      children[i].reset();
                     children.erase(children.begin()+i);
                     return;
                 }
@@ -150,11 +149,17 @@ namespace kte
             isActive = active;
             for(auto& component : components)
                 component->isActive = active;
+	    
             for(auto& child : children)
                 child->setActive(active);
         }
 
+        bool getActive() { return isActive; }
+        
         unsigned int getId() { return id; }
+        kte::GameObject* getParent() { return parent; }
+        void remove() { parent->removeChild(this); }
+        
     private:
         unsigned int id;
         static unsigned int ID_COUNTER;

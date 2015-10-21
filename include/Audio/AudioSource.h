@@ -5,7 +5,7 @@
 #include <AL/alc.h>
 #include "AudioManager.h"
 
-#include "AudioData.h"
+#include "Resources/AudioData.h"
 #include "AudioBuffer.h"
 
 namespace kte
@@ -36,6 +36,7 @@ namespace kte
 	
 	void play(AudioBuffer* buffer)
 	{
+	    alSourceStop(source);
 	    alSourcei(source, AL_BUFFER, buffer->getBuffer());
 	    if(!Audio::muted)
 		alSourcef(source, AL_GAIN, Audio::masterVolume);

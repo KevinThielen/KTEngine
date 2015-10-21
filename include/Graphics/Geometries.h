@@ -13,6 +13,9 @@ namespace kte
   namespace Geometries
   {
     bool initialze();
+    void reCreate();
   }
+  
+  
 }
 #endif

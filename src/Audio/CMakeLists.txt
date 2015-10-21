@@ -6,7 +6,6 @@ set(KTENGINE_SOURCE
 set(KTENGINE_HEADER
 		  ${KTEngine_SOURCE_DIR}/include/Audio/AudioManager.h
                   ${KTEngine_SOURCE_DIR}/include/Audio/AudioSource.h
-                  ${KTEngine_SOURCE_DIR}/include/Audio/AudioData.h
                   ${KTEngine_SOURCE_DIR}/include/Audio/AudioBuffer.h
 )
 

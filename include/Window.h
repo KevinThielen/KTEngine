@@ -26,13 +26,15 @@ namespace kte
     public:
 	Window() { window = nullptr; initialized = false; reCreate = false;}
         bool create(kte::WindowDesc windowDesc, bool fullscreen = false );
-	bool create(bool fullscreen);
         void clearScreen();
         void swapBuffers();
         void destroy();
         GLFWwindow* getContext() { return window; }
         bool isKeyDown(unsigned int key) { return glfwGetKey(window, key); }
         void setWireframe() {  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); }
+        
+        void setBackgroundColor(float r, float g, float b) {     glClearColor(r, g, b, 1.0f); }
+	void setFullscreen(bool fullscreen);
         
         
         //setting stuff
@@ -56,10 +58,8 @@ namespace kte
     
 	
 	
-	void setFullscreen(bool fullscreen);
     private:
         GLFWwindow* window;
-        GLFWwindow* fullscreenWindow;
 	WindowDesc desc;
 	
 	bool initialized;

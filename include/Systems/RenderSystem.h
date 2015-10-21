@@ -9,6 +9,7 @@
 #include "Components/TransformationComponent.h"
 #include "Components/BoxCollider.h"
 #include "Messages/ComponentAddedMessage.h"
+#include "Messages/ContextChange.h"
 #include "Messages/GameObjectRemovedMessage.h"
 #include "Graphics/RenderTechnique.h"
 #include <Graphics/TextTechnique.h>
@@ -35,6 +36,19 @@ namespace kte
             textTechnique->render(text);
         }
 
+        static bool checkGLError(std::string message = "") 
+	{
+	    GLenum error = glGetError();
+	    bool errorFound = false;
+	    while(error != GL_NO_ERROR)
+	    {
+		std::cout<<"GL Error: "<<message<<"("<<std::to_string(error)<< "): "<<glewGetErrorString(error)<<std::endl;
+		error = glGetError();
+		errorFound = true;
+	    }
+	    
+	    return errorFound;
+	}
     private:
         std::map<unsigned int, TransformationComponent*> transformationComponents;
         std::map<unsigned int, SpriteComponent*> spriteComponents;

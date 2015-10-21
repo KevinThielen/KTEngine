@@ -8,37 +8,25 @@
 #include <fstream>
 #include "AudioManager.h"
 
-#include "AudioData.h"
+#include "Resources/AudioData.h"
+
 namespace kte 
 {
     class AudioBuffer 
     {
     public:
-	
-
-
-	bool loadWaveFromFile(std::string path)
+	bool initialize(AudioData audio)
 	{
-	   
-	    
-	       if(!audioData.loadWavFromFile(path))
-		   return false;
-
-	    
-	
 		alGenBuffers(1, &buffer);
 	       
 		AudioManager::checkALError("Audio Buffer generation");
 
-		alBufferData(buffer, (audioData.getChannels() == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16,
-			     &audioData.getData().front(), audioData.getData().size()* sizeof(short), audioData.getSampleRate());
+		alBufferData(buffer, (audio.numberOfChannels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16,
+			     &audio.data.front(), audio.data.size()* sizeof(short), audio.sampleRate);
 		
 		AudioManager::checkALError("Set Audio Buffer Data");
 		
 		
-		
-		
-
 		return true;
 	}
 
@@ -46,7 +34,6 @@ namespace kte
 	
     private:
 	ALuint buffer;
-	AudioData audioData;
     };
 }
 

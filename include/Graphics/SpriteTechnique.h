@@ -28,8 +28,7 @@ namespace kte
         GLuint programId;
         Quad* quad;
         GLuint defaultTexture;
-        Resources resources;
-
+	Resources* resources;
     };
 }
 #endif

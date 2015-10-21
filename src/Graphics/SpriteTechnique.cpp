@@ -8,6 +8,8 @@
 #include <Graphics/Texture.h>
 #include "Graphics/RenderTechnique.h"
 #include "Components/Camera.h"
+#include <GameEngine.h>
+#include <Systems/RenderSystem.h>
 
 namespace kte
 {
@@ -18,10 +20,14 @@ namespace kte
 
     bool SpriteTechnique::init()
     {
+	
+	resources = kte::GameEngine::instance()->getResources();
+
+	
         ShaderManager* shaderManager = ShaderManager::instance();
         if(!shaderManager->getShaderProgram("SpriteShader"))
         {
-            if(!shaderManager->shaderProgramFromFile("SpriteShader", "SpriteShader.vs", "SpriteShader.fs"))
+            if(!shaderManager->shaderProgramFromFile("SpriteShader", resources->getFile("spriteVS")->content, resources->getFile("spriteFS")->content))
                 return false;
         }
 
@@ -29,8 +35,7 @@ namespace kte
 
         quad = &kte::Geometry::quad;
 
-	resources.loadPackage("default");
-        defaultTexture = resources.getTexture("default")->getTexture();
+        defaultTexture = resources->getTexture("default")->getTexture();
 
         return true;
     }
@@ -48,9 +53,10 @@ namespace kte
     ***************************************/
     void SpriteTechnique::render(std::map<SpriteComponent*, TransformationComponent*> spritesToRender)
     {
-
+	RenderSystem::checkGLError("SpriteTechnique entry");
         glUseProgram(programId);
 
+	RenderSystem::checkGLError("SpriteTechnique use Program");
 
         std::map<unsigned int, std::map<SpriteComponent*, TransformationComponent*>> spritesSortedByLayer;
         for(auto sprite : spritesToRender)
@@ -90,14 +96,14 @@ namespace kte
                 std::vector<glm::vec4> uvs;
 
                 Texture *texture = sortedSprites.first;
-
                 if (texture)
                 {
                     GLint textureLoc = glGetUniformLocation(programId, "texture");
                     glActiveTexture(GL_TEXTURE0);
-                    glBindTexture(GL_TEXTURE_2D, texture->getTexture());
-                    glUniform1i(textureLoc, 0);
-                }
+		    
+		    glBindTexture(GL_TEXTURE_2D, texture->getTexture());
+		    glUniform1i(textureLoc, 0);
+		}
                 else
                 {
                     GLint textureLoc = glGetUniformLocation(programId, "texture");
@@ -105,6 +111,8 @@ namespace kte
                     glBindTexture(GL_TEXTURE_2D, defaultTexture);
                     glUniform1i(textureLoc, 0);
                 }
+                RenderSystem::checkGLError("SpriteTechnique bind Texture "+texture->getName());
+		
 
           
 
@@ -168,7 +176,9 @@ namespace kte
 
                 glBindTexture(GL_TEXTURE_2D, 0);
                 glBindVertexArray(0);
-
+		
+		
+		RenderSystem::checkGLError("SpriteTechnique: "+texture->getName());
             }
         }
     }

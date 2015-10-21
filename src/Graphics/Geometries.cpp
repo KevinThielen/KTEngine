@@ -16,3 +16,9 @@ bool kte::Geometries::initialze()
 
     return result;
 }
+
+void kte::Geometries::reCreate()
+{
+    Geometry::quad.init();
+}
+

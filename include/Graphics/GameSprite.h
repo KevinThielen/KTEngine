@@ -197,6 +197,10 @@ namespace kte
             gameObject->setActive(isActive);
 	    
         }
+        bool isActive()
+        {
+            return gameObject->getActive();
+        }
 
         void moveUV(float x, float y)
         {
@@ -216,7 +220,6 @@ namespace kte
         void pauseOnClickListener(bool pause)
 	{
 	    gameObject->getComponent<MouseInputComponent>()->isActive = !pause;
-	    
 	}
 	
         bool contains(glm::vec2 point)
