@@ -33,30 +33,38 @@ namespace kte
         bool isKeyDown(unsigned int key) { return glfwGetKey(window, key); }
         void setWireframe() {  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ); }
         
-        void setBackgroundColor(float r, float g, float b) {     glClearColor(r, g, b, 1.0f); }
+        void setBackgroundColor(float r, float g, float b) { glClearColor(r, g, b, 1.0f); }
 	void setFullscreen(bool fullscreen);
         
         
         //setting stuff
         std::vector<glm::vec2> getScreenResolutions()
 	{
+	    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 	    
-	    GLFWmonitor* monitor = glfwGetWindowMonitor(window);
 	    std::vector<glm::vec2> resolutions;
 	    
 	    if(monitor)
 	    {
-	    int modeCount;
-	    const GLFWvidmode* modes = glfwGetVideoModes(monitor, &modeCount);
+		int modeCount;
+		const GLFWvidmode* modes = glfwGetVideoModes(monitor, &modeCount);
 	    
 	    
-	    for(int i = 0; i<modeCount; i++)
-		resolutions.push_back(glm::vec2(modes[i].width, modes[i].height));
+		for(int i = 0; i<modeCount; i++)
+		    resolutions.push_back(glm::vec2(modes[i].width, modes[i].height));
 	    }
 	    return resolutions;
 	}
     
+	glm::vec2 getScreenResolution() { return glm::vec2(desc.width, desc.height); }
 	
+	void setScreenResolution(glm::vec2 resolution)
+	{
+	   desc.width = resolution.x;
+	   desc.height = resolution.y;
+	   
+	   reCreate = true;
+	}
 	
     private:
         GLFWwindow* window;

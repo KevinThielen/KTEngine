@@ -13,10 +13,14 @@ namespace kte
     class Text
     {
     public:
-        void setFont(FontTexture* f) { size = glm::vec2(1,1); fontTexture = f; }
+        void setFont(FontTexture* f)
+	{ 
+	    size = glm::vec2(1,1);
+	    fontTexture = f; 
+	}
+	
         void setString(std::string s);
-
-
+	
         void setColor(glm::vec4 color) { this->color = color; colors.clear(); colors.push_back(color); }
 	glm::vec4 getColor(unsigned int index = 0) {  if(!colors.size()) return glm::vec4(0,0,0,1); else  return colors[index%colors.size()]; }
         void addColor(glm::vec4 color) { colors.push_back(color); }
@@ -33,6 +37,7 @@ namespace kte
         GLuint getTexture() { return  fontTexture->getTexture(); }
         void setSize(float x, float y) { size = glm::vec2(x,y); }
 	glm::vec2 getSize() { return size; }
+	float getDeltaY() { return deltaY; }
 	
     private:
         glm::vec2 position;
@@ -41,11 +46,14 @@ namespace kte
 
         FontTexture* fontTexture;
 	
+	float deltaY;
         unsigned int length;
         std::string textString;
 
         std::map<unsigned int, glm::vec4> textureRectangles;
         std::map<unsigned int, glm::vec4> rectangles;
+        
+	
 	std::vector<glm::vec4> colors;
     };
 }

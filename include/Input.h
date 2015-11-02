@@ -2,8 +2,9 @@
 #define KTE_INPUT_H
 
 #include <Window.h>
+#include "Components/Camera.h"
 #include <glm/glm.hpp>
-
+#include <iostream>
 namespace kte
 {
     class Input
@@ -13,15 +14,22 @@ namespace kte
         static bool isKeyDown(unsigned int key) { return window->isKeyDown(key); }
         static bool isMouseDown(unsigned int button = 0)
         {
-
             return glfwGetMouseButton(window->getContext(), button) == GLFW_PRESS;
         }
         static glm::vec2 getMousePosition()
         {
             double x,y;
             glfwGetCursorPos(window->getContext(), &x, &y);
+	    kte::Camera* cam = kte::Camera::getMainCamera();
+	    glm::vec2 screenResolution = window->getScreenResolution();
+	    glm::vec2 virtualResolution = cam->getResolution();
+	    
+	    glm::vec2 scale;
+	    scale.x = virtualResolution.x / screenResolution.x ;
+	    scale.y =  virtualResolution.y / screenResolution.y;
 
-            return glm::vec2(x,y);
+	    glm::vec2 position = cam->getPosition();
+            return glm::vec2(x * scale.x + position.x, y * scale.y + position.y);
         }
 	
 	static void enableCursor(bool enabled)

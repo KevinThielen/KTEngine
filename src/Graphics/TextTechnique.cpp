@@ -22,10 +22,14 @@ namespace kte
 	
         if(!shaderManager->getShaderProgram("TextShader"))
         {
-            if(!shaderManager->shaderProgramFromFile("TextShader", resources->getFile("textVS")->content, resources->getFile("textFS")->content))
-                return false;
+	    #if defined(EMSCRIPTEN)
+              if(!shaderManager->shaderProgramFromFile("TextShader", resources->getFile("textVS_WEB")->content, resources->getFile("textFS_WEB")->content))
+                  return false;
+	    #else
+              if(!shaderManager->shaderProgramFromFile("TextShader", resources->getFile("textVS")->content, resources->getFile("textFS")->content))
+		  return false;
+            #endif
         }
-
         programId = shaderManager->getShaderProgram("TextShader");
 
         quad = &kte::Geometry::quad;
@@ -99,7 +103,7 @@ namespace kte
 			
                         glm::vec3 finalPosition = position;
 			finalPosition.x += t.getPosition().x;
-			finalPosition.y += t.getPosition().y;
+			finalPosition.y += t.getPosition().y + t.getDeltaY();
 
 
                         glm::mat4 matrix;
@@ -193,7 +197,7 @@ namespace kte
 	
                         glm::vec3 finalPosition = position;
 			finalPosition.x += text.getPosition().x + scaledOffset.x;
-			finalPosition.y += text.getPosition().y + scaledOffset.y;
+			finalPosition.y += text.getPosition().y + scaledOffset.y + text.getDeltaY();
 
 
 

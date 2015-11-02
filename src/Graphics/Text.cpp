@@ -8,11 +8,12 @@ namespace kte
 	    
         float xOffset = 0.0f;
         float yOffset = 0.0f;
-
+	deltaY = 0.0f;
         length = text.length();
 
 	rectangles.clear();
 	textureRectangles.clear();
+	
         for (unsigned int i = 0; i < text.length(); i++)
         {
             char c = text[i];
@@ -30,11 +31,14 @@ namespace kte
                 //if (!textureRectangles[c])
                 //{
 		    float textureX = (float)g.textureX / fontTexture->getFont().textureWidth;
-                    rectangles[i].x = xOffset + g.bitmapLeft + textureX;
-                    rectangles[i].y = yOffset+  g.bitmapTop-g.bitmapHeight ;
+                    int positionY = fontTexture->getFont().textureHeight - g.bitmapTop;
+		    
+		    rectangles[i].x = xOffset + g.bitmapLeft + textureX;
+                    rectangles[i].y = yOffset + positionY;
                     rectangles[i].z = g.bitmapWidth;
                     rectangles[i].a = g.bitmapHeight;
-
+		    if(deltaY+10 < -positionY || deltaY >= 0.0f)
+			deltaY = -positionY;
 	
                     textureRectangles[i].x = textureX;
                     textureRectangles[i].y = 0;
@@ -45,7 +49,6 @@ namespace kte
                     xOffset += g.advanceX;
             //    }
             }
-
         }
     }
 }

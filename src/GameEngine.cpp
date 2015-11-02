@@ -6,7 +6,7 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc, bool 
 {
     //gameLoop
     isRunning = true;
-    pop = true;
+    pop = false;
     if(!window.create(windowDesc))
         return;
 
@@ -61,6 +61,19 @@ void kte::GameEngine::update()
         gameScenes.back()->update(dt);
 	
         window.swapBuffers();
+	
+	if(pop)
+	{
+	    if(gameScenes.size())
+	    {
+		gameScenes.pop_back();
+		
+		if(gameScenes.size())
+		    gameScenes.back()->refresh();
+		
+		pop = false;
+	    }
+	}
 }
 
 //exit the whole game
@@ -82,13 +95,7 @@ void kte::GameEngine::pushScene(kte::IGameScene* scene)
 
 void kte::GameEngine::popScene()
 {
-    if(gameScenes.size())
-    {
-	gameScenes.pop_back();
-	
-	if(gameScenes.size())
-	    gameScenes.back()->refresh();
-    }
+    pop = true;
 }
 
 kte::GameObject* kte::GameEngine::getSceneNode()

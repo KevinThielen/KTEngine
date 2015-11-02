@@ -173,6 +173,11 @@ namespace kte
 	    {
 		texture.second.reload();
 	    }
+	    
+	    for(auto& font : fonts)
+	    {
+		font.second.reload();
+	    }
 	}
 	
 	void unload() 
@@ -180,6 +185,11 @@ namespace kte
 	    for(auto& texture : textures)
 	    {
 		texture.second.unload();
+	    }
+	    
+	    for(auto& font : fonts)
+	    {
+		font.second.unload();
 	    }
 	}
     private:

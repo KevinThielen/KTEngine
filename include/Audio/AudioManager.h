@@ -10,7 +10,12 @@
 
 namespace kte
 {
-    namespace Audio 
+    namespace Sound 
+    {
+	extern float masterVolume ;
+	extern bool muted;
+    }
+    namespace Music 
     {
 	extern float masterVolume ;
 	extern bool muted;

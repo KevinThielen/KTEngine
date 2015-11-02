@@ -17,35 +17,42 @@ namespace kte
             if(mainCamera == nullptr)
                 mainCamera = this;
 
+	   position = glm::vec2(0,0);
            setViewMatrix(left, right, bottom, top);
         }
 
         glm::mat4 getMatrix() { return projectionMatrix * viewMatrix; }
 
-        void setViewMatrix(float left, float right, float bottom, float top, float nearPlane = 0.01f, float farPlane = 100.0f)
+        void setViewMatrix(float left, float right, float bottom, float top, float nearPlane = -0.01f, float farPlane = -100.0f)
         {
             this->left = left;
             this->right = right;
             this->bottom = bottom;
             this->top = top;
-
-            viewMatrix = glm::ortho(left, right, bottom, top, -0.01f, -100.0f);
+            this->nearPlane = nearPlane;
+	    this->farPlane = farPlane;
+	    
+	    viewMatrix = glm::ortho(left, right, bottom, top, nearPlane, farPlane);
         }
         
+    
+	
         void move(float dx, float dy) 
 	{
-	    left += dx;
-	    right += dx;
-	    top += dy;
-	    bottom += dy;
+	    position.x += dx;
+	    position.y += dy;
 	    
 	    updateMatrix();
 	}
-        
+  
         void updateMatrix()
 	{
-	    viewMatrix = glm::ortho(left, right, bottom, top, -0.01f, -100.0f);
+	    viewMatrix = glm::ortho(left+position.x, right+position.x, bottom+position.y, top+position.y, nearPlane, farPlane);
 	}
+	
+	glm::vec2 getPosition() { return position; }
+	glm::vec2 getResolution() { return glm::vec2(right, bottom); }
+	
         static void setMainCamera(Camera* camera) { Camera::mainCamera = camera; }
         static Camera* getMainCamera() { return mainCamera; }
 
@@ -55,7 +62,8 @@ namespace kte
 
         glm::mat4 projectionMatrix;
         glm::mat4 viewMatrix;
-
+	glm::vec2 position;
+	
         float 	fieldOfView = 45.0f,
                 aspectRatio = 4.0f / 3.0f,
                 nearPlane = 0.01f,

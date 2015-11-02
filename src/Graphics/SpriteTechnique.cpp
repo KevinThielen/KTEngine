@@ -27,8 +27,13 @@ namespace kte
         ShaderManager* shaderManager = ShaderManager::instance();
         if(!shaderManager->getShaderProgram("SpriteShader"))
         {
-            if(!shaderManager->shaderProgramFromFile("SpriteShader", resources->getFile("spriteVS")->content, resources->getFile("spriteFS")->content))
-                return false;
+	    #if defined(EMSCRIPTEN)
+              if(!shaderManager->shaderProgramFromFile("SpriteShader", resources->getFile("spriteVS_WEB")->content, resources->getFile("spriteFS_WEB")->content))
+                  return false;
+	    #else
+              if(!shaderManager->shaderProgramFromFile("SpriteShader", resources->getFile("spriteVS")->content, resources->getFile("spriteFS")->content))
+		  return false;
+            #endif
         }
 
         programId = shaderManager->getShaderProgram("SpriteShader");
@@ -73,6 +78,8 @@ namespace kte
             std::map<kte::Texture *, std::map<SpriteComponent *, TransformationComponent *>> spritesSortedByTexture;
 
             kte::Camera *mainCam = Camera::getMainCamera();
+	    
+	    
             glm::mat4 viewMatrix;
             if (mainCam)
                 viewMatrix = mainCam->getMatrix();
@@ -96,13 +103,16 @@ namespace kte
                 std::vector<glm::vec4> uvs;
 
                 Texture *texture = sortedSprites.first;
-                if (texture)
+		std::string textureName = (texture? texture->getName() : "default");
+                
+		if (texture)
                 {
                     GLint textureLoc = glGetUniformLocation(programId, "texture");
                     glActiveTexture(GL_TEXTURE0);
 		    
 		    glBindTexture(GL_TEXTURE_2D, texture->getTexture());
 		    glUniform1i(textureLoc, 0);
+		
 		}
                 else
                 {
@@ -111,9 +121,8 @@ namespace kte
                     glBindTexture(GL_TEXTURE_2D, defaultTexture);
                     glUniform1i(textureLoc, 0);
                 }
-                RenderSystem::checkGLError("SpriteTechnique bind Texture "+texture->getName());
 		
-
+		RenderSystem::checkGLError("SpriteTechnique bind Texture "+textureName);
           
 
                 for (auto sprite : sortedSprites.second)
@@ -141,7 +150,7 @@ namespace kte
                         parentTransform = parentTransform->parentTransform;
                     }
                     glm::vec3 finalPosition = position + spriteOffset;
-
+		    
                     glm::vec4 textureRectangle = spriteComponent->textureRectangle;
                     if(spriteComponent->mirrored)
                     {
@@ -178,7 +187,8 @@ namespace kte
                 glBindVertexArray(0);
 		
 		
-		RenderSystem::checkGLError("SpriteTechnique: "+texture->getName());
+
+		RenderSystem::checkGLError("SpriteTechnique: "+textureName);
             }
         }
     }

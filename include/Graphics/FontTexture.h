@@ -20,12 +20,12 @@ namespace kte
 	glActiveTexture(GL_TEXTURE0);
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
-        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glPixelStorei ( GL_UNPACK_ALIGNMENT, 1 ) ;
-        glPixelStorei ( GL_PACK_ALIGNMENT, 1 ) ;
+	glPixelStorei ( GL_UNPACK_ALIGNMENT, 1);
+        glPixelStorei ( GL_PACK_ALIGNMENT, 1);
 	
 	std::vector<unsigned char> fontData;
 	
@@ -42,6 +42,10 @@ namespace kte
 	return (texture>0);
     }
     
+    void reload() { loadFromFont(font); }
+    void unload() { glDeleteTextures(1, &texture); texture = 0;}
+    
+   
     Font getFont() { return font; }
     GLuint getTexture() { return texture; }
     

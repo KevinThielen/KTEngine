@@ -3,7 +3,12 @@
 
 namespace kte 
 {
-    namespace Audio 
+    namespace Sound 
+    {
+	float masterVolume = 1.0f;
+	bool muted = false;
+    }
+    namespace Music 
     {
 	float masterVolume = 1.0f;
 	bool muted = false;

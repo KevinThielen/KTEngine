@@ -13,7 +13,6 @@
 ********************/
 bool kte::Window::create(kte::WindowDesc windowDesc, bool fullscreen ) 
 {
-    GLenum error = glGetError();
     desc = windowDesc;
   
 
@@ -47,6 +46,8 @@ bool kte::Window::create(kte::WindowDesc windowDesc, bool fullscreen )
 	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
 	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
+	desc.width = mode->width;
+	desc.height = mode->height;
 	newWindow = glfwCreateWindow(mode->width, mode->height, windowDesc.title.c_str(), glfwGetPrimaryMonitor(), nullptr);
     }
     //window creation failed
@@ -91,12 +92,7 @@ bool kte::Window::create(kte::WindowDesc windowDesc, bool fullscreen )
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
-    error = glGetError();
-
-    if(error != GL_NO_ERROR)
-    {
-	std::cout<<"ERROR in WindowCreation: "<<std::to_string(error)<< glewGetErrorString(error)<<std::endl;
-    }
+    RenderSystem::checkGLError("WindowCreation");
     initialized = true;
     
     return true;
@@ -107,9 +103,11 @@ void kte::Window::setFullscreen(bool fullscreen)
 {
     if(this->fullscreen == fullscreen)
 	return; 
-    
-    this->fullscreen = fullscreen;
-    reCreate = true;
+    else 
+    {
+	this->fullscreen = fullscreen;
+	reCreate = true;
+    }
 }
 
 /*******************

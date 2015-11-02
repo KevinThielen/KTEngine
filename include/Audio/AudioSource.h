@@ -17,9 +17,13 @@ namespace kte
 	{
 	}
 	
+	~AudioSource()
+	{
+	    alDeleteSources(1, &source);
+	}
 	bool initialize()
 	{
-	    alGenSources((ALuint)1, &source);
+	    alGenSources(1, &source);
 
 	    alSourcef(source, AL_PITCH, 1);
 	    alSourcef(source, AL_GAIN, 1);
@@ -28,18 +32,46 @@ namespace kte
 	    alSourcei(source, AL_LOOPING, AL_FALSE);
 	    
 	    AudioManager::checkALError("Audio source generation");
-	    isLooping = false;
+	    looping = false;
 	  
 	    
 	    return true;
 	}
 	
-	void play(AudioBuffer* buffer)
+	void play(AudioBuffer* buffer, bool looping = false) { playSound(buffer, looping); } 
+	void playSound(AudioBuffer* buffer, bool looping = false)
 	{
 	    alSourceStop(source);
+	    if(looping)
+		alSourcei(source, AL_LOOPING, AL_TRUE);
+	    else 
+		alSourcei(source, AL_LOOPING, AL_FALSE);
+	
+	    this-> looping = looping;
 	    alSourcei(source, AL_BUFFER, buffer->getBuffer());
-	    if(!Audio::muted)
-		alSourcef(source, AL_GAIN, Audio::masterVolume);
+	    if(!Sound::muted)
+		alSourcef(source, AL_GAIN, Sound::masterVolume);
+	    else 
+		alSourcef(source, AL_GAIN, 0.0f);
+	    
+	    alSourcePlay(source);
+	    AudioManager::checkALError("Play Buffer");
+	}
+
+	
+	void playMusic(AudioBuffer* buffer, bool looping = true)
+	{
+	    if(looping)
+		alSourcei(source, AL_LOOPING, AL_TRUE);
+	    else 
+		alSourcei(source, AL_LOOPING, AL_FALSE);
+	
+	    this-> looping = looping;
+	    
+	    alSourceStop(source);
+	    alSourcei(source, AL_BUFFER, buffer->getBuffer());
+	    if(!Music::muted)
+		alSourcef(source, AL_GAIN, Music::masterVolume);
 	    else 
 		alSourcef(source, AL_GAIN, 0.0f);
 	    
@@ -47,22 +79,10 @@ namespace kte
 	    AudioManager::checkALError("Play Buffer");
 	}
 	
-	void play(AudioBuffer* buffer, bool loop)
-	{
-	    isLooping = loop;
-	    
-	    if(loop)
-		alSourcei(source, AL_LOOPING, AL_TRUE);
-	    else 
-		alSourcei(source, AL_LOOPING, AL_FALSE);
-	
-	    play(buffer);
-	}
-	
 
 	
     private:
-	bool isLooping;
+	bool looping;
 	ALuint source;
     };
 }
