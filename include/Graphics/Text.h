@@ -13,13 +13,17 @@ namespace kte
     class Text
     {
     public:
+	Text() { fontTexture = nullptr; active = true;}
         void setFont(FontTexture* f)
 	{ 
 	    size = glm::vec2(1,1);
 	    fontTexture = f; 
+	    
 	}
 	
+	std::string getFontName() { return (fontTexture ? fontTexture->getFontName() : "");}
         void setString(std::string s);
+	std::string getString() { return textString; }
 	
         void setColor(glm::vec4 color) { this->color = color; colors.clear(); colors.push_back(color); }
 	glm::vec4 getColor(unsigned int index = 0) {  if(!colors.size()) return glm::vec4(0,0,0,1); else  return colors[index%colors.size()]; }
@@ -34,16 +38,18 @@ namespace kte
 
         unsigned int getLength() { return length; }
 
-        GLuint getTexture() { return  fontTexture->getTexture(); }
+        GLuint getTexture() { return fontTexture->getTexture(); }
         void setSize(float x, float y) { size = glm::vec2(x,y); }
 	glm::vec2 getSize() { return size; }
 	float getDeltaY() { return deltaY; }
 	
+	bool isActive() { return active; }
+	void isActive(bool active) { this->active = active; }
     private:
         glm::vec2 position;
         glm::vec2 size;
         glm::vec4 color;
-
+	bool active;
         FontTexture* fontTexture;
 	
 	float deltaY;
@@ -52,7 +58,7 @@ namespace kte
 
         std::map<unsigned int, glm::vec4> textureRectangles;
         std::map<unsigned int, glm::vec4> rectangles;
-        
+	
 	
 	std::vector<glm::vec4> colors;
     };

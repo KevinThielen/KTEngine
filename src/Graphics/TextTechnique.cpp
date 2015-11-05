@@ -49,7 +49,7 @@ namespace kte
     *
     *
     ***************************************/
-    void TextTechnique::render(std::vector<Text> texts)
+    void TextTechnique::render(std::map<unsigned int, Text> texts)
     {
 
 	
@@ -61,10 +61,17 @@ namespace kte
         glm::mat4 viewMatrix;
         if (mainCam)
             viewMatrix = mainCam->getMatrix();
-
-        for(auto text : texts)
+	
+	std::vector<Text> textsToRender;
+	
+	for(auto& t : texts)
+	{
+	    if(t.second.getTexture() > 0 && t.second.isActive())
+		textsToRender.push_back(t.second);
+	}	
+        for(auto text : textsToRender)
         {
-            sortedByFont[text.getTexture()].push_back(text);
+		sortedByFont[text.getTexture()].push_back(text);
         }
 
             for (auto text : sortedByFont)
@@ -150,8 +157,9 @@ namespace kte
 
             kte::Camera *mainCam = Camera::getMainCamera();
             glm::mat4 viewMatrix;
-            if (mainCam)
-                viewMatrix = mainCam->getMatrix();
+          
+		if (mainCam)
+		    viewMatrix = mainCam->getMatrix();
 
                 //single drawCall
                 quad->bindVAO();

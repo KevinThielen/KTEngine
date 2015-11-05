@@ -51,12 +51,13 @@ namespace kte
 
 	void popScene();
 	GameObject* getSceneNode();
-	
+	IGameScene* getCurrentScene();
 	
 	Window* getContext() { return &window; }
 	AudioManager* getAudioManager() { return &audioManager; }
 	Resources* getResources() { return &resources; }
 	void sendMessage(kte::Message* message);
+	
     private:
 
         //only one instance

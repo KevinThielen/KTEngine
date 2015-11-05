@@ -101,7 +101,14 @@ void kte::GameEngine::popScene()
 kte::GameObject* kte::GameEngine::getSceneNode()
 {
     return gameScenes.back()->getSceneNode();
+
+    
 }
+kte::IGameScene* kte::GameEngine::getCurrentScene()
+{	
+    return gameScenes.back().get();
+}
+
 
 void kte::GameEngine::sendMessage(kte::Message* message)
 {

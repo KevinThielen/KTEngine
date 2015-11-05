@@ -33,18 +33,14 @@ void kte::IGameScene::addGameObject(GameObject* gameObject) { gameObjects[gameOb
 void kte::IGameScene::removeGameObject(unsigned int gameObjectid) { gameObjects.erase(gameObjectid); }
 
 void kte::IGameScene::initDefaultSystem()
+{
+    //standard systems
+    renderer = new RenderSystem();
+    addSystem(renderer);
 
-    {
-        //standard systems
-
-	renderer = new RenderSystem();
-        addSystem(renderer);
-
-        addSystem(new kte::AnimationSystem(resources));
-        addSystem(new kte::InputSystem);
-	
-
-    }
+    addSystem(new kte::AnimationSystem(resources));
+    addSystem(new kte::InputSystem);
+}
 
 void kte::IGameScene::displayText(kte::Text text)
 {

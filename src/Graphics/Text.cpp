@@ -1,11 +1,17 @@
 #include <Graphics/Text.h>
+#include <boost/concept_check.hpp>
 
 namespace kte
 {
     void Text::setString(std::string text)
     {
+	if(text == "" || fontTexture == nullptr)
+	    return;
+	
         textString = text;
 	    
+	
+	
         float xOffset = 0.0f;
         float yOffset = 0.0f;
 	deltaY = 0.0f;

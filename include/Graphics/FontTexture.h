@@ -48,7 +48,7 @@ namespace kte
    
     Font getFont() { return font; }
     GLuint getTexture() { return texture; }
-    
+    std::string getFontName() { return font.name; } 
     private:
 	GLuint texture;
 	Font font;

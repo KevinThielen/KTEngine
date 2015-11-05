@@ -8,7 +8,7 @@
 namespace kte 
 {
     
-    void saveData(std::string filename, int width, int height, std::vector<char> data)
+    inline void saveData(std::string filename, int width, int height, std::vector<char> data)
     {
 	int x = width;
 	int y = height;
@@ -31,8 +31,21 @@ namespace kte
 	
     }
     
+  
+    inline void saveTextureAsTGA(std::string filename, GLuint texture, int w, int h)
+    {	
+
+	std::vector<char> data;
+	data.resize(w*h*3);
+	
+	glReadPixels(0.0, 0.0, w, h, GL_BGR, GL_UNSIGNED_BYTE, &data[0]);
+	
+
+
+ saveData(filename, w, h, data); 
+    }
     
-    void saveTextureAsTGA(std::string filename, Texture* texture)
+inline    void saveTextureAsTGA(std::string filename, Texture* texture)
     {	
 
 	std::vector<char> data;
@@ -51,7 +64,7 @@ namespace kte
 	saveData(filename, texture->getWidth(), texture->getHeight(), data); 
     }
     
-    void saveAlphaMapAsTGA(std::string filename, Texture* texture)
+inline    void saveAlphaMapAsTGA(std::string filename, Texture* texture)
     {	
 	//remove the alpha value
 	std::vector<char> data;

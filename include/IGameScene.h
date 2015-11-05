@@ -49,6 +49,8 @@ namespace kte
 
         void initDefaultSystem();
 	GameObject* getSceneNode();
+	AudioManager* getAudioManager() { return audioManager; }
+	
     protected:
 
         RenderSystem* renderer;

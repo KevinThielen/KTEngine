@@ -25,7 +25,6 @@ namespace kte
 
     private:
 
-        GLuint programId;
         Quad* quad;
         GLuint defaultTexture;
 	Resources* resources;

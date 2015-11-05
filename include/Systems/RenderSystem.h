@@ -7,12 +7,15 @@
 #include "ISystem.h"
 #include "Components/SpriteComponent.h"
 #include "Components/TransformationComponent.h"
+#include "Components/TextComponent.h"
 #include "Components/BoxCollider.h"
 #include "Messages/ComponentAddedMessage.h"
 #include "Messages/ContextChange.h"
 #include "Messages/GameObjectRemovedMessage.h"
 #include "Graphics/RenderTechnique.h"
 #include <Graphics/TextTechnique.h>
+#include "Graphics/Text.h"
+#include <Graphics/PostProcessing.h>
 
 namespace kte
 {
@@ -33,7 +36,7 @@ namespace kte
 
         void displayText(std::vector<Text> text)
         {
-            textTechnique->render(text);
+   //         textTechnique->render(text);
         }
 
         static bool checkGLError(std::string message = "") 
@@ -56,10 +59,15 @@ namespace kte
 
         std::map<SpriteComponent*, TransformationComponent*> spritesToRender;
         bool componentsChanged = true;
+	
+	Resources* resources;
         //render Techniques
         std::vector<std::unique_ptr<RenderTechnique>> renderTechniques;
 
         std::unique_ptr<TextTechnique> textTechnique;
+        std::map<unsigned int, TextComponent*> textComponents;
+	std::map<unsigned int, Text> textsToRender;
+	PostProcessing postProcessing;
     };
 }
 

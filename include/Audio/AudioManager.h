@@ -7,9 +7,11 @@
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <map>
 
 namespace kte
 {
+    class AudioSource;
     namespace Sound 
     {
 	extern float masterVolume ;
@@ -20,9 +22,14 @@ namespace kte
 	extern float masterVolume ;
 	extern bool muted;
     }
+
+
     class AudioManager
     {
     public:
+	
+	~AudioManager();
+	
 	bool initializeAudioDevice()
 	{
 	 
@@ -86,11 +93,11 @@ namespace kte
 	    alListener3f(AL_POSITION, 0, 0, 1.0f);
 	    alListener3f(AL_VELOCITY, 0, 0, 0);
 	    alListenerfv(AL_ORIENTATION, listenerOrientation);
-	   
+	    
 	    return availableDevices;
 	}
-	
-	
+    
+	void update();
 	void release()
 	{
 	    alcMakeContextCurrent(NULL);
@@ -109,6 +116,16 @@ namespace kte
 		return true;
 	    }
 	}
+	
+	void addAudioSource(AudioSource* audioSource);
+	void removeAudioSource(AudioSource* audioSource); 
+	
+	
+	void setMusicVolume(float volume);
+	void setSoundVolume(float volume);
+	void muteMusic(bool mute);
+	void muteSound(bool mute);
+	
     private:
 	
 	static std::string getErrorString(ALenum error)
@@ -126,6 +143,12 @@ namespace kte
 	
 	ALCdevice* audioDevice;
 	ALCcontext* context;
+	std::map<ALuint, AudioSource*> audioSources;
+	bool musicMuted;
+	bool soundMuted;
+	
+	float musicVolume;
+	float soundVolume;
     };
 }
 

@@ -19,9 +19,13 @@ namespace kte
 	
 	~AudioSource()
 	{
+	    if(manager)
+		manager->removeAudioSource(this);
+	    
 	    alDeleteSources(1, &source);
 	}
-	bool initialize()
+	
+	bool initialize(AudioManager* audioManager)
 	{
 	    alGenSources(1, &source);
 
@@ -32,6 +36,9 @@ namespace kte
 	    alSourcei(source, AL_LOOPING, AL_FALSE);
 	    
 	    AudioManager::checkALError("Audio source generation");
+	    audioManager->addAudioSource(this);
+	    
+	    manager = audioManager;
 	    looping = false;
 	  
 	    
@@ -79,11 +86,14 @@ namespace kte
 	    AudioManager::checkALError("Play Buffer");
 	}
 	
-
+	void setAudioManager(AudioManager* audioManager) { manager = audioManager; }
+	
+	ALuint getID() { return source; } 
 	
     private:
 	bool looping;
 	ALuint source;
+	AudioManager* manager;
     };
 }
 

@@ -41,12 +41,19 @@ namespace kte
         quad = &kte::Geometry::quad;
 
         defaultTexture = resources->getTexture("default")->getTexture();
-
-        return true;
+    
+	
+        return generateFBO();
     }
     void SpriteTechnique::use()
     {
         glUseProgram(programId);
+	
+        // Render to framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	glViewport(0, 0, context->getScreenResolution().x, context->getScreenResolution().y); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+
     }
 
     /**************************************

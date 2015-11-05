@@ -1,7 +1,7 @@
 #ifndef KTE_TEXT_TECHNIQUE_H
 #define KTE_TEXT_TECHNIQUE_H
 
-#include <vector>
+#include <map>
 #include <GLFW/glfw3.h>
 
 #include "RenderTechnique.h"
@@ -20,11 +20,10 @@ namespace kte
         virtual bool init();
         virtual void use();
         virtual void render(std::map<SpriteComponent*, TransformationComponent*> spritesToRender){}
-        void render(std::vector<Text> text);
+        void render(std::map<unsigned int, Text> text);
         void render(Text text);
 
     private:
-        GLuint programId;
         Quad* quad;
 	Resources* resources;
     };

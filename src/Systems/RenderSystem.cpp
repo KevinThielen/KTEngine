@@ -18,16 +18,25 @@ bool kte::RenderSystem::init()
     if(!textTechnique->init())
       return false;
 
+    resources = kte::GameEngine::instance()->getResources();
+    
+    if(!postProcessing.initialize())
+      return false;
+    
+    postProcessing.setTechnique(renderTechniques.back().get());
+    checkGLError("PostProcessing");
+    
     return true;
 }
 
 void kte::RenderSystem::update(float dt)
 {
+//     postProcessing.bind();
+    std::vector<GLuint> renderTextures;
     //pass the spriteComponents with the transformcomponents to their according rendertechniques
     for(auto& renderTechnique : renderTechniques)
     {
         renderTechnique->use();
-
         if(componentsChanged)
         {
             spritesToRender.clear();
@@ -42,14 +51,47 @@ void kte::RenderSystem::update(float dt)
             }
             componentsChanged = true;
 //            componentsChanged = false;
+	    
             renderTechnique->render(spritesToRender);
+	    renderTextures.push_back(renderTechnique->getRenderTexture());
         }
    //     else
-   //         renderTechnique->renderCached();
+   //        renderTechnique->renderCached();
 
 
     }
+    
+    postProcessing.bind();
 
+    checkGLError("POSTPROCESSING");
+    for(auto& textToRender : textsToRender)
+    {
+	Text* text = &textToRender.second;
+	TextComponent* textComp = textComponents[textToRender.first];
+	text->isActive(textComp->isActive);
+	
+	if(textComp->isActive)
+	{
+	    TransformationComponent* trans = transformationComponents[textToRender.first];
+	    
+	    if(text->getFontName() != textComp->font)
+		text->setFont(resources->getFont(textComp->font));
+	    
+	    if(text->getString() != textComp->text)
+		text->setString(textComp->text);
+	    
+	    text->setPosition(trans->x + textComp->xOffset, trans->y + textComp->yOffset);
+	    
+	    if(textComp->colors.size() > 0)
+		text->setColors(textComp->colors);
+	    else text->setColor(textComp->color);
+	}
+    }
+    
+    for(auto texture : renderTextures)
+	postProcessing.render(texture);
+        
+    textTechnique->render(textsToRender);
     //draw debug colliders
 /*    for(auto collider : boxColliders)
     {
@@ -106,7 +148,17 @@ void kte::RenderSystem::receiveMessage(kte::Message* message)
         {
             boxColliders.push_back(dynamic_cast<kte::BoxCollider*>(componentAddedMessage->addedComponent));
         }
-        
+        else if(dynamic_cast<kte::TextComponent*>(componentAddedMessage->addedComponent))
+        {
+            componentsChanged = true;
+            textComponents[componentAddedMessage->gameObjectId] = dynamic_cast<kte::TextComponent*>(componentAddedMessage->addedComponent);
+	    
+	    TextComponent* comp = textComponents[componentAddedMessage->gameObjectId];
+	    textsToRender[componentAddedMessage->gameObjectId].setColor(comp->color);
+	    textsToRender[componentAddedMessage->gameObjectId].setString("");
+	    
+	    
+        }
     }
     if(dynamic_cast<kte::GameObjectRemovedMessage*>(message))
     {
@@ -121,6 +173,11 @@ void kte::RenderSystem::receiveMessage(kte::Message* message)
         {
             componentsChanged = true;
             transformationComponents.erase(gameObjectRemovedMessage->gameObjectId);
+        }
+        if(textComponents.count(gameObjectRemovedMessage->gameObjectId))
+        {
+            componentsChanged = true;
+            textComponents.erase(gameObjectRemovedMessage->gameObjectId);
         }
     }
     if(dynamic_cast<kte::ContextChange*>(message))
@@ -141,6 +198,8 @@ void kte::RenderSystem::receiveMessage(kte::Message* message)
 	    textTechnique.reset(new TextTechnique);
 	    textTechnique->init();
 	    checkGLError("TextTechnique init");
+	    
+	    postProcessing.reload();
     }
 
 }

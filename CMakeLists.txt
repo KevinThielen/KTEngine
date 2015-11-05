@@ -10,6 +10,8 @@ SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -Wall ")
 SET(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -Wall")
 set_property( GLOBAL PROPERTY USE_FOLDERS ON)
 
+add_definitions(-DGLM_FORCE_RADIANS)
+
 
 FIND_PACKAGE(OpenAL)
 
