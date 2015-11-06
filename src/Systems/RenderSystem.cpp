@@ -31,6 +31,8 @@ bool kte::RenderSystem::init()
 
 void kte::RenderSystem::update(float dt)
 {
+    kte::Profiler::track("RenderSystem");
+    
 //     postProcessing.bind();
     std::vector<GLuint> renderTextures;
     //pass the spriteComponents with the transformcomponents to their according rendertechniques
@@ -92,6 +94,8 @@ void kte::RenderSystem::update(float dt)
 	postProcessing.render(texture);
         
     textTechnique->render(textsToRender);
+    
+    kte::Profiler::stop("RenderSystem");
     //draw debug colliders
 /*    for(auto collider : boxColliders)
     {

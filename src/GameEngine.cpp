@@ -4,6 +4,7 @@
 //run the game. The parameter is the first gameScene that should run.
 void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc, bool isMainLoop)
 {
+        kte::Profiler::track("StartUp");
     //gameLoop
     isRunning = true;
     pop = false;
@@ -35,6 +36,7 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc, bool 
     
 
     fpsCounter.update();
+    kte::Profiler::stop("StartUp");
     
     if(isMainLoop)
     {
@@ -48,6 +50,7 @@ void kte::GameEngine::run(IGameScene* initialScene, WindowDesc windowDesc, bool 
 
 void kte::GameEngine::update()
 {
+        kte::Profiler::track("GameLoop");
     	fpsCounter.update();
 
         window.clearScreen();
@@ -74,6 +77,8 @@ void kte::GameEngine::update()
 		pop = false;
 	    }
 	}
+	
+	    kte::Profiler::stop("GameLoop");
 }
 
 //exit the whole game

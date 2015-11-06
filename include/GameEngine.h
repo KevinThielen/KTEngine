@@ -16,6 +16,7 @@
 #include "Utility/FPSCounter.h"
 #include "Audio/AudioManager.h"
 #include "Resources/Resources.h"
+#include "Utility/Profiler.h"
 
 
 namespace kte

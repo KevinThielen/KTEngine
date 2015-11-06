@@ -10,8 +10,7 @@ namespace kte
 {
     namespace Time 
     {
-	int getTimeInMs();
-
+	unsigned int getTimeInMs();
     }
 }
 #endif
